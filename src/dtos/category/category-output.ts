@@ -1,5 +1,5 @@
 import { Category } from '../../types';
-import { PaginationOutput, toPaginationOutput } from '..';
+import { PaginationOutput, toPaginationOutput } from '../../dtos';
 
 export type CategoryOutput = {
   id: string;

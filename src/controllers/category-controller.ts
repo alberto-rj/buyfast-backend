@@ -128,7 +128,7 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default {
+export const categoryController = {
   create,
   findMany,
   find,

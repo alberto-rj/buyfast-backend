@@ -17,6 +17,6 @@ const check = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default {
+export const healthController = {
   check,
 };

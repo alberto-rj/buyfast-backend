@@ -147,7 +147,7 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default {
+export const userController = {
   findProfile,
   findMany,
   find,

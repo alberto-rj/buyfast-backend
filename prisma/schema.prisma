@@ -20,6 +20,7 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive Boolean @default(true) @map("is_active")
   refreshTokens RefreshToken[]
+  cartItems CartItem[]
   @@map("users")
 }
 
@@ -64,5 +65,18 @@ model Product {
   weight Decimal?
   dimensions String?
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  cartItems CartItem[]
   @@map("products")
+}
+
+model CartItem {
+  id String @id @default(uuid())
+  userId String @map("user_id")
+  productId String @map("product_id")
+  quantity Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("cart_items")
 }

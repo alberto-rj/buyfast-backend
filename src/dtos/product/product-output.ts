@@ -4,7 +4,7 @@ import {
   toCategoryOutput,
   PaginationOutput,
   toPaginationOutput,
-} from '..';
+} from '../../dtos';
 
 export type ProductOutput = {
   id: string;

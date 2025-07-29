@@ -127,14 +127,22 @@ export const setISOPastDate = ({ fieldName }: { fieldName: string }) =>
     .transform((input) => new Date(input));
 
 export const setDefaultFalse = ({ fieldName }: { fieldName: string }) =>
-  z.coerce
-    .boolean({ invalid_type_error: `${fieldName} must be a boolean.` })
-    .default(false);
+  z
+    .string()
+    .default('false')
+    .refine((arg) => arg === 'true' || arg === 'false', {
+      message: `${fieldName} must be only "true" or "false".`,
+    })
+    .transform((arg) => arg === 'true');
 
 export const setDefaultTrue = ({ fieldName }: { fieldName: string }) =>
-  z.coerce
-    .boolean({ invalid_type_error: `${fieldName} must be a boolean.` })
-    .default(true);
+  z
+    .string()
+    .default('true')
+    .refine((arg) => arg === 'true' || arg === 'false', {
+      message: `${fieldName} must be only "true" or "false".`,
+    })
+    .transform((arg) => arg === 'true');
 
 export const setMinCreatedAt = (fieldName: string = 'minCreatedAt') =>
   setISOPastDate({ fieldName });

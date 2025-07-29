@@ -99,7 +99,7 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default {
+export const authController = {
   login,
   logout,
   refresh,

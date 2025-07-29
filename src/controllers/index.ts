@@ -1,5 +1,6 @@
-export { default as authController } from './auth-controller';
-export { default as categoryController } from './category-controller';
+export { authController } from './auth-controller';
+export { cartController } from './cart-controller';
+export { categoryController } from './category-controller';
 export { productController } from './product-controller';
-export { default as userController } from './user-controller';
-export { default as heathController } from './heath-controller';
+export { userController } from './user-controller';
+export { healthController } from './heath-controller';

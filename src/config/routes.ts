@@ -1,11 +1,12 @@
 import { Express } from 'express';
 
 import {
-  authRoutes,
-  categoryRoutes,
   healthRoutes,
+  authRoutes,
   userRoutes,
+  categoryRoutes,
   productRoutes,
+  cartRoutes,
 } from '../routes';
 import { errorHandler, notFoundHandler } from '../middlewares';
 
@@ -15,6 +16,7 @@ export const setupRoutes = (app: Express) => {
   app.use('/api/users', userRoutes);
   app.use('/api/categories', categoryRoutes);
   app.use('/api/products', productRoutes);
+  app.use('/api/cart', cartRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

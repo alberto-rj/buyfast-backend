@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import { UserRole } from './';
+import { UserRole } from '.';
 
 export interface AuthPayload extends JwtPayload {
   userId: string;
