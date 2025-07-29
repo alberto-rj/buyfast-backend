@@ -1,5 +1,5 @@
-import { Category } from '../types';
-import { PaginationOutput, toPaginationOutput } from './common-output';
+import { Category } from '../../types';
+import { PaginationOutput, toPaginationOutput } from '../common/common-output';
 
 export type CategoryOutput = {
   id: string;

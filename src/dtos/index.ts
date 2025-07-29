@@ -21,3 +21,27 @@ export {
   toProductOutput,
   toProductPaginationOutput,
 } from './product';
+
+export {
+  CategoryCreate,
+  CategoryCreateInput,
+  CategoryFind,
+  CategoryFindInput,
+  CategoryFindMany,
+  CategoryFindManyInput,
+  CategoryRemove,
+  CategoryRemoveInput,
+  CategoryUpdate,
+  CategoryUpdateInput,
+  CategoryUpdateIsActive,
+  CategoryUpdateIsActiveInput,
+  CategoryOutput,
+  toCategoryCreate,
+  toCategoryFind,
+  toCategoryFindMany,
+  toCategoryRemove,
+  toCategoryUpdate,
+  toCategoryUpdateIsActive,
+  toCategoryOutput,
+  toCategoryPaginationOutput,
+} from './category';

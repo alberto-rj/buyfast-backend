@@ -7,7 +7,7 @@ import {
   toCategoryRemove,
   toCategoryUpdate,
   toCategoryUpdateIsActive,
-} from '../dtos/category-input';
+} from '../dtos';
 import { categoryService } from '../services';
 import { resBody } from '../utils';
 

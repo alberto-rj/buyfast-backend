@@ -20,7 +20,7 @@ import {
   updatedAtMin,
   updatedAtMax,
 } from './user-base';
-import { validate } from '../utils/validate';
+import { validate } from '../../utils/validate';
 
 export const userCreate = z.object({
   body: z.object({

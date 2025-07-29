@@ -12,8 +12,8 @@ import {
   setUpdatedAtMax,
   setUpdatedAtMin,
   setUUID,
-} from './common-base';
-import { UserRole } from '../types/user';
+} from '../common/common-base';
+import { UserRole } from '../../types/user';
 
 export const id = setUUID();
 

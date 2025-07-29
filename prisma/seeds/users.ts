@@ -1,5 +1,5 @@
 import { prisma } from '../../src/config/prisma';
-import { UserCreateInput } from '../../src/dtos/user-input';
+import { UserCreateInput } from '../../src/dtos/user/user-input';
 import { hashPassword } from '../../src/utils/password-crypt';
 
 import usersData from './users.json';

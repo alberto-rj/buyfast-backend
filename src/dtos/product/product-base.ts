@@ -12,7 +12,7 @@ import {
   setUpdatedAtMax,
   setUpdatedAtMin,
   setUUID,
-} from '../common-base';
+} from '../common/common-base';
 
 export const id = setUUID();
 

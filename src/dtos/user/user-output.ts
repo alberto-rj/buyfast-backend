@@ -1,5 +1,5 @@
-import { User } from '../types';
-import { PaginationOutput, toPaginationOutput } from './common-output';
+import { User } from '../../types';
+import { PaginationOutput, toPaginationOutput } from '../common/common-output';
 
 export type UserOutput = {
   id: string;

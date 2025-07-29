@@ -6,11 +6,10 @@ import {
   CategoryUpdateInput,
   CategoryUpdateIsActiveInput,
   CategoryRemoveInput,
-} from '../dtos/category-input';
-import {
   toCategoryOutput,
   toCategoryPaginationOutput,
-} from '../dtos/category-output';
+} from '../dtos';
+
 import { ConflictError, NotFoundError } from '../utils';
 
 const getIsActive = (includeInactive: boolean) => {

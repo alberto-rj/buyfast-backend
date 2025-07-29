@@ -1,7 +1,7 @@
 import { userService } from './';
 import { prisma } from '../config';
-import { UserCreateInput, UserLoginInput } from '../dtos/user-input';
-import { toUserOutput, UserOutput } from '../dtos/user-output';
+import { UserCreateInput, UserLoginInput } from '../dtos/user/user-input';
+import { toUserOutput, UserOutput } from '../dtos/user/user-output';
 import { AuthPayload, User, UserRole } from '../types';
 import {
   NotFoundError,

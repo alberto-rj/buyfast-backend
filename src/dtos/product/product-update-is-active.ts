@@ -1,12 +1,6 @@
 import { z } from 'zod';
 
-import {
-  id,
-  includeCategory,
-  includeInactive,
-  includeInactiveCategory,
-  isActive,
-} from './';
+import { id, includeCategory, includeInactive, isActive } from './';
 import { validate } from '../../utils';
 
 export const productUpdateIsActive = z.object({
