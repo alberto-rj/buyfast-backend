@@ -17,6 +17,7 @@ export {
   maxCreatedAt,
   minUpdatedAt,
   maxUpdatedAt,
+  includeInactive,
 } from './user-base';
 export { UserCreate, UserCreateInput, toUserCreate } from './user-create';
 export { UserFind, UserFindInput, toUserFind } from './user-find';

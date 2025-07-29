@@ -25,3 +25,4 @@ export { validate } from './validate';
 export { ModelFindManyBuilder } from './common';
 export { getCategoryFindManyArgs } from './category';
 export { getProductFindManyArgs } from './product';
+export { getUserFindManyArgs } from './user';

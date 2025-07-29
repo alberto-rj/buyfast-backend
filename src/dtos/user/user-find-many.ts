@@ -11,6 +11,7 @@ import {
   maxCreatedAt,
   minUpdatedAt,
   maxUpdatedAt,
+  includeInactive,
 } from '.';
 import { validate } from '../../utils';
 
@@ -22,6 +23,7 @@ const userFindMany = z.object({
     maxCreatedAt: maxCreatedAt.optional(),
     minUpdatedAt: minUpdatedAt.optional(),
     maxUpdatedAt: maxUpdatedAt.optional(),
+    includeInactive: includeInactive.optional(),
     limit,
     page,
     sortBy,

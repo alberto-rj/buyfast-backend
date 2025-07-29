@@ -9,38 +9,89 @@ import {
   toUserOutput,
   toUserPaginationOutput,
 } from '../dtos';
-import { ConflictError, NotFoundError, hashPassword } from '../utils';
+import {
+  ConflictError,
+  NotFoundError,
+  canIncludeInactive,
+  getUserFindManyArgs,
+  hashPassword,
+} from '../utils';
+
+const ensureCanFind = async ({
+  id,
+  includeInactive,
+}: {
+  id: string;
+  includeInactive: boolean;
+}) => {
+  const foundUser = await prisma.user.findUnique({
+    where: {
+      id,
+      isActive: canIncludeInactive(includeInactive),
+    },
+    select: {
+      isActive: true,
+    },
+  });
+
+  if (!foundUser) {
+    throw new NotFoundError('User not found.');
+  }
+};
+
+const ensureCanCreate = async ({
+  email,
+  username,
+}: {
+  email: string;
+  username: string;
+}) => {
+  const [foundUserByEmail, foundUserByUsername] = await Promise.all([
+    prisma.user.findUnique({
+      where: { email },
+      select: { isActive: true },
+    }),
+    prisma.user.findUnique({
+      where: { username },
+      select: { isActive: true },
+    }),
+  ]);
+
+  if (foundUserByEmail || foundUserByUsername) {
+    const details: { field: string; message: string }[] = [];
+
+    if (foundUserByEmail) {
+      details.push({ field: 'email', message: 'Email already exists.' });
+    }
+
+    if (foundUserByUsername) {
+      details.push({ field: 'username', message: 'Username already exists.' });
+    }
+
+    throw new ConflictError(details);
+  }
+};
 
 const findMany = async ({
-  role,
-  search,
-  minCreatedAt,
-  maxCreatedAt,
-  minUpdatedAt,
-  maxUpdatedAt,
-  sortBy,
-  order,
+  includeInactive,
   limit,
   page,
+  ...props
 }: UserFindManyInput) => {
   const [total, foundUsers] = await Promise.all([
-    prisma.user.count(),
-    prisma.user.findMany({
+    prisma.user.count({
       where: {
-        role,
-        createdAt: { gte: minCreatedAt, lte: maxCreatedAt },
-        updatedAt: { gte: minUpdatedAt, lte: maxUpdatedAt },
-        OR: [
-          { firstName: { contains: search, mode: 'insensitive' } },
-          { lastName: { contains: search, mode: 'insensitive' } },
-          { email: { contains: search, mode: 'insensitive' } },
-          { username: { contains: search, mode: 'insensitive' } },
-        ],
+        isActive: includeInactive,
       },
-      orderBy: { [sortBy]: order },
-      take: limit,
-      skip: limit * (page - 1),
     }),
+    prisma.user.findMany(
+      getUserFindManyArgs({
+        includeInactive,
+        limit,
+        page,
+        ...props,
+      }) as { [x: string]: never },
+    ),
   ]);
 
   return toUserPaginationOutput({
@@ -73,32 +124,10 @@ const create = async ({
   username,
   password,
 }: UserCreateInput) => {
-  const [foundUserByEmail, foundUserByUserName] = await Promise.all([
-    prisma.user.findUnique({
-      where: { email },
-      select: { id: true },
-    }),
-    prisma.user.findUnique({
-      where: { username },
-      select: { id: true },
-    }),
-  ]);
-
-  if (foundUserByEmail || foundUserByUserName) {
-    const details: { field: string; message: string }[] = [];
-
-    if (foundUserByEmail) {
-      details.push({ field: 'email', message: 'Email already exists.' });
-    }
-
-    if (foundUserByUserName) {
-      details.push({ field: 'username', message: 'Username already exists.' });
-    }
-
-    throw new ConflictError(details);
-  }
+  await ensureCanCreate({ email, username });
 
   const hashedPassword = await hashPassword(password);
+
   const createdUser = await prisma.user.create({
     data: {
       firstName,
@@ -113,7 +142,7 @@ const create = async ({
 };
 
 const update = async ({ firstName, lastName, id }: UserUpdateInput) => {
-  await findOneById(id);
+  await ensureCanFind({ id, includeInactive: false });
 
   const updatedUser = await prisma.user.update({
     data: {
@@ -127,7 +156,7 @@ const update = async ({ firstName, lastName, id }: UserUpdateInput) => {
 };
 
 const updateRole = async ({ role, id }: UserUpdateRoleInput) => {
-  await findOneById(id);
+  await ensureCanFind({ id, includeInactive: true });
 
   const updatedUser = await prisma.user.update({
     data: {
@@ -140,7 +169,7 @@ const updateRole = async ({ role, id }: UserUpdateRoleInput) => {
 };
 
 const remove = async ({ id }: UserRemoveInput): Promise<void> => {
-  await findOneById(id);
+  await ensureCanFind({ id, includeInactive: true });
   await prisma.user.delete({ where: { id } });
 };
 

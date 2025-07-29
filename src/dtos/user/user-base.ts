@@ -12,6 +12,7 @@ import {
   setMaxUpdatedAt,
   setMinUpdatedAt,
   setUUID,
+  setDefaultFalse,
 } from '..';
 import { UserRole } from '../../types';
 
@@ -19,23 +20,23 @@ export const id = setUUID();
 
 export const firstName = z
   .string({
-    required_error: 'firstName is required.',
+    required_error: 'firstName must be provided.',
     invalid_type_error: 'firstName must be string.',
   })
-  .min(1, { message: 'firstName cannot be empty.' })
+  .min(2, { message: 'firstName must have at least 2 characters.' })
   .max(50, { message: 'firstName cannot exceed 50 characters.' });
 
 export const lastName = z
   .string({
-    required_error: 'lastName is required.',
+    required_error: 'lastName must be provided.',
     invalid_type_error: 'lastName must be string.',
   })
-  .min(1, { message: 'lastName cannot be empty.' })
+  .min(2, { message: 'lastName must have at least 2 characters.' })
   .max(50, { message: 'lastName cannot exceed 50 characters.' });
 
 export const username = z
   .string({
-    required_error: 'username is required.',
+    required_error: 'username must be provided.',
     invalid_type_error: 'username must be a string.',
   })
   .min(3, { message: 'username must be at least 3 characters.' })
@@ -50,10 +51,10 @@ export const username = z
 
 export const email = z
   .string({
-    required_error: 'email is required.',
+    required_error: 'email must be provided.',
     invalid_type_error: 'email must be a string.',
   })
-  .max(60, { message: 'email cannot exceed 60 characters.' })
+  .max(80, { message: 'email cannot exceed 80 characters.' })
   .email({
     message: 'email must be a valid address (e.g., "name@example.com").',
   });
@@ -68,7 +69,7 @@ export const isActive = setDefaultTrue({ fieldName: 'isActive' });
 
 export const password = z
   .string({
-    required_error: 'password is required.',
+    required_error: 'password must be provided.',
     invalid_type_error: 'password must be a string.',
   })
   .refine(
@@ -109,7 +110,7 @@ const isValidIdentifier = (input: string) => {
 
 export const identifier = z
   .string({
-    required_error: 'identifier is required.',
+    required_error: 'identifier must be provided.',
     invalid_type_error: 'identifier must be string.',
   })
   .min(1, { message: 'identifier cannot be empty.' })
@@ -119,7 +120,7 @@ export const identifier = z
 
 export const refreshToken = z
   .string({
-    required_error: 'refreshToken is required.',
+    required_error: 'refreshToken must be provided.',
     invalid_type_error: 'refreshToken must be string.',
   })
   .min(1, { message: 'refreshToken cannot be empty.' });
@@ -152,7 +153,13 @@ export const order = setOrder({ defaultValue: 'desc' });
 export const search = setSearch({ defaultValue: '' });
 
 export const minCreatedAt = setMinCreatedAt();
+
 export const maxCreatedAt = setMaxCreatedAt();
 
 export const minUpdatedAt = setMinUpdatedAt();
+
 export const maxUpdatedAt = setMaxUpdatedAt();
+
+export const includeInactive = setDefaultFalse({
+  fieldName: 'includeInactive',
+});
