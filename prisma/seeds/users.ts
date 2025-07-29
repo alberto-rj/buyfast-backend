@@ -1,18 +1,26 @@
-import { prisma } from '../../src/config/prisma';
-import { UserCreateInput } from '../../src/dtos/user/user-input';
-import { hashPassword } from '../../src/utils/password-crypt';
+import { prisma } from '../../src/config';
+import { UserCreateInput } from '../../src/dtos';
+import { hashPassword } from '../../src/utils';
 
-import usersData from './users.json';
+import userEntries from './data/users.json';
 
-const users = usersData as UserCreateInput[];
+const users = userEntries as UserCreateInput[];
 
-const createUser = async (user: UserCreateInput) => {
-  const hashedPassword = await hashPassword(user.password);
-  const data = { ...user, password: hashedPassword };
+const createUser = async (input: UserCreateInput) => {
+  const hashedPassword = await hashPassword(input.password);
+  const data = { ...input, password: hashedPassword };
 
-  await prisma.user.create({ data: { ...data } });
+  await prisma.user.create({ data });
 };
 
-export const createUsers = () => {
-  users.forEach(createUser);
+const deleteAllUsers = async () => {
+  await prisma.user.deleteMany();
+};
+
+export const createUsers = async () => {
+  await deleteAllUsers();
+
+  for (const user of users) {
+    await createUser(user);
+  }
 };

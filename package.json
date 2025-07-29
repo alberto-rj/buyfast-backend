@@ -9,8 +9,10 @@
     "clean": "rm -rf dist",
     "re": "npm run clean && npm run build",
     "db:migrate": "prisma migrate dev --name init",
-    "db:seed": "node dist/prisma/seeds/index.js",
-    "db:reset": "prisma migrate reset --force"
+    "db:seed": "prisma db seed"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seeds"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",

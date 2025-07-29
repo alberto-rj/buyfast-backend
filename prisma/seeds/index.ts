@@ -1,7 +1,12 @@
 import { createCategories } from './categories';
 import { createUsers } from './users';
 
-(() => {
-  createUsers();
-  createCategories();
-})();
+const main = async () => {
+  await createUsers();
+  await createCategories();
+};
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

@@ -1,9 +1,9 @@
 import { prisma } from '../../src/config';
 import { toSlug } from '../../src/utils';
 
-import categoriesData from './categories.json';
+import categoryEntries from './data/categories.json';
 
-const categories = categoriesData as { name: string; description?: string }[];
+const categories = categoryEntries as { name: string; description?: string }[];
 
 const createCategory = async ({
   name,
@@ -17,6 +17,13 @@ const createCategory = async ({
   await prisma.category.create({ data: { name, slug, description } });
 };
 
-export const createCategories = () => {
-  categories.forEach(createCategory);
+const deleteAllCategories = async () => {
+  await prisma.category.deleteMany();
+};
+
+export const createCategories = async () => {
+  deleteAllCategories();
+  for (const { name, description } of categories) {
+    await createCategory({ name, description });
+  }
 };
