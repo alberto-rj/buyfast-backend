@@ -1,9 +1,14 @@
-import { Router } from 'express';
+import { Express } from 'express';
 
-const routes = Router();
+import { authRoutes } from './auth-routes';
+import { healthRoutes } from './health-routes';
+import { errorHandler } from '../middlewares/error-handler';
+import { notFoundHandler } from '../middlewares/not-found-handler';
 
-routes.get('/health', (req, res) => {
-  res.status(200).json({ success: true, timestamp: new Date().toISOString() });
-});
+export const setupRoutes = (app: Express) => {
+  app.use('/api/auth', authRoutes);
+  app.use('/api/health', healthRoutes);
 
-export { routes };
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+};

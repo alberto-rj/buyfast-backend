@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import { isDevelopmentEnv, PORT } from './config/env';
-import { routes } from './routes';
+import { setupRoutes } from './routes';
 
 const app = express();
 
@@ -13,8 +13,10 @@ app.use(express.json());
 if (isDevelopmentEnv) {
   app.use(morgan('dev'));
 }
-app.use(routes);
+
+setupRoutes(app);
 
 app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  console.log(`🚀 Server is running at http://localhost:${PORT}`);
+  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
 });
