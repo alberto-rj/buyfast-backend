@@ -4,6 +4,7 @@ import { z } from 'zod';
 import {
   setCreatedAtMax,
   setCreatedAtMin,
+  setDefaultTrue,
   setLimit,
   setPage,
   setSearch,
@@ -58,10 +59,12 @@ export const email = z
   });
 
 export const role = z
-  .enum([UserRole.CLIENT, UserRole.ADMIN], {
-    required_error: 'role must be only "ADMIN" or "CLIENT".',
+  .enum([UserRole.Admin, UserRole.Customer], {
+    invalid_type_error: 'role must be only "Admin" or "Customer".',
   })
-  .default('CLIENT');
+  .default('Customer');
+
+export const isActive = setDefaultTrue({ fieldName: 'isActive' });
 
 export const password = z
   .string({
@@ -125,7 +128,6 @@ export const limit = setLimit();
 
 export const page = setPage();
 
-export const fieldQuery = z.string().default('');
 export const sortedBy = z
   .enum(
     [

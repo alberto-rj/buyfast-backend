@@ -20,10 +20,10 @@ O sistema permitirá aos usuários navegarem, pesquisarem e comprarem produtos o
 
 ### 2.1 Autenticação e Autorização
 
-- [ ] RF01: O sistema deve permitir registro de novos usuários
-- [ ] RF02: O sistema deve permitir login/logout de usuários
+- [x] RF01: O sistema deve permitir registro de novos usuários
+- [x] RF02: O sistema deve permitir login/logout de usuários
 - [ ] RF03: O sistema deve permitir recuperação de senha
-- [ ] RF04: O sistema deve ter diferentes níveis de acesso
+- [x] RF04: O sistema deve ter diferentes níveis de acesso
 
 ### 2.2 Gestão de Produtos
 
@@ -48,9 +48,9 @@ O sistema permitirá aos usuários navegarem, pesquisarem e comprarem produtos o
 
 ### 3.1 Segurança
 
-- [ ] RNF01: Senhas devem ser criptografadas
-- [ ] RNF02: Autenticação deve usar JWT
-- [ ] RNF03: Dados de entrada devem ser validados
+- [x] RNF01: Senhas devem ser criptografadas
+- [x] RNF02: Autenticação deve usar JWT
+- [x] RNF03: Dados de entrada devem ser validados
 
 ### 3.2 Performance
 
@@ -135,22 +135,22 @@ O sistema permitirá aos usuários navegarem, pesquisarem e comprarem produtos o
 ### 7.2 Qualidade do Código
 
 - [ ] Testes automatizados
-- [ ] Tratamento de erros
+- [x] Tratamento de erros
 - [ ] Documentação da API
-- [ ] Validação de dados
+- [x] Validação de dados
 
 ## 8. Cronograma de Desenvolvimento
 
 ### Fase 1: Setup e Configuração (Semana 1)
 
-- [ ] Configuração do ambiente
-- [ ] Setup do banco de dados
-- [ ] Estrutura básica da API
+- [x] Configuração do ambiente
+- [x] Setup do banco de dados
+- [x] Estrutura básica da API
 
 ### Fase 2: Autenticação (Semana 2)
 
-- [ ] Sistema de registro/login
-- [ ] Middleware de autenticação
+- [x] Sistema de registro/login
+- [x] Middleware de autenticação
 - [ ] Recuperação de senha
 
 ### Fase 3: Produtos e Categorias (Semana 3)

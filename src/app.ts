@@ -2,10 +2,13 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
-import './config/env';
-import { isDevelopmentEnv, NODE_ENV, PORT } from './config/server';
-import { setupCors } from './config/cors';
-import { setupRoutes } from './routes';
+import {
+  isDevelopmentEnv,
+  NODE_ENV,
+  PORT,
+  setupCors,
+  setupRoutes,
+} from './config';
 
 const app = express();
 

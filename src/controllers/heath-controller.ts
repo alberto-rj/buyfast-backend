@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import { NODE_ENV } from '../config/server';
 
-export const check = (req: Request, res: Response, next: NextFunction) => {
+const check = (req: Request, res: Response, next: NextFunction) => {
   try {
     res.status(200).json({
       success: true,
@@ -15,4 +15,8 @@ export const check = (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     next(error);
   }
+};
+
+export default {
+  check,
 };

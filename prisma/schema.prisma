@@ -15,9 +15,10 @@ model User {
   password String
   firstName String   @map("first_name")
   lastName  String   @map("last_name")
-  role      UserRole @default(CLIENT)
+  role      UserRole @default(Customer)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  isActive Boolean @default(true) @map("is_active")
   refreshTokens RefreshToken[]
   @@map("users")
 }
@@ -33,6 +34,18 @@ model RefreshToken {
 }
 
 enum UserRole {
-  CLIENT
-  ADMIN
+  Customer
+  Admin
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String @unique
+  description String?
+  slug String @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isActive Boolean @default(true) @map("is_active")
+
+  @@map("categories")
 }

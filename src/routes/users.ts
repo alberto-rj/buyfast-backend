@@ -14,7 +14,7 @@ userRoutes
 userRoutes.get(
   '/',
   authenticate,
-  checkRoles(['ADMIN']),
+  checkRoles(['Admin']),
   userController.findMany.bind(userController),
 );
 
@@ -22,17 +22,17 @@ userRoutes
   .route('/:id')
   .get(
     authenticate,
-    checkRoles(['ADMIN']),
+    checkRoles(['Admin']),
     userController.find.bind(userController),
   )
   .patch(
     authenticate,
-    checkRoles(['ADMIN']),
+    checkRoles(['Admin']),
     userController.update.bind(userController),
   )
   .delete(
     authenticate,
-    checkRoles(['ADMIN']),
+    checkRoles(['Admin']),
     userController.remove.bind(userController),
   );
 
@@ -40,6 +40,6 @@ userRoutes
   .route('/:id/role')
   .patch(
     authenticate,
-    checkRoles(['ADMIN']),
+    checkRoles(['Admin']),
     userController.updateRole.bind(userController),
   );

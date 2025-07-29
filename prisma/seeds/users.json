@@ -5,7 +5,7 @@
     "password": "12.jd.JD",
     "email": "john@company.com",
     "username": "john",
-    "role": "ADMIN"
+    "role": "Admin"
   },
   {
     "firstName": "Maria",
@@ -13,7 +13,7 @@
     "password": "12.md.MD",
     "email": "maria@company.com",
     "username": "maria",
-    "role": "ADMIN"
+    "role": "Admin"
   },
   {
     "firstName": "Alice",
@@ -21,7 +21,7 @@
     "password": "12.aj.AJ",
     "email": "alice@gmail.com",
     "username": "alice",
-    "role": "CLIENT"
+    "role": "Customer"
   },
   {
     "firstName": "Victor",
@@ -29,7 +29,7 @@
     "password": "12.vs.VS",
     "email": "victor@gmail.com",
     "username": "victor",
-    "role": "CLIENT"
+    "role": "Customer"
   },
   {
     "firstName": "Erika",
@@ -37,7 +37,7 @@
     "password": "12.ep.EP",
     "email": "ep@gmail.com",
     "username": "erika",
-    "role": "CLIENT"
+    "role": "Customer"
   },
   {
     "firstName": "Will",
@@ -45,6 +45,6 @@
     "password": "12.ws.WS",
     "email": "will@gmail.com",
     "username": "will",
-    "role": "CLIENT"
+    "role": "Customer"
   }
 ]

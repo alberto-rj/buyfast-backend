@@ -1,3 +1,0 @@
-const createToken = () => {};
-
-const deleteToken = () => {};
