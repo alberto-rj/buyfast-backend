@@ -1,4 +1,12 @@
-# Sistema E-commerce - REST API
+# E-commerce REST API
+
+## Índice
+
+1. [Construído com](#construído-com)
+2. [Documentacões](#documentações)
+3. [Como executar localmente](#como-executar-localmente)
+   - [Requisitos](#requisitos)
+   - [Passos](#passos)
 
 ## Construído com
 
@@ -12,6 +20,14 @@
 - Prettier
 - VS Code
 - Insomnia
+
+## Documentações
+
+- [Modelo de Dados](docs/ERD.md)
+- [Endpoints da API](docs/API.md)
+- [Casos de Uso](docs/USE-CASES.md)
+- [Critérios de Aceitação](docs/CRITERIA.md)
+- [Cronograma de Desenvolvimento](docs/CALENDAR.md)
 
 ## Como executar localmente
 
