@@ -1,19 +1,16 @@
 import express from 'express';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
-import {
-  CLIENT_BASE_URL,
-  isDevelopmentEnv,
-  NODE_ENV,
-  PORT,
-} from './config/env';
+import './config/env';
+import { isDevelopmentEnv, NODE_ENV, PORT } from './config/server';
 import { setupRoutes } from './routes';
+import { setupCors } from './config/cors';
 
 const app = express();
 
-app.use(cors({ origin: CLIENT_BASE_URL, credentials: true }));
+setupCors(app);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -26,7 +23,7 @@ setupRoutes(app);
 
 app.listen(PORT, () => {
   console.log(
-    `🚀 Server is running at http://localhost:${PORT} in ${NODE_ENV} mode`,
+    `🚀 Server is running at http://localhost:${PORT} in "${NODE_ENV}" mode`,
   );
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
 });

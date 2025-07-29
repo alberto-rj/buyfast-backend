@@ -10,17 +10,17 @@ export const authenticate = (
   next: NextFunction,
 ) => {
   try {
-    const authHeader = req.headers['authorization'];
+    const authorization = req.headers['authorization'];
 
-    if (!authHeader) {
+    if (!authorization) {
       throw new UnauthorizedError('Access token is required.');
     }
 
-    if (!authHeader.startsWith('Bearer')) {
+    if (!authorization.startsWith('Bearer')) {
       throw new UnauthorizedError('Access token is invalid.');
     }
 
-    const [, token] = authHeader.split(' ');
+    const [, token] = authorization.split(' ');
 
     if (token.trim().length === 0) {
       throw new UnauthorizedError('Access token is required.');

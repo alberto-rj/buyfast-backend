@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { NODE_ENV } from '../config/env';
+import { NODE_ENV } from '../config/server';
 
 export const check = (req: Request, res: Response, next: NextFunction) => {
   try {

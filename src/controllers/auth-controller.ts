@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { isProductionEnv } from '../config/env';
+import { isProductionEnv } from '../config/server';
 import authService from '../services/auth-service';
 import {
   toUserCreate,

@@ -5,7 +5,7 @@ import {
   JWT_ACCESS_SECRET_EXPIRES_IN_MINUTES,
   JWT_REFRESH_SECRET,
   JWT_REFRESH_SECRET_EXPIRES_IN_DAYS,
-} from '../config/env';
+} from '../config/auth';
 import { AuthPayload } from '../types/auth';
 
 export const generateAccessToken = (payload: AuthPayload) => {
