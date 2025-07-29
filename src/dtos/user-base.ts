@@ -17,7 +17,7 @@ export const firstName = z
 export const lastName = z
   .string({
     required_error: 'lastName is required.',
-    invalid_type_error: 'lastName must be string',
+    invalid_type_error: 'lastName must be string.',
   })
   .min(1, { message: 'lastName cannot be empty.' })
   .max(50, { message: 'lastName cannot exceed 50 characters.' });
@@ -61,14 +61,14 @@ export const password = z
   .refine(
     (input) =>
       validator.isStrongPassword(input, {
-        minUppercase: 2,
-        minLowercase: 2,
+        minUppercase: 1,
+        minLowercase: 1,
         minNumbers: 2,
         minSymbols: 2,
       }),
     {
       message:
-        'password must have at least 8 characters, including 2 uppercase letters, 2 lowercase letters, 2 numbers, and 2 symbols.',
+        'password must have at least 6 characters, including 1 uppercase letter, 1 lowercase letter, 2 numbers, and 2 symbols.',
     },
   );
 
@@ -101,5 +101,12 @@ export const identifier = z
   })
   .min(1, { message: 'identifier cannot be empty.' })
   .refine((input) => isValidIdentifier(input), {
-    message: 'identifier must be either a valid email or email.',
+    message: 'identifier must be a valid email or username.',
   });
+
+export const refreshToken = z
+  .string({
+    required_error: 'refreshToken is required.',
+    invalid_type_error: 'refreshToken must be string.',
+  })
+  .min(1, { message: 'refreshToken cannot be empty.' });

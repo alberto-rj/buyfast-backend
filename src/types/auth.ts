@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
+
 import { UserRole } from './user';
 
 export interface AuthPayload extends JwtPayload {
