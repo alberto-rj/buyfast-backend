@@ -7,10 +7,10 @@ import {
   search,
   sortBy,
   order,
-  createdAtMin,
-  createdAtMax,
-  updatedAtMin,
-  updatedAtMax,
+  minCreatedAt,
+  maxCreatedAt,
+  minUpdatedAt,
+  maxUpdatedAt,
 } from '.';
 import { validate } from '../../utils';
 
@@ -18,10 +18,10 @@ const userFindMany = z.object({
   query: z.object({
     search: search,
     role: role.optional(),
-    createdAtMin: createdAtMin.optional(),
-    createdAtMax: createdAtMax.optional(),
-    updatedAtMin: updatedAtMin.optional(),
-    updatedAtMax: updatedAtMax.optional(),
+    minCreatedAt: minCreatedAt.optional(),
+    maxCreatedAt: maxCreatedAt.optional(),
+    minUpdatedAt: minUpdatedAt.optional(),
+    maxUpdatedAt: maxUpdatedAt.optional(),
     limit,
     page,
     sortBy,

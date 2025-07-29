@@ -13,10 +13,10 @@ export {
   search,
   sortBy,
   order,
-  createdAtMin,
-  createdAtMax,
-  updatedAtMin,
-  updatedAtMax,
+  minCreatedAt,
+  maxCreatedAt,
+  minUpdatedAt,
+  maxUpdatedAt,
 } from './user-base';
 export { UserCreate, UserCreateInput, toUserCreate } from './user-create';
 export { UserFind, UserFindInput, toUserFind } from './user-find';

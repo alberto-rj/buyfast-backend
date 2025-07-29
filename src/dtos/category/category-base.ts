@@ -1,16 +1,16 @@
 import { z } from 'zod';
 
 import {
-  setCreatedAtMax,
-  setCreatedAtMin,
+  setMaxCreatedAt,
+  setMinCreatedAt,
   setDefaultFalse,
   setDefaultTrue,
   setLimit,
   setPage,
   setSearch,
   setOrder,
-  setUpdatedAtMax,
-  setUpdatedAtMin,
+  setMaxUpdatedAt,
+  setMinUpdatedAt,
   setUUID,
 } from '..';
 
@@ -58,8 +58,8 @@ export const sortOrder = setOrder({ defaultValue: 'desc' });
 
 export const search = setSearch({ defaultValue: '' });
 
-export const createdAtMin = setCreatedAtMin();
-export const createdAtMax = setCreatedAtMax();
+export const minCreatedAt = setMinCreatedAt();
+export const maxCreatedAt = setMaxCreatedAt();
 
-export const updatedAtMin = setUpdatedAtMin();
-export const updatedAtMax = setUpdatedAtMax();
+export const minUpdatedAt = setMinUpdatedAt();
+export const maxUpdatedAt = setMaxUpdatedAt();

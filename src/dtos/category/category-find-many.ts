@@ -7,10 +7,10 @@ import {
   sortedBy,
   sortOrder,
   search,
-  updatedAtMin,
-  updatedAtMax,
-  createdAtMin,
-  createdAtMax,
+  minCreatedAt,
+  maxCreatedAt,
+  minUpdatedAt,
+  maxUpdatedAt,
 } from '.';
 
 import { validate } from '../../utils';
@@ -19,10 +19,10 @@ export const categoryFindMany = z.object({
   query: z.object({
     includeInactive,
     search,
-    createdAtMin: createdAtMin.optional(),
-    createdAtMax: createdAtMax.optional(),
-    updatedAtMin: updatedAtMin.optional(),
-    updatedAtMax: updatedAtMax.optional(),
+    minCreatedAt: minCreatedAt.optional(),
+    maxCreatedAt: maxCreatedAt.optional(),
+    minUpdatedAt: minUpdatedAt.optional(),
+    maxUpdatedAt: maxUpdatedAt.optional(),
     page,
     limit,
     sortedBy,

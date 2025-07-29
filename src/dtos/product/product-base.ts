@@ -1,16 +1,16 @@
 import { z } from 'zod';
 
 import {
-  setCreatedAtMax,
-  setCreatedAtMin,
+  setMaxCreatedAt,
+  setMinCreatedAt,
   setDefaultFalse,
   setDefaultTrue,
   setLimit,
   setPage,
   setSearch,
   setOrder,
-  setUpdatedAtMax,
-  setUpdatedAtMin,
+  setMaxUpdatedAt,
+  setMinUpdatedAt,
   setUUID,
 } from '..';
 
@@ -85,57 +85,57 @@ export const dimensions = z.coerce
   })
   .max(100, { message: 'dimensions can not exceed 100 characters.' });
 
-export const priceMin = z.coerce
+export const minPrice = z.coerce
   .number({
-    required_error: 'priceMin must be provided.',
-    invalid_type_error: 'priceMin must be a number.',
+    required_error: 'minPrice must be provided.',
+    invalid_type_error: 'minPrice must be a number.',
   })
-  .min(0, { message: 'priceMin must be at least 0.' });
+  .min(0, { message: 'minPrice must be at least 0.' });
 
-export const priceMax = z.coerce
+export const maxPrice = z.coerce
   .number({
-    required_error: 'priceMax must be provided.',
-    invalid_type_error: 'priceMax must be a number.',
+    required_error: 'maxPrice must be provided.',
+    invalid_type_error: 'maxPrice must be a number.',
   })
-  .min(0, { message: 'priceMax must be at least 0.' });
+  .min(0, { message: 'maxPrice must be at least 0.' });
 
-export const quantityMin = z.coerce
+export const minQuantity = z.coerce
   .number({
-    required_error: 'quantityMin must be provided.',
-    invalid_type_error: 'quantityMin must be a number.',
+    required_error: 'minQuantity must be provided.',
+    invalid_type_error: 'minQuantity must be a number.',
   })
-  .int({ message: 'quantityMin must be an integer.' })
-  .min(0, { message: 'quantityMin must be at least 0.' });
+  .int({ message: 'minQuantity must be an integer.' })
+  .min(0, { message: 'minQuantity must be at least 0.' });
 
-export const quantityMax = z.coerce
+export const maxQuantity = z.coerce
   .number({
-    required_error: 'quantityMax must be provided.',
-    invalid_type_error: 'quantityMax must be a number.',
+    required_error: 'maxQuantity must be provided.',
+    invalid_type_error: 'maxQuantity must be a number.',
   })
-  .int({ message: 'quantityMax must be an integer number.' })
-  .min(0, { message: 'quantityMax must be at least 0.' });
+  .int({ message: 'maxQuantity must be an integer number.' })
+  .min(0, { message: 'maxQuantity must be at least 0.' });
 
-export const weightMin = z.coerce
+export const minWeight = z.coerce
   .number({
-    required_error: 'weightMin must be provided.',
-    invalid_type_error: 'weightMin must be a number.',
+    required_error: 'minWeight must be provided.',
+    invalid_type_error: 'minWeight must be a number.',
   })
-  .min(0, { message: 'weightMin must be at least 0.' });
+  .min(0, { message: 'minWeight must be at least 0.' });
 
-export const weightMax = z.coerce
+export const maxWeight = z.coerce
   .number({
-    required_error: 'weightMax must be provided.',
-    invalid_type_error: 'weightMax must be a number.',
+    required_error: 'maxWeight must be provided.',
+    invalid_type_error: 'maxWeight must be a number.',
   })
-  .min(0, { message: 'weightMax must be at least 0.' });
+  .min(0, { message: 'maxWeight must be at least 0.' });
 
-export const createdAtMin = setCreatedAtMin();
+export const minCreatedAt = setMinCreatedAt();
 
-export const createdAtMax = setCreatedAtMax();
+export const maxCreatedAt = setMaxCreatedAt();
 
-export const updatedAtMin = setUpdatedAtMin();
+export const minUpdatedAt = setMinUpdatedAt();
 
-export const updatedAtMax = setUpdatedAtMax();
+export const maxUpdatedAt = setMaxUpdatedAt();
 
 export const sortBy = z
   .enum(

@@ -1,6 +1,6 @@
 export {
-  setCreatedAtMax,
-  setCreatedAtMin,
+  setMaxCreatedAt,
+  setMinCreatedAt,
   setDefaultFalse,
   setDefaultTrue,
   setISODate,
@@ -12,7 +12,7 @@ export {
   setSearch,
   setOrder,
   setUUID,
-  setUpdatedAtMax,
-  setUpdatedAtMin,
+  setMaxUpdatedAt,
+  setMinUpdatedAt,
 } from './common-base';
 export { PaginationOutput, toPaginationOutput } from './common-output';

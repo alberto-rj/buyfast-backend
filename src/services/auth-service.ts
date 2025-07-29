@@ -47,33 +47,33 @@ const register = async (input: UserCreateInput) => {
 };
 
 const login = async (input: UserLoginInput) => {
-  const filteredUser = await prisma.user.findFirst({
+  const foundUser = await prisma.user.findFirst({
     where: {
       OR: [{ email: input.identifier }, { username: input.identifier }],
     },
   });
 
-  if (!filteredUser) {
+  if (!foundUser) {
     throw new NotFoundError('identifier or password do not match.');
   }
 
   const hasVerifiedPassword = await verifyPassword(
     input.password,
-    filteredUser.password,
+    foundUser.password,
   );
 
   if (!hasVerifiedPassword) {
     throw new NotFoundError('identifier or password do not match.');
   }
 
-  const payload = toAuthPayload(filteredUser);
+  const payload = toAuthPayload(foundUser);
   const accessToken = generateAccessToken(payload);
   const refreshToken = generateRefreshToken(payload);
 
   await prisma.refreshToken.create({
     data: {
       token: refreshToken,
-      userId: filteredUser.id,
+      userId: foundUser.id,
       expiriesAt: refreshTokenExpiresAt(),
     },
   });
@@ -81,7 +81,7 @@ const login = async (input: UserLoginInput) => {
   return {
     accessToken,
     refreshToken,
-    user: toUserOutput(filteredUser),
+    user: toUserOutput(foundUser),
   };
 };
 

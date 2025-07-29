@@ -2,15 +2,15 @@ import validator from 'validator';
 import { z } from 'zod';
 
 import {
-  setCreatedAtMax,
-  setCreatedAtMin,
+  setMaxCreatedAt,
+  setMinCreatedAt,
   setDefaultTrue,
   setLimit,
   setPage,
   setSearch,
   setOrder,
-  setUpdatedAtMax,
-  setUpdatedAtMin,
+  setMaxUpdatedAt,
+  setMinUpdatedAt,
   setUUID,
 } from '..';
 import { UserRole } from '../../types';
@@ -151,8 +151,8 @@ export const order = setOrder({ defaultValue: 'desc' });
 
 export const search = setSearch({ defaultValue: '' });
 
-export const createdAtMin = setCreatedAtMin();
-export const createdAtMax = setCreatedAtMax();
+export const minCreatedAt = setMinCreatedAt();
+export const maxCreatedAt = setMaxCreatedAt();
 
-export const updatedAtMin = setUpdatedAtMin();
-export const updatedAtMax = setUpdatedAtMax();
+export const minUpdatedAt = setMinUpdatedAt();
+export const maxUpdatedAt = setMaxUpdatedAt();

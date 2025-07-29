@@ -19,15 +19,15 @@ const findById = async ({
   id: string;
   includeInactive: boolean;
 }) => {
-  const filteredProduct = await prisma.product.findUnique({
+  const foundProduct = await prisma.product.findUnique({
     where: { id, isActive: canIncludeInactive(includeInactive) },
   });
 
-  if (!filteredProduct) {
+  if (!foundProduct) {
     throw new NotFoundError('Product not found.');
   }
 
-  return filteredProduct;
+  return foundProduct;
 };
 
 const find = async ({
@@ -36,7 +36,7 @@ const find = async ({
   includeCategory,
   includeInactiveCategory,
 }: ProductFindInput) => {
-  const filteredProduct = await prisma.product.findUnique({
+  const foundProduct = await prisma.product.findUnique({
     where: {
       id,
       isActive: canIncludeInactive(includeInactive),
@@ -49,26 +49,26 @@ const find = async ({
     },
   });
 
-  if (!filteredProduct) {
+  if (!foundProduct) {
     throw new NotFoundError('Product not found.');
   }
 
-  return toProductOutput(filteredProduct);
+  return toProductOutput(foundProduct);
 };
 
 const findMany = async ({
   category,
   search,
-  priceMin,
-  priceMax,
-  quantityMin,
-  quantityMax,
-  weightMin,
-  weightMax,
-  createdAtMin,
-  createdAtMax,
-  updatedAtMin,
-  updatedAtMax,
+  minPrice,
+  maxPrice,
+  minQuantity,
+  maxQuantity,
+  minWeight,
+  maxWeight,
+  minCreatedAt,
+  maxCreatedAt,
+  minUpdatedAt,
+  maxUpdatedAt,
   includeInactive,
   includeCategory,
   includeInactiveCategory,
@@ -77,7 +77,7 @@ const findMany = async ({
   sortBy,
   order,
 }: ProductFindManyInput) => {
-  const [total, filteredProducts] = await Promise.all([
+  const [total, foundProducts] = await Promise.all([
     prisma.product.count({
       where: {
         isActive: canIncludeInactive(includeInactive),
@@ -86,24 +86,24 @@ const findMany = async ({
     prisma.product.findMany({
       where: {
         createdAt: {
-          gte: createdAtMin,
-          lte: createdAtMax,
+          gte: minCreatedAt,
+          lte: maxCreatedAt,
         },
         updatedAt: {
-          gte: updatedAtMin,
-          lte: updatedAtMax,
+          gte: minUpdatedAt,
+          lte: maxUpdatedAt,
         },
         price: {
-          gte: priceMin,
-          lte: priceMax,
+          gte: minPrice,
+          lte: maxPrice,
         },
         quantity: {
-          gte: quantityMin,
-          lte: quantityMax,
+          gte: minQuantity,
+          lte: maxQuantity,
         },
         weight: {
-          gte: weightMin,
-          lte: weightMax,
+          gte: minWeight,
+          lte: maxWeight,
         },
         isActive: canIncludeInactive(includeInactive),
         category: {
@@ -142,7 +142,7 @@ const findMany = async ({
     total,
     limit,
     page,
-    resources: filteredProducts,
+    resources: foundProducts,
   });
 };
 
@@ -156,7 +156,7 @@ const create = async ({
   includeCategory,
   includeInactiveCategory,
 }: ProductCreateInput) => {
-  const [, filteredProduct] = await Promise.all([
+  const [, foundProduct] = await Promise.all([
     categoryService.find({
       id: categoryId,
       includeInactive: includeInactiveCategory,
@@ -166,7 +166,7 @@ const create = async ({
     }),
   ]);
 
-  if (filteredProduct) {
+  if (foundProduct) {
     throw new ConflictError([
       { field: 'sku', message: 'sku is already registered.' },
     ]);
@@ -213,8 +213,8 @@ const update = async ({
   await findById({ id, includeInactive });
 
   // check if is already registered another product with the same sku provided
-  const filteredProduct = await prisma.product.findUnique({ where: { sku } });
-  const skuAlreadyExists = filteredProduct && filteredProduct.id !== id;
+  const foundProduct = await prisma.product.findUnique({ where: { sku } });
+  const skuAlreadyExists = foundProduct && foundProduct.id !== id;
 
   if (skuAlreadyExists) {
     throw new ConflictError([

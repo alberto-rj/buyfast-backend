@@ -13,7 +13,7 @@ export const checkRoles = (roles: UserRole[]) => {
       }
 
       if (!roles.includes(payload.role)) {
-        throw new ForbiddenError('Unauthorized role.');
+        throw new ForbiddenError('Access denied. Admin role is required.');
       }
       next();
     } catch (error) {

@@ -136,12 +136,12 @@ export const setDefaultTrue = ({ fieldName }: { fieldName: string }) =>
     .boolean({ invalid_type_error: `${fieldName} must be a boolean.` })
     .default(true);
 
-export const setCreatedAtMin = (fieldName: string = 'createdAtMin') =>
+export const setMinCreatedAt = (fieldName: string = 'minCreatedAt') =>
   setISOPastDate({ fieldName });
-export const setCreatedAtMax = (fieldName: string = 'createdAtMax') =>
+export const setMaxCreatedAt = (fieldName: string = 'maxCreatedAt') =>
   setISOFutureDate({ fieldName });
 
-export const setUpdatedAtMin = (fieldName: string = 'updatedAtMin') =>
+export const setMinUpdatedAt = (fieldName: string = 'minUpdatedAt') =>
   setISOPastDate({ fieldName });
-export const setUpdatedAtMax = (fieldName: string = 'updatedAtMax') =>
+export const setMaxUpdatedAt = (fieldName: string = 'maxUpdatedAt') =>
   setISOFutureDate({ fieldName });

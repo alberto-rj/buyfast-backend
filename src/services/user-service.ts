@@ -14,22 +14,22 @@ import { ConflictError, NotFoundError, hashPassword } from '../utils';
 const findMany = async ({
   role,
   search,
-  createdAtMin,
-  createdAtMax,
-  updatedAtMin,
-  updatedAtMax,
+  minCreatedAt,
+  maxCreatedAt,
+  minUpdatedAt,
+  maxUpdatedAt,
   sortBy,
   order,
   limit,
   page,
 }: UserFindManyInput) => {
-  const [total, filteredUsers] = await Promise.all([
+  const [total, foundUsers] = await Promise.all([
     prisma.user.count(),
     prisma.user.findMany({
       where: {
         role,
-        createdAt: { gte: createdAtMin, lte: createdAtMax },
-        updatedAt: { gte: updatedAtMin, lte: updatedAtMax },
+        createdAt: { gte: minCreatedAt, lte: maxCreatedAt },
+        updatedAt: { gte: minUpdatedAt, lte: maxUpdatedAt },
         OR: [
           { firstName: { contains: search, mode: 'insensitive' } },
           { lastName: { contains: search, mode: 'insensitive' } },
@@ -47,23 +47,23 @@ const findMany = async ({
     total,
     limit,
     page,
-    resources: filteredUsers,
+    resources: foundUsers,
   });
 };
 
 const findOneById = async (id: string) => {
-  const filteredUser = await prisma.user.findUnique({ where: { id } });
+  const foundUser = await prisma.user.findUnique({ where: { id } });
 
-  if (!filteredUser) {
+  if (!foundUser) {
     throw new NotFoundError('User not found.');
   }
 
-  return toUserOutput(filteredUser);
+  return toUserOutput(foundUser);
 };
 
 const find = async ({ id }: UserFindInput) => {
-  const filteredUser = await findOneById(id);
-  return filteredUser;
+  const foundUser = await findOneById(id);
+  return foundUser;
 };
 
 const create = async ({
@@ -73,19 +73,19 @@ const create = async ({
   username,
   password,
 }: UserCreateInput) => {
-  const [filteredUserByEmail, filteredUserByUserName] = await Promise.all([
+  const [foundUserByEmail, foundUserByUserName] = await Promise.all([
     prisma.user.findUnique({ where: { email } }),
     prisma.user.findUnique({ where: { username } }),
   ]);
 
-  if (filteredUserByEmail || filteredUserByUserName) {
+  if (foundUserByEmail || foundUserByUserName) {
     const details: { field: string; message: string }[] = [];
 
-    if (filteredUserByEmail) {
+    if (foundUserByEmail) {
       details.push({ field: 'email', message: 'Email already exists.' });
     }
 
-    if (filteredUserByUserName) {
+    if (foundUserByUserName) {
       details.push({ field: 'username', message: 'Username already exists.' });
     }
 

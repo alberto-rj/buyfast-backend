@@ -9,10 +9,10 @@ export {
   sortedBy,
   sortOrder,
   search,
-  updatedAtMin,
-  updatedAtMax,
-  createdAtMin,
-  createdAtMax,
+  minCreatedAt,
+  maxCreatedAt,
+  minUpdatedAt,
+  maxUpdatedAt,
 } from './category-base';
 
 export {
