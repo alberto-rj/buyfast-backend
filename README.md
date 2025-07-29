@@ -4,7 +4,8 @@
 
 1. [Construído com](#construído-com)
 2. [Documentacões](#documentações)
-3. [Como executar localmente](#como-executar-localmente)
+3. [Estrutura de pastas](#estrutura-de-pastas)
+4. [Como executar localmente](#como-executar-localmente)
    - [Requisitos](#requisitos)
    - [Passos](#passos)
 
@@ -28,6 +29,23 @@
 - [Casos de Uso](docs/USE-CASES.md)
 - [Critérios de Aceitação](docs/CRITERIA.md)
 - [Cronograma de Desenvolvimento](docs/CALENDAR.md)
+
+## Estrutura de pastas
+
+```tree
+├── docs
+├── prisma
+│   └── seeds
+└── src
+    ├── config
+    ├── controllers
+    ├── dtos
+    ├── middlewares
+    ├── routes
+    ├── services
+    ├── types
+    └── utils
+```
 
 ## Como executar localmente
 
