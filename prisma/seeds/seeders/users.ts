@@ -1,8 +1,8 @@
-import { prisma } from '../../src/config';
-import { UserCreateInput } from '../../src/dtos';
-import { hashPassword } from '../../src/utils';
+import { prisma } from '../../../src/config';
+import { UserCreateInput } from '../../../src/dtos';
+import { hashPassword } from '../../../src/utils';
 
-import userEntries from './data/users.json';
+import userEntries from '../data/users.json';
 
 const users = userEntries as UserCreateInput[];
 

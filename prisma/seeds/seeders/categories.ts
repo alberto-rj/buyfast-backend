@@ -1,7 +1,7 @@
-import { prisma } from '../../src/config';
-import { toSlug } from '../../src/utils';
+import { prisma } from '../../../src/config';
+import { toSlug } from '../../../src/utils';
 
-import categoryEntries from './data/categories.json';
+import categoryEntries from '../data/categories.json';
 
 const categories = categoryEntries as { name: string; description?: string }[];
 
