@@ -1,4 +1,5 @@
-export { authRoutes } from './auth';
-export { healthRoutes } from './health';
-export { userRoutes } from './users';
-export { categoryRoutes } from './categories';
+export { authRoutes } from './auth-routes';
+export { healthRoutes } from './health-routes';
+export { userRoutes } from './user-routes';
+export { categoryRoutes } from './category-routes';
+export { productRoutes } from './product-routes';

@@ -1,7 +1,7 @@
 import { Express } from 'express';
 import cors from 'cors';
 
-import { CLIENT_BASE_URL } from './client';
+import { CLIENT_BASE_URL } from './';
 
 export const setupCors = (app: Express) => {
   app.use(

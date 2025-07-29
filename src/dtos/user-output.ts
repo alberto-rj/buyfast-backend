@@ -1,4 +1,4 @@
-import { User } from '../types/user';
+import { User } from '../types';
 import { PaginationOutput, toPaginationOutput } from './common-output';
 
 export type UserOutput = {

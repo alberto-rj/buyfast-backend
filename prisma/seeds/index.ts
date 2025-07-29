@@ -1,7 +1,7 @@
+import { createCategories } from './categories';
 import { createUsers } from './users';
 
-const main = () => {
+(() => {
   createUsers();
-};
-
-main();
+  createCategories();
+})();

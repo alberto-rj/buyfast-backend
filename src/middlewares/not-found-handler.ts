@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { NotFoundError } from '../utils/app-error';
+import { NotFoundError } from '../utils';
 
 export const notFoundHandler = (
   req: Request,

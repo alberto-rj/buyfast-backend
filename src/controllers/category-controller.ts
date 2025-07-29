@@ -15,9 +15,14 @@ const findMany = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { query } = toCategoryFindMany(req);
 
-    const { resources, meta } = await categoryService.findMany(query);
+    const { resources, pagination } = await categoryService.findMany(query);
 
-    res.status(200).json(resBody.paginated({ resources, meta }));
+    res.status(200).json(
+      resBody.paginated({
+        resources,
+        pagination,
+      }),
+    );
   } catch (error) {
     next(error);
   }
@@ -44,7 +49,11 @@ const find = async (req: Request, res: Response, next: NextFunction) => {
 
     const resource = await categoryService.find({ id, includeInactive });
 
-    res.status(200).json(resBody.record({ resource }));
+    res.status(200).json(
+      resBody.record({
+        resource,
+      }),
+    );
   } catch (error) {
     next(error);
   }
@@ -66,7 +75,11 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
       includeInactive,
     });
 
-    res.status(200).json(resBody.record({ resource }));
+    res.status(200).json(
+      resBody.record({
+        resource,
+      }),
+    );
   } catch (error) {
     next(error);
   }
@@ -90,7 +103,11 @@ const updateIsActive = async (
       isActive,
     });
 
-    res.status(200).json(resBody.record({ resource }));
+    res.status(200).json(
+      resBody.record({
+        resource,
+      }),
+    );
   } catch (error) {
     next(error);
   }

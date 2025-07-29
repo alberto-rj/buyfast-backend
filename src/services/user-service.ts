@@ -1,4 +1,4 @@
-import { prisma } from '../config/prisma';
+import { prisma } from '../config';
 import { toUserOutput, toUserPaginationOutput } from '../dtos/user-output';
 import {
   UserCreateInput,
@@ -8,8 +8,7 @@ import {
   UserUpdateInput,
   UserUpdateRoleInput,
 } from '../dtos/user-input';
-import { ConflictError, NotFoundError } from '../utils/app-error';
-import { hashPassword } from '../utils/password-crypt';
+import { ConflictError, NotFoundError, hashPassword } from '../utils';
 
 const findMany = async ({
   role,

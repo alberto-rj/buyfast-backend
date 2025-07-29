@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { AppError, InternalServerError } from '../utils/app-error';
-import { isDevelopmentEnv } from '../config/server';
+import { AppError, InternalServerError } from '../utils';
+import { isDevelopmentEnv } from '../config';
 
 export const errorHandler = (
   error: Error,

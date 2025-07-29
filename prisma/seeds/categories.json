@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Kids",
+    "description": "Products for kids"
+  },
+  {
+    "name": "Cloths",
+    "description": "Cloths for mans and womans"
+  },
+  {
+    "name": "Dresses",
+    "description": "Dresses for womans"
+  },
+  {
+    "name": "Shoes",
+    "description": "Shoes for children and youngs"
+  },
+  {
+    "name": "T-shirts",
+    "description": "T-shirts for party, meeting, beach."
+  },
+  {
+    "name": "Hats",
+    "description": "Hats for beach, walk, ..."
+  },
+  {
+    "name": "Sun Glasses",
+    "description": "Good sun glasses for beach, park"
+  }
+]

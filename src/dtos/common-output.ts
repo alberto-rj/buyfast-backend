@@ -1,6 +1,7 @@
-export type PaginationOutput<T> = {
-  meta: {
+export type PaginationOutput<T extends { length: number }> = {
+  pagination: {
     total: number;
+    length: number;
     limit: number;
     page: number;
     pages: number;
@@ -10,20 +11,21 @@ export type PaginationOutput<T> = {
   resources: T;
 };
 
-export const toPaginationOutput = <T>({
+export const toPaginationOutput = <T extends { length: number }>({
   total,
   page,
   limit,
   resources,
 }: {
+  total: number;
   page: number;
   limit: number;
-  total: number;
   resources: T;
 }): PaginationOutput<T> => {
   return {
-    meta: {
+    pagination: {
       total,
+      length: resources.length,
       limit,
       page,
       pages: limit == 0 ? 0 : Math.ceil(total / limit),

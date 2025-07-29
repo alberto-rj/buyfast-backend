@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { isDevelopmentEnv, isProductionEnv } from './server';
+import { isDevelopmentEnv, isProductionEnv } from './';
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 

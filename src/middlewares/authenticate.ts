@@ -1,8 +1,7 @@
 import { Response, NextFunction } from 'express';
 
-import { AuthRequest } from '../types/auth';
-import { UnauthorizedError } from '../utils/app-error';
-import { verifyAccessToken } from '../utils/jwt';
+import { AuthRequest } from '../types';
+import { UnauthorizedError, verifyAccessToken } from '../utils';
 
 export const authenticate = (
   req: AuthRequest,

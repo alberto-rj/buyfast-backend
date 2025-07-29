@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
-import userService from '../services/user-service';
-import responseBody from '../utils/response-body';
-import { AuthPayload, AuthRequest } from '../types/auth';
+import { userService } from '../services';
+import { resBody } from '../utils';
+import { AuthPayload, AuthRequest } from '../types';
 import {
   toUserFind,
   toUserFindMany,
@@ -20,9 +20,13 @@ const findProfile = async (
   try {
     const { userId } = req.payload as AuthPayload;
 
-    const output = await userService.find({ id: userId });
+    const resource = await userService.find({ id: userId });
 
-    res.status(200).json(responseBody.record({ resource: output }));
+    res.status(200).json(
+      resBody.record({
+        resource,
+      }),
+    );
   } catch (error) {
     next(error);
   }
@@ -40,15 +44,15 @@ const updateProfile = async (
       body: { firstName, lastName },
     } = toUserUpdateProfile(req);
 
-    const output = await userService.update({
+    const resource = await userService.update({
       id: userId,
       firstName,
       lastName,
     });
 
     res.status(200).json(
-      responseBody.record({
-        resource: output,
+      resBody.record({
+        resource,
       }),
     );
   } catch (error) {
@@ -63,11 +67,11 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
       body: { firstName, lastName },
     } = toUserUpdate(req);
 
-    const output = await userService.update({ id, firstName, lastName });
+    const resource = await userService.update({ id, firstName, lastName });
 
     res.status(200).json(
-      responseBody.record({
-        resource: output,
+      resBody.record({
+        resource,
       }),
     );
   } catch (error) {
@@ -82,11 +86,11 @@ const updateRole = async (req: Request, res: Response, next: NextFunction) => {
       body: { role },
     } = toUserUpdateRole(req);
 
-    const output = await userService.updateRole({ id, role });
+    const resource = await userService.updateRole({ id, role });
 
     res.status(200).json(
-      responseBody.record({
-        resource: output,
+      resBody.record({
+        resource,
       }),
     );
   } catch (error) {
@@ -98,11 +102,11 @@ const findMany = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { query } = toUserFindMany(req);
 
-    const { meta, resources } = await userService.findMany(query);
+    const { pagination, resources } = await userService.findMany(query);
 
     res.status(200).json(
-      responseBody.paginated({
-        meta,
+      resBody.paginated({
+        pagination,
         resources,
       }),
     );
@@ -117,11 +121,11 @@ const find = async (req: Request, res: Response, next: NextFunction) => {
       params: { id },
     } = toUserFind(req);
 
-    const output = await userService.find({ id });
+    const resource = await userService.find({ id });
 
     res.status(200).json(
-      responseBody.record({
-        resource: output,
+      resBody.record({
+        resource,
       }),
     );
   } catch (error) {
@@ -137,7 +141,7 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
 
     await userService.remove({ id });
 
-    res.status(204).json();
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }

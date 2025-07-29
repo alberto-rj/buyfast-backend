@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { isProductionEnv } from '../config/server';
-import authService from '../services/auth-service';
+import { isProductionEnv } from '../config';
+import { authService } from '../services';
 import {
   toUserCreate,
   toUserLogin,
   toUserLogout,
   toUserRefresh,
 } from '../dtos/user-input';
-import responseBody from '../utils/response-body';
-import { refreshTokenExpiresAt } from '../utils/jwt';
+import { resBody, refreshTokenExpiresAt } from '../utils';
 
 const createCookie = (res: Response, refreshToken: string) => {
   res.cookie('refreshToken', refreshToken, {
@@ -33,7 +32,12 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 
     createCookie(res, refreshToken);
 
-    res.status(201).json(responseBody.auth({ accessToken, user }));
+    res.status(201).json(
+      resBody.auth({
+        accessToken,
+        user,
+      }),
+    );
   } catch (error) {
     next(error);
   }
@@ -47,7 +51,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     createCookie(res, refreshToken);
 
-    res.status(200).json(responseBody.auth({ accessToken, user }));
+    res.status(200).json(
+      resBody.auth({
+        accessToken,
+        user,
+      }),
+    );
   } catch (error) {
     next(error);
   }
@@ -63,7 +72,12 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
 
     createCookie(res, refreshToken);
 
-    res.status(200).json(responseBody.auth({ accessToken, user }));
+    res.status(200).json(
+      resBody.auth({
+        accessToken,
+        user,
+      }),
+    );
   } catch (error) {
     next(error);
   }
@@ -79,7 +93,7 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
 
     clearCookie(res);
 
-    res.status(204).json();
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }

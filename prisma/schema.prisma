@@ -46,6 +46,23 @@ model Category {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive Boolean @default(true) @map("is_active")
-
+  products Product[]
   @@map("categories")
+}
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  description String?
+  price Decimal
+  quantity Int @default(0)
+  sku String @unique
+  categoryId String @map("category_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isActive Boolean @default(true) @map("is_active")
+  weight Decimal?
+  dimensions String?
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  @@map("products")
 }

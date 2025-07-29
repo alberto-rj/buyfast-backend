@@ -1,8 +1,7 @@
 import { NextFunction, Response } from 'express';
 
-import { AuthRequest } from '../types/auth';
-import { UserRole } from '../types/user';
-import { ForbiddenError, UnauthorizedError } from '../utils/app-error';
+import { AuthRequest, UserRole } from '../types';
+import { ForbiddenError, UnauthorizedError } from '../utils';
 
 export const checkRoles = (roles: UserRole[]) => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {

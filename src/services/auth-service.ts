@@ -1,16 +1,16 @@
-import userService from './user-service';
-import { prisma } from '../config/prisma';
+import { userService } from './';
+import { prisma } from '../config';
 import { UserCreateInput, UserLoginInput } from '../dtos/user-input';
 import { toUserOutput, UserOutput } from '../dtos/user-output';
-import { User, UserRole } from '../types/user';
-import { AuthPayload } from '../types/auth';
+import { AuthPayload, User, UserRole } from '../types';
 import {
+  NotFoundError,
+  UnauthorizedError,
+  verifyPassword,
   generateAccessToken,
   generateRefreshToken,
   refreshTokenExpiresAt,
-} from '../utils/jwt';
-import { NotFoundError, UnauthorizedError } from '../utils/app-error';
-import { verifyPassword } from '../utils/password-crypt';
+} from '../utils';
 
 const toAuthPayload = (user: UserOutput | User): AuthPayload => {
   return {
