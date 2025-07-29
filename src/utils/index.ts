@@ -18,7 +18,7 @@ export {
   verifyRefreshToken,
 } from './jwt';
 export { hashPassword, verifyPassword } from './password-crypt';
-export { default as resBody } from './response-body';
+export { responseBody as resBody } from './response-body';
 export { toSlug } from './to-slug';
-export { getIsActive } from './get-is-active';
+export { canExcludeInactive, canIncludeInactive } from './is-active';
 export { validate } from './validate';

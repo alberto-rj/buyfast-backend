@@ -59,7 +59,7 @@ const updated = <T>(payload: { resource: T }) => {
   };
 };
 
-export default {
+export const responseBody = {
   auth,
   error,
   paginated,

@@ -10,18 +10,11 @@ import {
   toCategoryPaginationOutput,
 } from '../dtos';
 
-import { ConflictError, NotFoundError } from '../utils';
-
-const getIsActive = (includeInactive: boolean) => {
-  if (includeInactive) {
-    return undefined;
-  }
-  return true;
-};
+import { canIncludeInactive, ConflictError, NotFoundError } from '../utils';
 
 const findById = async ({ id, includeInactive }: CategoryFindInput) => {
   const filteredCategory = await prisma.category.findUnique({
-    where: { id, isActive: getIsActive(includeInactive) },
+    where: { id, isActive: canIncludeInactive(includeInactive) },
   });
 
   if (!filteredCategory) {
@@ -49,11 +42,11 @@ const findMany = async ({
 }: CategoryFindManyInput) => {
   const [total, filteredCategories] = await Promise.all([
     prisma.category.count({
-      where: { isActive: getIsActive(includeInactive) },
+      where: { isActive: canIncludeInactive(includeInactive) },
     }),
     prisma.category.findMany({
       where: {
-        isActive: getIsActive(includeInactive),
+        isActive: canIncludeInactive(includeInactive),
         createdAt: {
           gte: createdAtMin,
           lte: createdAtMax,

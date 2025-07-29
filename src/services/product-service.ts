@@ -1,4 +1,4 @@
-import { ConflictError, getIsActive, NotFoundError } from '../utils';
+import { ConflictError, canIncludeInactive, NotFoundError } from '../utils';
 import { prisma } from '../config';
 import {
   ProductCreateInput,
@@ -20,7 +20,7 @@ const findById = async ({
   includeInactive: boolean;
 }) => {
   const filteredProduct = await prisma.product.findUnique({
-    where: { id, isActive: getIsActive(includeInactive) },
+    where: { id, isActive: canIncludeInactive(includeInactive) },
   });
 
   if (!filteredProduct) {
@@ -39,9 +39,9 @@ const find = async ({
   const filteredProduct = await prisma.product.findUnique({
     where: {
       id,
-      isActive: getIsActive(includeInactive),
+      isActive: canIncludeInactive(includeInactive),
       category: {
-        isActive: getIsActive(includeInactiveCategory),
+        isActive: canIncludeInactive(includeInactiveCategory),
       },
     },
     include: {
@@ -80,7 +80,7 @@ const findMany = async ({
   const [total, filteredProducts] = await Promise.all([
     prisma.product.count({
       where: {
-        isActive: getIsActive(includeInactive),
+        isActive: canIncludeInactive(includeInactive),
       },
     }),
     prisma.product.findMany({
@@ -105,10 +105,10 @@ const findMany = async ({
           gte: weightMin,
           lte: weightMax,
         },
-        isActive: getIsActive(includeInactive),
+        isActive: canIncludeInactive(includeInactive),
         category: {
           name: category,
-          isActive: getIsActive(includeInactiveCategory),
+          isActive: canIncludeInactive(includeInactiveCategory),
         },
         OR: [
           {
