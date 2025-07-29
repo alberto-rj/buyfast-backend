@@ -12,8 +12,9 @@ export type UserOutput = {
 };
 
 export const toUserOutput = (user: User): UserOutput => {
+  const { password, ...userWithoutPassword } = user;
   return {
-    ...user,
+    ...userWithoutPassword,
     createdAt: user.createdAt.toISOString(),
     updatedAt: user.updatedAt.toISOString(),
   };
