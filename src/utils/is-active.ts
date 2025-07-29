@@ -1,11 +1,11 @@
-export const canIncludeInactive = (includeInactive: boolean) => {
+export const canIncludeInactive = (includeInactive?: boolean) => {
   if (includeInactive) {
     return undefined;
   }
   return true;
 };
 
-export const canExcludeInactive = (excludeActive: boolean) => {
+export const canExcludeInactive = (excludeActive?: boolean) => {
   if (excludeActive) {
     return undefined;
   }

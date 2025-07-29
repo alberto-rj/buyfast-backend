@@ -22,3 +22,4 @@ export { responseBody as resBody } from './response-body';
 export { toSlug } from './to-slug';
 export { canExcludeInactive, canIncludeInactive } from './is-active';
 export { validate } from './validate';
+export { getProductFindManyArgs } from './product';

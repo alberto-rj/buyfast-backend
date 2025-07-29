@@ -1,4 +1,9 @@
-import { ConflictError, canIncludeInactive, NotFoundError } from '../utils';
+import {
+  ConflictError,
+  canIncludeInactive,
+  NotFoundError,
+  getProductFindManyArgs,
+} from '../utils';
 import { prisma } from '../config';
 import {
   ProductCreateInput,
@@ -10,7 +15,7 @@ import {
   toProductOutput,
   toProductPaginationOutput,
 } from '../dtos';
-import { categoryService } from './';
+import { categoryService } from '../services';
 
 const findById = async ({
   id,
@@ -57,25 +62,10 @@ const find = async ({
 };
 
 const findMany = async ({
-  category,
-  search,
-  minPrice,
-  maxPrice,
-  minQuantity,
-  maxQuantity,
-  minWeight,
-  maxWeight,
-  minCreatedAt,
-  maxCreatedAt,
-  minUpdatedAt,
-  maxUpdatedAt,
   includeInactive,
-  includeCategory,
-  includeInactiveCategory,
   limit,
   page,
-  sortBy,
-  order,
+  ...props
 }: ProductFindManyInput) => {
   const [total, foundProducts] = await Promise.all([
     prisma.product.count({
@@ -83,59 +73,14 @@ const findMany = async ({
         isActive: canIncludeInactive(includeInactive),
       },
     }),
-    prisma.product.findMany({
-      where: {
-        createdAt: {
-          gte: minCreatedAt,
-          lte: maxCreatedAt,
-        },
-        updatedAt: {
-          gte: minUpdatedAt,
-          lte: maxUpdatedAt,
-        },
-        price: {
-          gte: minPrice,
-          lte: maxPrice,
-        },
-        quantity: {
-          gte: minQuantity,
-          lte: maxQuantity,
-        },
-        weight: {
-          gte: minWeight,
-          lte: maxWeight,
-        },
-        isActive: canIncludeInactive(includeInactive),
-        category: {
-          name: category,
-          isActive: canIncludeInactive(includeInactiveCategory),
-        },
-        OR: [
-          {
-            name: { contains: search, mode: 'insensitive' },
-          },
-          {
-            description: { contains: search, mode: 'insensitive' },
-          },
-          {
-            sku: { contains: search, mode: 'insensitive' },
-          },
-          {
-            category: {
-              name: { contains: search, mode: 'insensitive' },
-            },
-          },
-        ],
-      },
-      include: {
-        category: includeCategory,
-      },
-      orderBy: {
-        [sortBy]: order,
-      },
-      skip: (page - 1) * limit,
-      take: limit,
-    }),
+    prisma.product.findMany(
+      getProductFindManyArgs({
+        includeInactive,
+        limit,
+        page,
+        ...props,
+      }) as { [x: string]: never },
+    ),
   ]);
 
   return toProductPaginationOutput({
@@ -163,6 +108,7 @@ const create = async ({
     }),
     prisma.product.findUnique({
       where: { sku },
+      select: { id: true },
     }),
   ]);
 
