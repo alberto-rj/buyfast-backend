@@ -1,76 +1,80 @@
 import validator from 'validator';
 import { z } from 'zod';
 
-export const search = ({
-  fieldName = 'search',
-  defaultValue = '',
-}: {
-  fieldName: string;
-  defaultValue: string;
-}) =>
-  z
+export const setSearch = (
+  options: Partial<{
+    fieldName: string;
+    defaultValue: string;
+  }> = {},
+) => {
+  const { fieldName = 'search', defaultValue = '' } = options;
+  return z
     .string({ invalid_type_error: `${fieldName} must be a string.` })
     .default(defaultValue);
+};
 
-export const sortOrder = ({
-  fieldName = 'sortOrder',
-  defaultValue,
-}: {
-  fieldName: string;
-  defaultValue: 'asc' | 'desc';
-}) =>
-  z
+export const setSortOrder = (
+  options: Partial<{
+    fieldName: string;
+    defaultValue: 'asc' | 'desc';
+  }> = {},
+) => {
+  const { fieldName = 'sortOrder', defaultValue = 'desc' } = options;
+  return z
     .enum(['asc', 'desc'], {
       invalid_type_error: `${fieldName} must be a string.`,
       message: `${fieldName} must be "asc" or "desc".`,
     })
     .default(defaultValue);
+};
 
-export const limit =
-  ({
-    fieldName = 'limit',
-    minValue = 1,
-    maxValue = 60,
-    defaultValue = 20,
-  }: {
+export const setLimit = (
+  options: Partial<{
     fieldName: string;
     minValue: number;
     maxValue: number;
     defaultValue: number;
-  }) =>
-  () =>
-    z.coerce
-      .number({
-        invalid_type_error: `${fieldName} must be a number.`,
-      })
-      .int({ message: `${fieldName} must be an integer.` })
-      .min(minValue, { message: `${fieldName} must at least ${minValue}.` })
-      .max(maxValue, { message: `${fieldName} cannot exceed ${maxValue}.` })
-      .default(defaultValue);
+  }> = {},
+) => {
+  const {
+    fieldName = 'limit',
+    minValue = 0,
+    maxValue = 40,
+    defaultValue = 10,
+  } = options;
+  return z.coerce
+    .number({
+      invalid_type_error: `${fieldName} must be a number.`,
+    })
+    .int({ message: `${fieldName} must be an integer.` })
+    .min(minValue, { message: `${fieldName} must at least ${minValue}.` })
+    .max(maxValue, { message: `${fieldName} cannot exceed ${maxValue}.` })
+    .default(defaultValue);
+};
 
-export const page = ({
-  fieldName = 'page',
-  minValue = 1,
-  defaultValue = 1,
-}: {
-  fieldName: string;
-  minValue: number;
-  defaultValue: number;
-}) =>
-  z.coerce
+export const setPage = (
+  options: Partial<{
+    fieldName: string;
+    minValue: number;
+    defaultValue: number;
+  }> = {},
+) => {
+  const { fieldName = 'page', minValue = 1, defaultValue = 1 } = options;
+  return z.coerce
     .number({
       invalid_type_error: `${fieldName} must be a number.`,
     })
     .int({ message: `${fieldName} must be an integer.` })
     .min(minValue, { message: `${fieldName} must be at least ${minValue}.` })
     .default(defaultValue);
+};
 
-export const uuid = (fieldName: string = 'id') =>
+export const setUUID = (fieldName: string = 'id') =>
   z.string({ required_error: `${fieldName} is required.` }).uuid({
     message: `${fieldName} must be a valid UUID v4 (e.g., "123e4567-e89b-12d3-a456-426614174000").`,
   });
 
-export const imageURL = ({
+export const setImageURL = ({
   fieldName = 'image',
   fileName = 'image',
 }: {
@@ -79,63 +83,65 @@ export const imageURL = ({
 }) =>
   z
     .string({ required_error: 'coverImage is required.' })
-    .refine((value) => validator.isURL(value), {
+    .refine((input) => validator.isURL(input), {
       message: `${fieldName} must be a valid URL (e.g., "https://example.com/${fileName}.png").`,
     });
 
-export const isoDate = ({ fieldName }: { fieldName: string }) =>
+export const setISODate = ({ fieldName }: { fieldName: string }) =>
   z
     .string({
       invalid_type_error: `${fieldName} must be string`,
       required_error: `${fieldName} is required.`,
     })
-    .refine((value) => validator.isISO8601(value, { strict: true }), {
+    .refine((input) => validator.isISO8601(input, { strict: true }), {
       message: `${fieldName} must be only in ISO 8601 (e.g., "2025-05-25T00:00:00Z").`,
     })
-    .transform((value) => new Date(value));
+    .transform((input) => new Date(input));
 
-export const isoFutureDate = ({ fieldName }: { fieldName: string }) =>
+export const setISOFutureDate = ({ fieldName }: { fieldName: string }) =>
   z
     .string({
       invalid_type_error: `${fieldName} must be string`,
       required_error: `${fieldName} is required.`,
     })
-    .refine((value) => validator.isISO8601(value, { strict: true }), {
+    .refine((input) => validator.isISO8601(input, { strict: true }), {
       message: `${fieldName} must be only in ISO 8601 (e.g., "2025-05-25T00:00:00Z").`,
     })
-    .refine((value) => validator.isAfter(value), {
+    .refine((input) => validator.isBefore(input), {
       message: `${fieldName} must be only in the future.`,
     })
-    .transform((value) => new Date(value));
+    .transform((input) => new Date(input));
 
-export const isoPastDate = ({ fieldName }: { fieldName: string }) =>
+export const setISOPastDate = ({ fieldName }: { fieldName: string }) =>
   z
     .string({
       invalid_type_error: `${fieldName} must be string`,
       required_error: `${fieldName} is required.`,
     })
-    .refine((value) => validator.isISO8601(value, { strict: true }), {
+    .refine((input) => validator.isISO8601(input, { strict: true }), {
       message: `${fieldName} must be only in ISO 8601 (e.g., "2025-05-25T00:00:00Z").`,
     })
-    .refine((value) => validator.isBefore(value), {
+    .refine((input) => validator.isAfter(input), {
       message: `${fieldName} must be only in the past.`,
     })
-    .transform((value) => new Date(value));
+    .transform((input) => new Date(input));
 
-export const defaultFalse = ({ fieldName }: { fieldName: string }) =>
+export const setDefaultFalse = ({ fieldName }: { fieldName: string }) =>
   z.coerce
     .boolean({ invalid_type_error: `${fieldName} must be a boolean.` })
     .default(false);
 
-export const defaultTrue = ({ fieldName }: { fieldName: string }) =>
+export const setDefaultTrue = ({ fieldName }: { fieldName: string }) =>
   z.coerce
     .boolean({ invalid_type_error: `${fieldName} must be a boolean.` })
     .default(true);
 
-export const createdAtMin = isoDate({ fieldName: 'createdAtMin' });
+export const setCreatedAtMin = (fieldName: string = 'createdAtMin') =>
+  setISOPastDate({ fieldName });
+export const setCreatedAtMax = (fieldName: string = 'createdAtMax') =>
+  setISOFutureDate({ fieldName });
 
-export const createdAtMax = isoDate({ fieldName: 'createdAtMax' });
-
-export const updatedAtMin = isoDate({ fieldName: 'updatedAtMin' });
-
-export const updatedAtMax = isoDate({ fieldName: 'updatedAtMax' });
+export const setUpdatedAtMin = (fieldName: string = 'updatedAtMin') =>
+  setISOPastDate({ fieldName });
+export const setUpdatedAtMax = (fieldName: string = 'updatedAtMax') =>
+  setISOFutureDate({ fieldName });

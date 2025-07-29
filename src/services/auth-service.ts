@@ -1,4 +1,4 @@
-import { createUser } from './user-service';
+import userService from './user-service';
 import { prisma } from '../config/prisma';
 import { UserCreateInput, UserLoginInput } from '../dtos/user-input';
 import { toUserOutput, UserOutput } from '../dtos/user-output';
@@ -22,7 +22,7 @@ const toAuthPayload = (user: UserOutput | User): AuthPayload => {
 };
 
 const register = async (input: UserCreateInput) => {
-  const createdUser = await createUser(input);
+  const createdUser = await userService.create(input);
   const payload = toAuthPayload(createdUser);
   const accessToken = generateAccessToken(payload);
   const refreshToken = generateRefreshToken(payload);

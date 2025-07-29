@@ -14,14 +14,16 @@ const records = <T>(payload: { resources: T }) => {
 
 const paginated = <T>(payload: {
   resources: T;
-  total: number;
-  page: number;
-  pages: number;
-  limit: number;
-  hasNext: boolean;
-  hasPrev: boolean;
+  meta: {
+    total: number;
+    page: number;
+    pages: number;
+    limit: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
 }) => {
-  const { resources: results, ...meta } = payload;
+  const { resources: results, meta } = payload;
   return {
     success: true,
     data: { results, meta },

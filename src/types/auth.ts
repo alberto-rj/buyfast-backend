@@ -11,5 +11,5 @@ export interface AuthPayload extends JwtPayload {
 }
 
 export interface AuthRequest extends Request {
-  payload: AuthPayload;
+  payload?: AuthPayload;
 }

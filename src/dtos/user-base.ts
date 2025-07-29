@@ -1,10 +1,20 @@
 import validator from 'validator';
 import { z } from 'zod';
 
-import { uuid } from './common-base';
+import {
+  setCreatedAtMax,
+  setCreatedAtMin,
+  setLimit,
+  setPage,
+  setSearch,
+  setSortOrder,
+  setUpdatedAtMax,
+  setUpdatedAtMin,
+  setUUID,
+} from './common-base';
 import { UserRole } from '../types/user';
 
-export const id = uuid();
+export const id = setUUID();
 
 export const firstName = z
   .string({
@@ -110,3 +120,36 @@ export const refreshToken = z
     invalid_type_error: 'refreshToken must be string.',
   })
   .min(1, { message: 'refreshToken cannot be empty.' });
+
+export const limit = setLimit();
+
+export const page = setPage();
+
+export const fieldQuery = z.string().default('');
+export const sortedBy = z
+  .enum(
+    [
+      'firstName',
+      'lastName',
+      'email',
+      'username',
+      'role',
+      'createdAt',
+      'updatedAt',
+    ],
+    {
+      invalid_type_error: 'sortedBy must be string.',
+      message:
+        'sortedBy must be "firstName", "lastName", "email", "username", "role", "createdAt" or "updatedAt".',
+    },
+  )
+  .default('createdAt');
+export const sortOrder = setSortOrder({ defaultValue: 'desc' });
+
+export const search = setSearch({ defaultValue: '' });
+
+export const createdAtMin = setCreatedAtMin();
+export const createdAtMax = setCreatedAtMax();
+
+export const updatedAtMin = setUpdatedAtMin();
+export const updatedAtMax = setUpdatedAtMax();

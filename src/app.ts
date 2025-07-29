@@ -4,8 +4,8 @@ import morgan from 'morgan';
 
 import './config/env';
 import { isDevelopmentEnv, NODE_ENV, PORT } from './config/server';
-import { setupRoutes } from './routes';
 import { setupCors } from './config/cors';
+import { setupRoutes } from './routes';
 
 const app = express();
 
@@ -23,7 +23,7 @@ setupRoutes(app);
 
 app.listen(PORT, () => {
   console.log(
-    `🚀 Server is running at http://localhost:${PORT} in "${NODE_ENV}" mode`,
+    `🚀 Server is running in "${NODE_ENV}" mode at http://localhost:${PORT}`,
   );
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
 });
