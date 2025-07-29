@@ -1,5 +1,4 @@
 import { prisma } from '../config';
-import { toUserOutput, toUserPaginationOutput } from '../dtos/user/user-output';
 import {
   UserCreateInput,
   UserFindInput,
@@ -7,7 +6,9 @@ import {
   UserRemoveInput,
   UserUpdateInput,
   UserUpdateRoleInput,
-} from '../dtos/user/user-input';
+  toUserOutput,
+  toUserPaginationOutput,
+} from '../dtos';
 import { ConflictError, NotFoundError, hashPassword } from '../utils';
 
 const findMany = async ({
@@ -17,8 +18,8 @@ const findMany = async ({
   createdAtMax,
   updatedAtMin,
   updatedAtMax,
-  sortedBy,
-  sortOrder,
+  sortBy,
+  order,
   limit,
   page,
 }: UserFindManyInput) => {
@@ -36,7 +37,7 @@ const findMany = async ({
           { username: { contains: search, mode: 'insensitive' } },
         ],
       },
-      orderBy: { [sortedBy]: sortOrder },
+      orderBy: { [sortBy]: order },
       take: limit,
       skip: limit * (page - 1),
     }),

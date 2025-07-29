@@ -10,7 +10,7 @@ import {
   toUserUpdate,
   toUserUpdateProfile,
   toUserUpdateRole,
-} from '../dtos/user/user-input';
+} from '../dtos';
 
 const findProfile = async (
   req: AuthRequest,

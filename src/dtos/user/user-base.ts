@@ -128,7 +128,7 @@ export const limit = setLimit();
 
 export const page = setPage();
 
-export const sortedBy = z
+export const sortBy = z
   .enum(
     [
       'firstName',
@@ -146,7 +146,8 @@ export const sortedBy = z
     },
   )
   .default('createdAt');
-export const sortOrder = setSortOrder({ defaultValue: 'desc' });
+
+export const order = setSortOrder({ defaultValue: 'desc' });
 
 export const search = setSearch({ defaultValue: '' });
 
