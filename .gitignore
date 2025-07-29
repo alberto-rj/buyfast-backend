@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+build/
+
+# prisma
+generated/
+migrations
+
+# env
+.env
+
+# npm
+npm-debug.log*
+
+# DS Store
+.DS_Store
