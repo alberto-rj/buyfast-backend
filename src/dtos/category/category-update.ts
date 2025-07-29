@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { description, id, includeInactive, name } from './';
+import { description, id, includeInactive, name } from '.';
 import { toSlug, validate } from '../../utils';
 
 export const categoryUpdate = z.object({

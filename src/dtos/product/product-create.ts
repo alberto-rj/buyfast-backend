@@ -9,7 +9,7 @@ import {
   price,
   quantity,
   sku,
-} from './';
+} from '.';
 import { validate } from '../../utils';
 
 export const productCreate = z.object({

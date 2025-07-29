@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { isActive, id, includeInactive } from './category-base';
-import { toSlug, validate } from '../../utils';
+import { isActive, id, includeInactive } from '.';
+import { validate } from '../../utils';
 
 export const categoryUpdateIsActive = z.object({
   params: z.object({

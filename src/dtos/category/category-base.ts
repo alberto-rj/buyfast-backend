@@ -8,11 +8,11 @@ import {
   setLimit,
   setPage,
   setSearch,
-  setSortOrder,
+  setOrder,
   setUpdatedAtMax,
   setUpdatedAtMin,
   setUUID,
-} from '../common/common-base';
+} from '..';
 
 export const id = setUUID();
 
@@ -54,7 +54,7 @@ export const sortedBy = z
     message: 'sortedBy must be "name", "createdAt" or "updatedAt".',
   })
   .default('createdAt');
-export const sortOrder = setSortOrder({ defaultValue: 'desc' });
+export const sortOrder = setOrder({ defaultValue: 'desc' });
 
 export const search = setSearch({ defaultValue: '' });
 

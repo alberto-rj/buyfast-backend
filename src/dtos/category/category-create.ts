@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { description, name } from './';
+import { description, name } from '.';
 import { toSlug, validate } from '../../utils';
 
 export const categoryCreate = z.object({

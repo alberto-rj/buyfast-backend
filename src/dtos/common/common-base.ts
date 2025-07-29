@@ -13,13 +13,13 @@ export const setSearch = (
     .default(defaultValue);
 };
 
-export const setSortOrder = (
+export const setOrder = (
   options: Partial<{
     fieldName: string;
     defaultValue: 'asc' | 'desc';
   }> = {},
 ) => {
-  const { fieldName = 'sortOrder', defaultValue = 'desc' } = options;
+  const { fieldName = 'order', defaultValue = 'desc' } = options;
   return z
     .enum(['asc', 'desc'], {
       invalid_type_error: `${fieldName} must be a string.`,

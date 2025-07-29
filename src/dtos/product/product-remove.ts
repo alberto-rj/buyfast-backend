@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { id, includeInactive } from './';
+import { id, includeInactive } from '.';
 import { validate } from '../../utils';
 
 export const productRemove = z.object({

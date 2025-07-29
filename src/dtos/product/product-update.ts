@@ -13,7 +13,7 @@ import {
   weight,
   includeInactiveCategory,
   includeCategory,
-} from './';
+} from '.';
 import { validate } from '../../utils';
 
 export const productUpdate = z.object({

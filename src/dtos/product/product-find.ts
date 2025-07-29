@@ -5,7 +5,7 @@ import {
   includeCategory,
   includeInactive,
   includeInactiveCategory,
-} from './';
+} from '.';
 import { validate } from '../../utils';
 
 export const productFind = z.object({

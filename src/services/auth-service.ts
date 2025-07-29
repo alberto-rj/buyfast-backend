@@ -1,7 +1,11 @@
-import { userService } from './';
+import { userService } from '.';
 import { prisma } from '../config';
-import { UserCreateInput, UserLoginInput } from '../dtos/user/user-input';
-import { toUserOutput, UserOutput } from '../dtos/user/user-output';
+import {
+  UserCreateInput,
+  UserLoginInput,
+  toUserOutput,
+  UserOutput,
+} from '../dtos';
 import { AuthPayload, User, UserRole } from '../types';
 import {
   NotFoundError,
@@ -106,7 +110,7 @@ const logout = async (refreshToken: string) => {
   });
 };
 
-export default {
+export const authService = {
   refresh,
   register,
   login,

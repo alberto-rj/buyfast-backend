@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { id, includeInactive } from './category-base';
+import { id, includeInactive } from '.';
 import { validate } from '../../utils';
 
 export const categoryFind = z.object({

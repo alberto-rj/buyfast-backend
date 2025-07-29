@@ -150,7 +150,7 @@ const remove = async ({ id, includeInactive }: CategoryRemoveInput) => {
   await prisma.category.delete({ where: { id } });
 };
 
-export default {
+export const categoryService = {
   findMany,
   find,
   create,

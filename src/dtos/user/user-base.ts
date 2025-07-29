@@ -8,12 +8,12 @@ import {
   setLimit,
   setPage,
   setSearch,
-  setSortOrder,
+  setOrder,
   setUpdatedAtMax,
   setUpdatedAtMin,
   setUUID,
-} from '../common/common-base';
-import { UserRole } from '../../types/user';
+} from '..';
+import { UserRole } from '../../types';
 
 export const id = setUUID();
 
@@ -147,7 +147,7 @@ export const sortBy = z
   )
   .default('createdAt');
 
-export const order = setSortOrder({ defaultValue: 'desc' });
+export const order = setOrder({ defaultValue: 'desc' });
 
 export const search = setSearch({ defaultValue: '' });
 

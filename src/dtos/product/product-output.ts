@@ -1,6 +1,10 @@
 import { Product } from '../../types';
-import { CategoryOutput, toCategoryOutput } from '../category/category-output';
-import { PaginationOutput, toPaginationOutput } from '../common/common-output';
+import {
+  CategoryOutput,
+  toCategoryOutput,
+  PaginationOutput,
+  toPaginationOutput,
+} from '..';
 
 export type ProductOutput = {
   id: string;

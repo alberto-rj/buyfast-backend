@@ -7,7 +7,7 @@ import {
   toUserLogin,
   toUserLogout,
   toUserRefresh,
-} from '../dtos/user/user-input';
+} from '../dtos';
 import { resBody, refreshTokenExpiresAt } from '../utils';
 
 const createCookie = (res: Response, refreshToken: string) => {

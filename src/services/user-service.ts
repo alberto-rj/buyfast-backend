@@ -138,7 +138,7 @@ const remove = async ({ id }: UserRemoveInput): Promise<void> => {
   await prisma.user.delete({ where: { id } });
 };
 
-export default {
+export const userService = {
   create,
   findMany,
   find,

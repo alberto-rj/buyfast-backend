@@ -20,7 +20,7 @@ import {
   updatedAtMin,
   updatedAtMax,
   category,
-} from './';
+} from '.';
 import { validate } from '../../utils';
 
 export const productFindMany = z.object({
