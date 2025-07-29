@@ -1,4 +1,4 @@
-import responseBody from './response-body';
+import { resBody } from '.';
 
 export abstract class AppError<T = undefined> extends Error {
   public readonly statusCode: number;
@@ -12,12 +12,12 @@ export abstract class AppError<T = undefined> extends Error {
 
   format() {
     if (typeof this.details === 'undefined') {
-      return responseBody.error({
+      return resBody.error({
         name: this.name,
         message: this.message,
       });
     }
-    return responseBody.error({
+    return resBody.error({
       name: this.name,
       message: this.message,
       details: this.details,
