@@ -55,6 +55,7 @@
     "Documentacões",
     "Documentações",
     "Documento",
+    "DTO",
     "dtos",
     "ecommerce",
     "editar",
@@ -150,6 +151,7 @@
     "Validação",
     "validados",
     "visualiza",
-    "visualizar"
+    "visualizar",
+    "zod"
   ]
 }
