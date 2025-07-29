@@ -7,7 +7,7 @@
     "dev": "nodemon src/app.ts",
     "build": "tsc",
     "db:migrate": "prisma migrate dev --name init",
-    "db:seed": "npm run build && cp -r generated dist/generated && node dist/prisma/seeds/index.js",
+    "db:seed": "node dist/prisma/seeds/index.js",
     "db:reset": "prisma migrate reset --force"
   },
   "dependencies": {

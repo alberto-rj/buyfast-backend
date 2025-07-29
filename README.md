@@ -37,7 +37,13 @@
    npm install
    ```
 
-3. Copiar o arquivo `.env.example` para `.env` e definir as variáves de ambiente com suas próprias configurações (_conforme esperado_):
+3. Fazer o build da aplicação:
+
+   ```bash
+   npm run build
+   ```
+
+4. Copiar as configurações do arquivo [`.env.example`](./.env.example) para `.env` e definir as variáves de ambiente com suas próprias configurações (_conforme esperado_):
 
    ```bash
    cp .env.example .env
@@ -45,20 +51,20 @@
 
    > Importante: Certifique-se de que seu servidor PostgreSQL está em execução antes de proceguir para os próximos passos.
 
-4. Criar o banco de dados:
+5. Criar o banco de dados:
 
    ```bash
    npm run db:migrate
    ```
 
-5. Popular o banco de dados:
+6. Popular o banco de dados:
 
    ```bash
    npm run db:seed
    ```
 
-6. Iniciar o servidor:
+7. Iniciar o servidor:
 
    ```bash
-   npm run dev
+   npm start
    ```
