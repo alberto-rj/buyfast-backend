@@ -74,8 +74,14 @@ const create = async ({
   password,
 }: UserCreateInput) => {
   const [foundUserByEmail, foundUserByUserName] = await Promise.all([
-    prisma.user.findUnique({ where: { email } }),
-    prisma.user.findUnique({ where: { username } }),
+    prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    }),
+    prisma.user.findUnique({
+      where: { username },
+      select: { id: true },
+    }),
   ]);
 
   if (foundUserByEmail || foundUserByUserName) {

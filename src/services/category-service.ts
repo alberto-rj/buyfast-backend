@@ -104,6 +104,7 @@ const update = async ({
 
   const foundCategory = await prisma.category.findUnique({
     where: { name },
+    select: { id: true },
   });
 
   if (foundCategory && foundCategory.id !== id) {
