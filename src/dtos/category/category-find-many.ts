@@ -4,8 +4,8 @@ import {
   includeInactive,
   limit,
   page,
-  sortedBy,
-  sortOrder,
+  sortBy,
+  order,
   search,
   minCreatedAt,
   maxCreatedAt,
@@ -15,18 +15,18 @@ import {
 
 import { validate } from '../../utils';
 
-export const categoryFindMany = z.object({
+const categoryFindMany = z.object({
   query: z.object({
-    includeInactive,
-    search,
+    search: search.optional(),
     minCreatedAt: minCreatedAt.optional(),
     maxCreatedAt: maxCreatedAt.optional(),
     minUpdatedAt: minUpdatedAt.optional(),
     maxUpdatedAt: maxUpdatedAt.optional(),
+    includeInactive: includeInactive.optional(),
     page,
     limit,
-    sortedBy,
-    sortOrder,
+    sortBy,
+    order,
   }),
 });
 

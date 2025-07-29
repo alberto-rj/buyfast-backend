@@ -1,68 +1,5 @@
 import { ProductFindManyInput } from '../dtos';
-import { canIncludeInactive } from '../utils';
-
-abstract class ModelFindManyBuilder<T> {
-  protected args?: Record<string, any>;
-  protected where?: Record<string, any>;
-  protected include?: Record<string, boolean>;
-  protected orderBy?: Record<string, 'asc' | 'desc'>;
-  protected skip?: number;
-  protected take?: number;
-
-  protected initArgs() {
-    if (!this.args) {
-      this.args = {};
-    }
-    return this;
-  }
-
-  protected initWhere() {
-    if (!this.where) {
-      this.where = {};
-    }
-    return this;
-  }
-
-  protected initInclude() {
-    if (!this.include) {
-      this.include = {};
-    }
-    return this;
-  }
-
-  protected initOrderBy() {
-    if (!this.orderBy) {
-      this.orderBy = {};
-    }
-    return this;
-  }
-
-  protected setSkip(count?: number) {
-    if (typeof count === 'number') {
-      this.skip = count;
-    }
-    return this;
-  }
-
-  protected setTake(count?: number) {
-    if (typeof count === 'number') {
-      this.take = count;
-    }
-    return this;
-  }
-
-  protected initOR() {
-    this.initWhere();
-
-    if (!Array.isArray(this.where!.OR)) {
-      this.where!.OR = [];
-    }
-
-    return this;
-  }
-
-  abstract build(input: T): Record<string, any>;
-}
+import { canIncludeInactive, ModelFindManyBuilder } from '../utils';
 
 class ProductFindManyBuilder extends ModelFindManyBuilder<ProductFindManyInput> {
   constructor() {
@@ -90,7 +27,9 @@ class ProductFindManyBuilder extends ModelFindManyBuilder<ProductFindManyInput> 
     sortBy,
     order,
   }: ProductFindManyInput): Record<string, any> {
-    const { where, include, take, skip } = this.whereSearchForName(search)
+    const { where, orderBy, include, take, skip } = this.whereSearchForName(
+      search,
+    )
       .whereSearchForDescription(search)
       .whereSearchForSku(search)
       .whereSearchForCategory(search)
@@ -112,7 +51,7 @@ class ProductFindManyBuilder extends ModelFindManyBuilder<ProductFindManyInput> 
       .setOrderBy({ fieldName: sortBy, order })
       .includeCategory(includeCategory);
 
-    return { where, include, take, skip };
+    return { where, orderBy, include, take, skip };
   }
 
   private initWhereCategory() {
@@ -237,72 +176,9 @@ class ProductFindManyBuilder extends ModelFindManyBuilder<ProductFindManyInput> 
     return this;
   }
 
-  private initWhereCreatedAt() {
-    this.initWhere();
-
-    if (typeof this.where!.createdAt === 'undefined') {
-      this.initWhere().where!.createdAt = {};
-    }
-
-    return this;
-  }
-
-  private whereMinCreateAt(date?: Date) {
-    if (typeof date === 'object') {
-      this.initWhereCreatedAt().where!.createdAt.gte = date;
-    }
-    return this;
-  }
-
-  private whereMaxCreateAt(date?: Date) {
-    if (typeof date === 'object') {
-      this.initWhereCreatedAt().where!.createdAt.lte = date;
-    }
-    return this;
-  }
-
-  private initWhereUpdatedAt() {
-    this.initWhere();
-
-    if (typeof this.where!.updatedAt === 'undefined') {
-      this.initWhere().where!.updatedAt = {};
-    }
-
-    return this;
-  }
-
-  private whereMinUpdatedAt(date?: Date) {
-    if (typeof date === 'object') {
-      this.initWhereUpdatedAt().where!.updatedAt.gte = date;
-    }
-    return this;
-  }
-
-  private whereMaxUpdatedAt(date?: Date) {
-    if (typeof date === 'object') {
-      this.initWhereUpdatedAt().where!.updatedAt.lte = date;
-    }
-    return this;
-  }
-
-  private whereIsActive(isActive?: boolean) {
-    if (typeof isActive === 'boolean') {
-      this.initWhere().where!.isActive = isActive;
-    }
-    return this;
-  }
-
   private includeCategory(canInclude?: boolean) {
     if (typeof canInclude === 'boolean') {
       this.initInclude().include!.category = canInclude;
-    }
-    return this;
-  }
-
-  private setOrderBy(options?: { fieldName: string; order: 'asc' | 'desc' }) {
-    if (typeof options === 'object') {
-      const { fieldName, order } = options;
-      this.initOrderBy().orderBy![fieldName] = order;
     }
     return this;
   }

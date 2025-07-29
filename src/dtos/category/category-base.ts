@@ -48,13 +48,13 @@ export const limit = setLimit();
 
 export const page = setPage();
 
-export const sortedBy = z
+export const sortBy = z
   .enum(['name', 'createdAt', 'updatedAt'], {
-    invalid_type_error: 'sortedBy must be string.',
-    message: 'sortedBy must be "name", "createdAt" or "updatedAt".',
+    invalid_type_error: 'sortBy must be string.',
+    message: 'sortBy must be "name", "createdAt" or "updatedAt".',
   })
   .default('createdAt');
-export const sortOrder = setOrder({ defaultValue: 'desc' });
+export const order = setOrder({ defaultValue: 'desc' });
 
 export const search = setSearch({ defaultValue: '' });
 

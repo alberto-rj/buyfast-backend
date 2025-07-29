@@ -10,7 +10,58 @@ import {
   toCategoryPaginationOutput,
 } from '../dtos';
 
-import { canIncludeInactive, ConflictError, NotFoundError } from '../utils';
+import {
+  canIncludeInactive,
+  ConflictError,
+  getCategoryFindManyArgs,
+  NotFoundError,
+} from '../utils';
+
+const ensureCanFind = async ({ id, includeInactive }: CategoryFindInput) => {
+  const foundCategory = await prisma.category.findUnique({
+    where: {
+      id,
+      isActive: canIncludeInactive(includeInactive),
+    },
+    select: { isActive: true },
+  });
+
+  if (!foundCategory) {
+    throw new NotFoundError('Category not found.');
+  }
+};
+
+const ensureCanUpdateName = async ({
+  id,
+  name,
+}: {
+  id: string;
+  name: string;
+}) => {
+  const foundCategory = await prisma.category.findUnique({
+    where: { name },
+    select: { id: true },
+  });
+
+  if (foundCategory && foundCategory.id !== id) {
+    throw new ConflictError([
+      { field: 'name', message: 'Category name is already registered.' },
+    ]);
+  }
+};
+
+const ensureCanInsertName = async ({ name }: { name: string }) => {
+  const foundCategory = await prisma.category.findUnique({
+    where: { name },
+    select: { isActive: true },
+  });
+
+  if (foundCategory) {
+    throw new ConflictError([
+      { field: 'name', message: 'Category name is already registered.' },
+    ]);
+  }
+};
 
 const findById = async ({ id, includeInactive }: CategoryFindInput) => {
   const foundCategory = await prisma.category.findUnique({
@@ -30,40 +81,22 @@ const find = async ({ id, includeInactive }: CategoryFindInput) => {
 
 const findMany = async ({
   includeInactive,
-  minCreatedAt,
-  maxCreatedAt,
-  minUpdatedAt,
-  maxUpdatedAt,
-  search,
-  sortedBy,
-  sortOrder,
   limit,
   page,
+  ...props
 }: CategoryFindManyInput) => {
   const [total, foundCategories] = await Promise.all([
     prisma.category.count({
       where: { isActive: canIncludeInactive(includeInactive) },
     }),
-    prisma.category.findMany({
-      where: {
-        isActive: canIncludeInactive(includeInactive),
-        createdAt: {
-          gte: minCreatedAt,
-          lte: maxCreatedAt,
-        },
-        updatedAt: {
-          gte: minUpdatedAt,
-          lte: maxUpdatedAt,
-        },
-        OR: [
-          { name: { contains: search, mode: 'insensitive' } },
-          { description: { contains: search, mode: 'insensitive' } },
-        ],
-      },
-      orderBy: { [sortedBy]: sortOrder },
-      skip: (page - 1) * limit,
-      take: limit,
-    }),
+    prisma.category.findMany(
+      getCategoryFindManyArgs({
+        page,
+        limit,
+        includeInactive,
+        ...props,
+      }) as { [x: string]: never },
+    ),
   ]);
 
   return toCategoryPaginationOutput({
@@ -75,16 +108,7 @@ const findMany = async ({
 };
 
 const create = async ({ name, description, slug }: CategoryCreateInput) => {
-  const foundCategory =
-    (await prisma.category.findUnique({
-      where: { name },
-    })) !== null;
-
-  if (foundCategory) {
-    throw new ConflictError([
-      { field: 'name', message: 'Category name is already registered.' },
-    ]);
-  }
+  await ensureCanInsertName({ name });
 
   const createdCategory = await prisma.category.create({
     data: { name, description, slug },
@@ -100,18 +124,10 @@ const update = async ({
   slug,
   includeInactive,
 }: CategoryUpdateInput) => {
-  await findById({ id, includeInactive });
-
-  const foundCategory = await prisma.category.findUnique({
-    where: { name },
-    select: { id: true },
-  });
-
-  if (foundCategory && foundCategory.id !== id) {
-    throw new ConflictError([
-      { field: 'name', message: 'Category name is already registered.' },
-    ]);
-  }
+  await Promise.all([
+    ensureCanFind({ id, includeInactive }),
+    ensureCanUpdateName({ id, name }),
+  ]);
 
   const updatedCategory = await prisma.category.update({
     data: { name, description, slug },
@@ -126,20 +142,18 @@ const updateIsActive = async ({
   includeInactive,
   isActive,
 }: CategoryUpdateIsActiveInput) => {
-  await findById({ id, includeInactive });
+  await ensureCanFind({ id, includeInactive });
 
   const updatedCategory = await prisma.category.update({
     data: { isActive },
     where: { id },
   });
 
-  console.log(`updated Category`, updatedCategory);
-
   return toCategoryOutput(updatedCategory);
 };
 
 const remove = async ({ id, includeInactive }: CategoryRemoveInput) => {
-  await findById({ id, includeInactive });
+  await ensureCanFind({ id, includeInactive });
 
   await prisma.category.delete({ where: { id } });
 };
