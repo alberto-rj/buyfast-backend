@@ -1,12 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { NODE_ENV } from '../config/env';
+
 export const check = (req: Request, res: Response, next: NextFunction) => {
   try {
     res.status(200).json({
       success: true,
       data: {
         uptime: process.uptime(),
-        timeStamp: new Date().toISOString(),
+        timestamp: new Date().toISOString(),
+        environment: NODE_ENV,
       },
     });
   } catch (error) {
