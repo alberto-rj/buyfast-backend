@@ -16,7 +16,7 @@
 ## Índice
 
 - [Sobre o Projecto](#sobre-o-projecto)
-- [Funcionalidades](#funcionalidades)
+  - [Funcionalidades](#funcionalidades)
 - [Tecnologias](#tecnologias)
   - [Backend](#backend)
   - [Desenvolvimento](#desenvolvimento)
@@ -28,6 +28,7 @@
 - [Scripts Disponíveis](#scripts-disponíveis)
 - [Variáveis de Ambiente](#variáveis-de-ambiente)
 - [Contribuição](#contribuição)
+  - [Diretrizes de Contribuição](#diretrizes-de-contribuição)
 - [Licença](#licença)
 
 ## Sobre o Projecto
@@ -36,17 +37,32 @@ Esta é uma API REST completa para e-commerce que fornece todas as funcionalidad
 
 ### Funcionalidades
 
-- 🔐 **Autenticação JWT** com refresh tokens
-- 👥 **Gestão de utilizadores** (registo, login, perfil)
-- 📦 **Gestão de produtos** (CRUD completo)
-- 🛒 **Carrinho de compras** funcional
-- 📋 **Sistema de pedidos** com diferentes estados
-- 🏷️ **Categorias de produtos**
-- 🔍 **Pesquisa e filtros** avançados
-- 📄 **Paginação** em todas as listagens
-- ⚡ **Validação de dados** robusta
-- 🛡️ **Middleware de segurança**
-- 📖 **Documentação completa** da API
+- **✅ Implementado:**
+
+  - [x] Autenticação JWT com refresh tokens
+  - [x] Gestão de utilizadores (registo, login, perfil)
+  - [x] Gestão de produtos (CRUD completo)
+  - [x] Categorias de produtos
+  - [x] Pesquisa e filtros avançados
+  - [x] Paginação em todas as listagens
+  - [x] Validação de dados robusta
+  - [x] Middleware de autenticação e autorização
+  - [x] Middleware de tratamento de erro global
+
+- **🔄 Em Desenvolvimento:**
+
+  - [] Carrinho de compras funcional
+  - [] Sistema de pedidos com diferentes estados
+
+- **📋 Próximos Passos:**
+  - [] Documentação completa da API
+  - [] Integração de pagamentos
+  - [] Sistema de notificações por email
+  - [] Sistema de reviews e avaliações
+  - [] Dashboard administrativo
+  - [] Relatórios e analytics
+  - [] Sistema de cupões de desconto
+  - [] API para aplicação móvel
 
 ## Tecnologias
 
@@ -88,9 +104,7 @@ Esta é uma API REST completa para e-commerce que fornece todas as funcionalidad
 e-commerce-api/
 ├── 📁 docs/                     # Documentação do projecto
 ├── 📁 prisma/                   # Configuração da base de dados
-│   ├── 📁 migrations/           # Migrações da base de dados
 │   ├── 📁 seeds/                # Scripts de população
-│   └── schema.prisma            # Esquema da base de dados
 ├── 📁 src/                      # Código fonte
 │   ├── 📁 config/               # Configurações da aplicação
 │   ├── 📁 controllers/          # Controladores das rotas
@@ -100,12 +114,6 @@ e-commerce-api/
 │   ├── 📁 services/             # Lógica de negócio
 │   ├── 📁 types/                # Definições de tipos TypeScript
 │   ├── 📁 utils/                # Utilitários e helpers
-│   └── app.ts                   # Configuração principal da app
-├── 📄 .env.example              # Exemplo de variáveis de ambiente
-├── 📄 .gitignore                # Arquivos ignorados pelo Git
-├── 📄 package.json              # Dependências e scripts
-├── 📄 README.md                 # Este arquivo
-└── 📄 tsconfig.json             # Configuração do TypeScript
 ```
 
 ## Instalação e Configuração
@@ -187,16 +195,6 @@ npm start               # Inicia o servidor em produção
 # Base de dados
 npm run db:migrate      # Executa as migrações da base de dados
 npm run db:seed         # Popula a base de dados com dados iniciais
-
-# Código
-npm run lint            # Executa o ESLint
-npm run lint:fix        # Corrige automaticamente problemas do ESLint
-npm run format          # Formata o código com Prettier
-
-# Testes
-npm test                # Todos os testes
-npm run test:watch      # Testes em modo watch
-npm run test:coverage   # Cobertura de testes
 ```
 
 ## Variáveis de Ambiente
@@ -212,14 +210,14 @@ CLIENT_BASE_URL="http://localhost:5173"
 
 # 🖥️ Servidor
 NODE_ENV="development"        # development | production | test
-PORT=3000                    # Porta do servidor
+PORT=3000                     # Porta do servidor
 
 # 🔑 Autenticação
 JWT_ACCESS_SECRET="super-secret-access-key-here"
 JWT_ACCESS_SECRET_EXPIRES_IN_MINUTES=15
 JWT_REFRESH_SECRET="super-secret-refresh-key-here"
 JWT_REFRESH_SECRET_EXPIRES_IN_DAYS=14
-BCRYPT_SALT=10               # Rounds do bcrypt para hash de senhas
+BCRYPT_SALT=10                # Rounds do bcrypt para hash de senhas
 ```
 
 > ⚠️ **Importante**: Nunca commits o arquivo `.env` para o repositório. Usa senhas seguras em produção!
@@ -243,7 +241,7 @@ Contribuições são bem-vindas! Para contribuir:
 
 ## Licença
 
-Este projeto está licenciado sob a Licença MIT - vê o arquivo [LICENSE](LICENSE) para detalhes.
+Este projecto está licenciado sob a Licença MIT - vê o arquivo [LICENSE](LICENSE) para detalhes.
 
 ## Autores
 
