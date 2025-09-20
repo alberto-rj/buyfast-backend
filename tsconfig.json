@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2021",
     "module": "commonjs",
+    "moduleResolution": "node",
     "lib": ["es2021"],
     "baseUrl": ".",
     "outDir": "./dist",
@@ -10,10 +11,12 @@
     "checkJs": true,
     "allowJs": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "removeComments": true
   },
-  "exclude": ["node_modules", "dist", "docs"]
+  "include": ["src/**/*", "prisma/**/*"],
+  "exclude": ["node_modules", "dist", "docs", "**/*.test.ts", "**/*.spec.ts"]
 }
