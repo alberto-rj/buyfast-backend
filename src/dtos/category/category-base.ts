@@ -1,42 +1,39 @@
-import { z } from 'zod';
+import * as z from 'zod';
 
 import {
-  setMaxCreatedAt,
-  setMinCreatedAt,
   setDefaultFalse,
   setDefaultTrue,
   setLimit,
+  setMaxCreatedAt,
+  setMaxUpdatedAt,
+  setMinCreatedAt,
+  setMinUpdatedAt,
+  setOrder,
   setPage,
   setSearch,
-  setOrder,
-  setMaxUpdatedAt,
-  setMinUpdatedAt,
   setUUID,
 } from '..';
 
 export const id = setUUID();
 
-export const name = z.coerce
+export const name = z
   .string({
-    invalid_type_error: 'name must be string.',
-    required_error: 'name must be provided.',
+    error: 'name must be string.',
   })
-  .min(1, { message: 'name must have at least 1 character.' })
-  .max(100, { message: 'name cannot exceed 100 characters.' });
+  .min(1, { error: 'name must have at least 1 character.' })
+  .max(100, { error: 'name cannot exceed 100 characters.' });
 
-export const description = z.coerce
+export const description = z
   .string({
-    invalid_type_error: 'description must be string.',
-    required_error: 'description must be provided.',
+    error: 'description must be string.',
   })
-  .max(500, { message: 'description cannot exceed 500 characters.' });
+  .max(500, { error: 'description cannot exceed 500 characters.' });
 
-export const slug = z.coerce
+export const slug = z
   .string({
-    required_error: 'slug must be provided.',
-    invalid_type_error: 'slug must be string.',
+    error: 'slug must be string.',
   })
-  .max(100, { message: 'slug cannot exceed 100 characters.' });
+  .max(100, { error: 'slug cannot exceed 100 characters.' });
 
 export const includeInactive = setDefaultFalse({
   fieldName: 'includeInactive',
@@ -50,8 +47,7 @@ export const page = setPage();
 
 export const sortBy = z
   .enum(['name', 'createdAt', 'updatedAt'], {
-    invalid_type_error: 'sortBy must be string.',
-    message: 'sortBy must be "name", "createdAt" or "updatedAt".',
+    error: 'sortBy must be "name", "createdAt" or "updatedAt".',
   })
   .default('createdAt');
 export const order = setOrder({ defaultValue: 'desc' });
