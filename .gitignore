@@ -4,9 +4,10 @@ node_modules/
 # build
 dist/
 build/
+coverage/
 
 # prisma
-migrations
+prisma/migrations/
 
 # env
 .env
@@ -14,5 +15,20 @@ migrations
 # npm
 npm-debug.log*
 
-# DS Store
-.DS_Store
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# API docs
+docs/api/
+
+# Config files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
