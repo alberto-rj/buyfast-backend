@@ -50,7 +50,7 @@ export const email = z
   .max(80, { error: 'email cannot exceed 80 characters.' });
 
 export const role = z
-  .enum([UserRole.Admin, UserRole.Customer], {
+  .enum(UserRole, {
     error: 'role must be only "Admin" or "Customer".',
   })
   .default('Customer');
