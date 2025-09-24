@@ -1,5 +1,5 @@
  <div align="center">
- <h1>E-commerce REST API 🛒</h1>
+ <h1>BuyFast API 🛒</h1>
  <p>Uma API REST robusta para e-commerce construída com Node.js, TypeScript, Express.js e PostgreSQL</p>
 </div>
 
@@ -82,7 +82,6 @@ Esta é uma API REST completa para e-commerce que fornece todas as funcionalidad
 
 <div>
 
-[![ESLint](https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white&logoSize=auto)](https://eslint.org/)&nbsp;
 [![Prettier](https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white&logoSize=auto)](https://prettier.io/)&nbsp;
 [![Git](https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white&logoSize=auto)](https://git-scm.com/)&nbsp;
 [![VS Code](https://img.shields.io/badge/vscode-2F80ED?style=for-the-badge&logo=vscode&logoColor=white&logoSize=auto)](https://code.visualstudio.com/)&nbsp;
@@ -101,7 +100,7 @@ Esta é uma API REST completa para e-commerce que fornece todas as funcionalidad
 ## Estrutura do Projecto
 
 ```txt
-e-commerce-api/
+buyfast-backend/
 ├── 📁 docs/                     # Documentação do projecto
 ├── 📁 prisma/                   # Configuração da base de dados
 │   ├── 📁 seeds/                # Scripts de população
@@ -132,8 +131,8 @@ Certifica-te de que tens as seguintes ferramentas instaladas:
 1. **Clonar o repositório**
 
    ```bash
-   git clone https://github.com/alberto-rj/e-commerce-api.git
-   cd e-commerce-api
+   git clone https://github.com/alberto-rj/buyfast-backend.git
+   cd buyfast-backend
    ```
 
 2. **Instalar dependências**
@@ -155,7 +154,7 @@ Certifica-te de que tens as seguintes ferramentas instaladas:
    Certifica-te de que o PostgreSQL está em execução e cria uma base de dados:
 
    ```sql
-   CREATE DATABASE e_commerce_db;
+   CREATE DATABASE buyfast_db;
    ```
 
 5. **Executar migrações**
@@ -199,11 +198,11 @@ npm run db:seed         # Popula a base de dados com dados iniciais
 
 ## Variáveis de Ambiente
 
-Cria um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+Cria um arquivo `.env` na raiz do projecto com as seguintes variáveis:
 
 ```bash
 # 🗄️ Base de Dados
-DATABASE_URL="postgresql://[user]:[password]@[hostname]:[port]/[db_name]?schema=public"
+DATABASE_URL="postgresql://[user]:[password]@[hostname]:[port]/buyfast_db?schema=public"
 
 # 🌐 Frontend
 CLIENT_BASE_URL="http://localhost:5173"
