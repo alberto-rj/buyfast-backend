@@ -41,10 +41,8 @@ export const setLimit = (
     maxValue = 40,
     defaultValue = 10,
   } = options;
-  return z
-    .number({
-      error: `${fieldName} must be a number.`,
-    })
+  return z.coerce
+    .number({ error: `${fieldName} must be a number.` })
     .int({ error: `${fieldName} must be an integer.` })
     .min(minValue, { error: `${fieldName} must at least ${minValue}.` })
     .max(maxValue, { error: `${fieldName} cannot exceed ${maxValue}.` })
@@ -59,7 +57,7 @@ export const setPage = (
   }> = {},
 ) => {
   const { fieldName = 'page', minValue = 1, defaultValue = 1 } = options;
-  return z
+  return z.coerce
     .number({
       error: `${fieldName} must be a number.`,
     })
@@ -80,28 +78,20 @@ export const setImageURL = ({
   fieldName: string;
   fileName: string;
 }) =>
-  z
-    .string({ error: 'coverImage is required.' })
-    .refine(input => validator.isURL(input), {
-      error: `${fieldName} must be a valid URL (e.g., "https://example.com/${fileName}.png").`,
-    });
+  z.url({
+    error: `${fieldName} must be a valid URL (e.g., "https://example.com/${fileName}.png").`,
+  });
 
 export const setISODate = ({ fieldName }: { fieldName: string }) =>
-  z
-    .string({
-      error: `${fieldName} must be string`,
-    })
-    .refine(input => validator.isISO8601(input, { strict: true }), {
+  z.iso
+    .datetime({
       error: `${fieldName} must be only in ISO 8601 (e.g., "2025-05-25T00:00:00Z").`,
     })
     .transform(input => new Date(input));
 
 export const setISOFutureDate = ({ fieldName }: { fieldName: string }) =>
-  z
-    .string({
-      error: `${fieldName} must be string`,
-    })
-    .refine(input => validator.isISO8601(input, { strict: true }), {
+  z.iso
+    .datetime({
       error: `${fieldName} must be only in ISO 8601 (e.g., "2025-05-25T00:00:00Z").`,
     })
     .refine(input => validator.isBefore(input), {
@@ -110,11 +100,8 @@ export const setISOFutureDate = ({ fieldName }: { fieldName: string }) =>
     .transform(input => new Date(input));
 
 export const setISOPastDate = ({ fieldName }: { fieldName: string }) =>
-  z
-    .string({
-      error: `${fieldName} must be string`,
-    })
-    .refine(input => validator.isISO8601(input, { strict: true }), {
+  z.iso
+    .datetime({
       error: `${fieldName} must be only in ISO 8601 (e.g., "2025-05-25T00:00:00Z").`,
     })
     .refine(input => validator.isAfter(input), {
