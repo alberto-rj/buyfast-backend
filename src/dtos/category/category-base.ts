@@ -50,12 +50,15 @@ export const sortBy = z
     error: 'sortBy must be "name", "createdAt" or "updatedAt".',
   })
   .default('createdAt');
+
 export const order = setOrder({ defaultValue: 'desc' });
 
 export const search = setSearch({ defaultValue: '' });
 
 export const minCreatedAt = setMinCreatedAt();
+
 export const maxCreatedAt = setMaxCreatedAt();
 
 export const minUpdatedAt = setMinUpdatedAt();
+
 export const maxUpdatedAt = setMaxUpdatedAt();
