@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { AppError, InternalServerError } from '../utils';
+import { AppError, cleanupOnError, InternalServerError } from '../utils';
 import { isDevelopmentEnv } from '../config';
 
 export const errorHandler = (
@@ -9,6 +9,8 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ): void => {
+  cleanupOnError();
+
   const customError: AppError =
     error instanceof AppError ? error : new InternalServerError();
 

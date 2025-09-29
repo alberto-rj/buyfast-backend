@@ -17,24 +17,9 @@ const ensureUploadDirectory = () => {
   }
 };
 
-const cleanupUploadedFile = (file: Express.Multer.File) => {
-  try {
-    if (fs.existsSync(file.path)) {
-      fs.unlinkSync(file.path);
-      console.log('🗑️ Cleaned up file:', file.path);
-    }
-  } catch (error) {
-    console.warn('⚠️ Failed to cleanup file:', file.path);
-  }
-};
-
-const cleanupAllUploadedFiles = (req: Request) => {
-  if (req.files) {
-    const files = Array.isArray(req.files)
-      ? req.files
-      : Object.values(req.files).flat();
-
-    files.forEach(cleanupUploadedFile);
+const cleanupUploadDirectory = () => {
+  if (fs.existsSync(PRODUCT_UPLOAD_PATH)) {
+    fs.rmSync(PRODUCT_UPLOAD_PATH, { recursive: true, force: true });
   }
 };
 
@@ -86,26 +71,28 @@ const handleUploadError = (
   _res: Response,
   next: NextFunction,
 ) => {
-  if (error instanceof multer.MulterError) {
-    cleanupAllUploadedFiles(req);
+  try {
+    if (error instanceof multer.MulterError) {
+      let errorMessage: string;
 
-    let errorMessage: string;
-
-    switch (error.code) {
-      case 'LIMIT_FILE_SIZE':
-        errorMessage = `File to large. Maximum size is ${PRODUCT_MAX_FILE_SIZE}MB.`;
-        break;
-      case 'LIMIT_FILE_COUNT':
-        errorMessage = `Too many files. Maximum ${PRODUCT_MAX_FILE_COUNT} file(s) allowed.`;
-        break;
-      case 'LIMIT_UNEXPECTED_FILE':
-        errorMessage = 'Unexpected file field.';
-        break;
-      default:
-        errorMessage = 'Failed to upload error.';
+      switch (error.code) {
+        case 'LIMIT_FILE_SIZE':
+          errorMessage = `File to large. Maximum size is ${PRODUCT_MAX_FILE_SIZE}MB.`;
+          break;
+        case 'LIMIT_FILE_COUNT':
+          errorMessage = `Too many files. Maximum ${PRODUCT_MAX_FILE_COUNT} file(s) allowed.`;
+          break;
+        case 'LIMIT_UNEXPECTED_FILE':
+          errorMessage = 'Unexpected file field.';
+          break;
+        default:
+          errorMessage = 'Failed to upload error.';
+      }
+      next(new BadRequestError(errorMessage));
+    } else {
+      next(error);
     }
-    next(new BadRequestError(errorMessage));
-  } else {
+  } catch (error) {
     next(error);
   }
 };
@@ -113,4 +100,5 @@ const handleUploadError = (
 export const product = {
   upload,
   handleUploadError,
+  cleanupUploadDirectory,
 };

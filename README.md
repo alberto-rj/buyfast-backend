@@ -201,25 +201,77 @@ npm run db:seed         # Popula a base de dados com dados iniciais
 Cria um arquivo `.env` na raiz do projecto com as seguintes variáveis:
 
 ```bash
-# 🗄️ Base de Dados
-DATABASE_URL="postgresql://[user]:[password]@[hostname]:[port]/buyfast_db?schema=public"
+# Database
+DATABASE_URL="postgresql://<user>:<password>@<hostname>:<port>/buyfast_db?schema=public"
 
-# 🌐 Frontend
+# Frontend
 CLIENT_BASE_URL="http://localhost:5173"
 
-# 🖥️ Servidor
-NODE_ENV="development"        # development | production | test
-PORT=3000                     # Porta do servidor
+# Server
+NODE_ENV="development"
+PORT="3000"
 
-# 🔑 Autenticação
+# Authentication
 JWT_ACCESS_SECRET="super-secret-access-key-here"
-JWT_ACCESS_SECRET_EXPIRES_IN_MINUTES=15
+JWT_ACCESS_SECRET_EXPIRES_IN_MINUTES="15"
 JWT_REFRESH_SECRET="super-secret-refresh-key-here"
-JWT_REFRESH_SECRET_EXPIRES_IN_DAYS=14
-BCRYPT_SALT=10                # Rounds do bcrypt para hash de senhas
+JWT_REFRESH_SECRET_EXPIRES_IN_DAYS="14"
+BCRYPT_SALT="10"
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME="your_cloud_name"
+CLOUDINARY_API_KEY="your_api_key"
+CLOUDINARY_API_SECRET="your_api_secret"
+CLOUDINARY_FOLDER_NAME="buyfast-uploads"
+
+# Product Image Upload
+PRODUCT_UPLOAD_PATH="uploads/products"
+PRODUCT_MAX_FILE_SIZE="2"
+PRODUCT_MAX_FILE_COUNT="5"
+PRODUCT_ALLOWED_FILE_TYPES="image/jpeg,image/png,image/webp"
 ```
 
 > ⚠️ **Importante**: Nunca commits o arquivo `.env` para o repositório. Usa senhas seguras em produção!
+
+<details>
+
+<summary>Mais detalhes</summary>
+
+- **Banco de Dados**
+
+  - `DATABASE_URL`: Conexão com banco PostgreSQL.
+
+- **Frontend:**
+
+  - `CLIENT_BASE_URL`: URL do frontend (ex.: `http://localhost:5173`).
+
+- **Servidor**
+
+  - `NODE_ENV`: Ambiente da aplicação (`development`, `production`, `test`).
+  - `PORT`: Porta do servidor backend.
+
+- **Autenticação:**
+
+  - `JWT_ACCESS_SECRET`: Chave secreta para tokens de acesso.
+  - `JWT_ACCESS_SECRET_EXPIRES_IN_MINUTES`: Expiração do token de acesso (minutos).
+  - `JWT_REFRESH_SECRET`: Chave secreta para tokens de refresh.
+  - `JWT_REFRESH_SECRET_EXPIRES_IN_DAYS`: Expiração do token de refresh (dias).
+  - `BCRYPT_SALT`: Número de rounds usados no hash de senha.
+
+- **Cloudinary:**
+
+  - `CLOUDINARY_CLOUD_NAME`: Nome da conta no Cloudinary.
+  - `CLOUDINARY_API_KEY`: Chave da API do Cloudinary.
+  - `CLOUDINARY_API_SECRET`: Segredo da API do Cloudinary.
+  - `CLOUDINARY_FOLDER_NAME`: Pasta no Cloudinary (opcional).
+
+- **Upload de Produtos:**
+  - `PRODUCT_UPLOAD_PATH`: Caminho local para uploads temporários.
+  - `PRODUCT_MAX_FILE_SIZE`: Tamanho máximo do arquivo (MB).
+  - `PRODUCT_MAX_FILE_COUNT`: Número máximo de arquivos por upload.
+  - `PRODUCT_ALLOWED_FILE_TYPES`: Tipos de arquivos aceitos.
+
+</details>
 
 ## Contribuição
 
