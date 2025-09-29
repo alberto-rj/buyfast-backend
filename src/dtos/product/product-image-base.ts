@@ -21,3 +21,11 @@ export const order = z
   .default(0);
 
 export const isPrimary = setDefaultFalse({ fieldName: 'isPrimary' });
+
+export const gallery = z.array(
+  z.object({
+    altText: altText.nullish(),
+    order: order.nullish(),
+    isPrimary,
+  }),
+);

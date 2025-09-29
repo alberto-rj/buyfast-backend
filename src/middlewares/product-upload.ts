@@ -104,7 +104,6 @@ const handleUploadError = (
       default:
         errorMessage = 'Failed to upload error.';
     }
-
     next(new BadRequestError(errorMessage));
   } else {
     next(error);

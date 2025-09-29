@@ -232,7 +232,6 @@ const remove = async ({ id, includeInactive }: ProductRemoveInput) => {
 
 const uploadImages = async ({
   id,
-  images,
   files,
   includeInactive,
 }: ProductUploadImagesInput): Promise<ProductImageOutput[]> => {
@@ -251,27 +250,16 @@ const uploadImages = async ({
     );
   }
 
-  if (images.length !== files.length) {
-    throw new BadRequestError(
-      `files and images count do not match. files: ${files.length}, images: ${images.length}.`,
-    );
-  }
-
-  const uploadPromises = files.map(async (file, index) => {
+  const uploadPromises = files.map(async file => {
     const { url, publicId } = await uploadToCloudinary(
       file.path,
       `products/${id}`,
     );
 
-    const { isPrimary, order, altText } = images[index];
-
     const productImage = await prisma.productImage.create({
       data: {
         url: url,
         publicId,
-        isPrimary,
-        order,
-        altText,
         productId: id,
       },
     });
