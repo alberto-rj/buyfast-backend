@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload</title>
+  </head>
+  <body>
+    <form id="auth-form">
+      <h2>Authentication Form</h2>
+      <button type="submit">Login</button>
+      <button type="button">Logout</button>
+    </form>
+
+    <form id="upload-form" enctype="multipart/form-data" method="post">
+      <h2>Upload Form</h2>
+      <div class="form-group">
+        <input type="file" class="form-control-file" name="images" multiple />
+        <button type="submit" class="btn btn-default">submit</button>
+      </div>
+    </form>
+
+    <script>
+      const LOGIN_END_POINT = 'http://localhost:3000/api/auth/login';
+      const UPLOAD_IMAGES_ENDPOINT =
+        'http://localhost:3000/api/products/7d688ba0-34e6-44b8-8433-9a5bb566a067/images';
+
+      const authForm = document.querySelector('#auth-form');
+      const uploadForm = document.querySelector('#upload-form');
+
+      const login = async ({ identifier, password }) => {
+        try {
+          const response = await fetch(LOGIN_END_POINT, {
+            method: 'POST',
+            body: JSON.stringify({ identifier, password }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const responseBody = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              `${response.status} - ${response.statusText}`,
+              responseBody,
+            );
+          }
+          localStorage.setItem('accessToken', responseBody.data.accessToken);
+          console.log(responseBody);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      const uploadImages = async formData => {
+        try {
+          const accessToken = localStorage.getItem('accessToken');
+          const response = await fetch(UPLOAD_IMAGES_ENDPOINT, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          const responseBody = await response.json();
+          console.log(responseBody);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      const handleUpload = evt => {
+        evt.preventDefault();
+
+        const form = evt.currentTarget;
+        const formData = new FormData(form);
+
+        uploadImages(formData);
+
+        form.reset();
+      };
+
+      const handleLogin = evt => {
+        evt.preventDefault();
+
+        const form = evt.currentTarget;
+
+        login({
+          identifier: 'john',
+          password: '12.jd.JD',
+        });
+
+        form.reset();
+      };
+
+      authForm.addEventListener('submit', handleLogin);
+      uploadForm.addEventListener('submit', handleUpload);
+    </script>
+  </body>
+</html>

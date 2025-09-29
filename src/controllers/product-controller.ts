@@ -176,12 +176,10 @@ const uploadImages = async (
     const {
       params: { id },
       query: { includeInactive },
-      body: { images },
     } = toProductUploadImages(req);
 
     const resources = await productService.uploadImages({
       id,
-      images,
       includeInactive,
       files: files as Express.Multer.File[],
     });
