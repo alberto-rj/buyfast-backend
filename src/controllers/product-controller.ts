@@ -5,11 +5,15 @@ import {
   toProductFind,
   toProductFindMany,
   toProductRemove,
+  toProductRemoveImage,
   toProductUpdate,
   toProductUpdateIsActive,
+  toProductUploadImages,
+  toProductGetImages,
+  toProductRemoveImages,
 } from '../dtos';
 import { productService } from '../services';
-import { resBody } from '../utils';
+import { BadRequestError, resBody } from '../utils';
 
 const findMany = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -60,12 +64,18 @@ const find = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {
       params: { id },
-      query: { includeInactive, includeCategory, includeInactiveCategory },
+      query: {
+        includeInactive,
+        includeImages,
+        includeCategory,
+        includeInactiveCategory,
+      },
     } = toProductFind(req);
 
     const resource = await productService.find({
       id,
       includeInactive,
+      includeImages,
       includeCategory,
       includeInactiveCategory,
     });
@@ -151,6 +161,100 @@ const updateIsActive = async (
   }
 };
 
+const uploadImages = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { files } = req;
+
+    if (!files || files.length === 0) {
+      throw new BadRequestError('No image provided.');
+    }
+
+    const {
+      params: { id },
+      query: { includeInactive },
+      body: { images },
+    } = toProductUploadImages(req);
+
+    const resources = await productService.uploadImages({
+      id,
+      images,
+      includeInactive,
+      files: files as Express.Multer.File[],
+    });
+
+    res.status(200).json(
+      resBody.records({
+        resources,
+      }),
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getImages = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {
+      params: { id },
+      query: { includeInactive },
+    } = toProductGetImages(req);
+
+    const resources = await productService.getImages({
+      id,
+      includeInactive,
+    });
+
+    res.status(204).json(resBody.records({ resources }));
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeImages = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const {
+      params: { id },
+      query: { includeInactive },
+    } = toProductRemoveImages(req);
+
+    await productService.removeImages({
+      id,
+      includeInactive,
+    });
+
+    res.status(204);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeImage = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {
+      params: { id, imageId },
+      query: { includeInactive },
+    } = toProductRemoveImage(req);
+
+    await productService.removeImage({
+      id,
+      imageId,
+      includeInactive,
+    });
+
+    res.status(204);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {
@@ -170,7 +274,11 @@ export const productController = {
   create,
   find,
   findMany,
-  remove,
   update,
   updateIsActive,
+  remove,
+  uploadImages,
+  getImages,
+  removeImage,
+  removeImages,
 };

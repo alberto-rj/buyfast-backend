@@ -63,6 +63,10 @@ export const includeCategory = setDefaultFalse({
   fieldName: 'includeCategory',
 });
 
+export const includeImages = setDefaultFalse({
+  fieldName: 'includeImages',
+});
+
 export const weight = z
   .number({
     error: 'weight must be a number.',
@@ -131,6 +135,6 @@ export const page = setPage();
 
 export const limit = setLimit({ defaultValue: 10, maxValue: 40 });
 
-export const search = setSearch({ defaultValue: '' });
+export const search = z.string({ error: 'search must be string.' });
 
-export const category = setSearch({ defaultValue: '' });
+export const category = z.string({ error: 'category must be string.' });

@@ -1,10 +1,10 @@
 {
-  "name": "e-ecommerce-api",
+  "name": "buyfast-backend",
   "version": "1.0.0",
-  "main": "src/app.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node dist/src/app.js",
-    "dev": "nodemon src/app.ts",
+    "start": "node dist/src/index.js",
+    "dev": "nodemon src/index.ts",
     "build": "tsc",
     "clean": "rm -rf dist",
     "re": "npm run clean && npm run build",
@@ -20,6 +20,7 @@
   "dependencies": {
     "@prisma/client": "^6.7.0",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.7.0",
     "compression": "^1.8.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -29,6 +30,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "multer": "^2.0.2",
     "validator": "^13.15.15",
     "zod": "^4.1.9"
   },
@@ -39,10 +41,11 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.18",
     "@types/dotenv": "^6.1.1",
-    "@types/express": "^5.0.1",
+    "@types/express": "^5.0.3",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^2.0.0",
     "@types/node": "^22.15.17",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",

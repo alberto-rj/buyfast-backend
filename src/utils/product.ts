@@ -21,6 +21,7 @@ class ProductFindManyBuilder extends ModelFindManyBuilder<ProductFindManyInput> 
     maxUpdatedAt,
     includeInactive,
     includeCategory,
+    includeImages,
     includeInactiveCategory,
     limit,
     page,
@@ -49,7 +50,10 @@ class ProductFindManyBuilder extends ModelFindManyBuilder<ProductFindManyInput> 
       .setTake(limit)
       .setSkip((page - 1) * limit)
       .setOrderBy({ fieldName: sortBy, order })
-      .includeCategory(includeCategory);
+      .includeCategory(includeCategory)
+      .includeImages(includeImages);
+
+    console.log({ where, orderBy, include, take, skip });
 
     return { where, orderBy, include, take, skip };
   }
@@ -179,6 +183,13 @@ class ProductFindManyBuilder extends ModelFindManyBuilder<ProductFindManyInput> 
   private includeCategory(canInclude?: boolean) {
     if (typeof canInclude === 'boolean') {
       this.initInclude().include!.category = canInclude;
+    }
+    return this;
+  }
+
+  private includeImages(canInclude?: boolean) {
+    if (typeof canInclude === 'boolean') {
+      this.initInclude().include!.images = canInclude;
     }
     return this;
   }

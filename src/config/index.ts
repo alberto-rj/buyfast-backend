@@ -20,5 +20,20 @@ export {
   NODE_ENV,
 } from './server';
 
+export {
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_FOLDER_NAME,
+  cloudinary,
+} from './cloudinary';
+
+export {
+  PRODUCT_ALLOWED_FILE_TYPES,
+  PRODUCT_MAX_FILE_COUNT,
+  PRODUCT_MAX_FILE_SIZE,
+  PRODUCT_UPLOAD_PATH,
+} from './upload';
+
 export { setupCors } from './cors';
 export { setupRoutes } from './routes';

@@ -15,6 +15,7 @@ export {
   includeInactive,
   includeInactiveCategory,
   includeCategory,
+  includeImages,
   weight,
   minWeight,
   maxWeight,
@@ -63,7 +64,33 @@ export {
 } from './product-update-is-active';
 
 export {
+  ProductUploadImages,
+  ProductUploadImagesInput,
+  toProductUploadImages,
+} from './product-upload-images';
+
+export {
+  ProductGetImages,
+  ProductGetImagesInput,
+  toProductGetImages,
+} from './product-get-images';
+
+export {
+  ProductRemoveImage,
+  ProductRemoveImageInput,
+  toProductRemoveImage,
+} from './product-remove-image';
+
+export {
+  ProductRemoveImages,
+  ProductRemoveImagesInput,
+  toProductRemoveImages,
+} from './product-remove-images';
+
+export {
   ProductOutput,
+  ProductImageOutput,
   toProductOutput,
   toProductPaginationOutput,
+  toProductImageOutput,
 } from './product-output';

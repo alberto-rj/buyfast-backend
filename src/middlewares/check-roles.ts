@@ -21,3 +21,5 @@ export const checkRoles = (roles: UserRole[]) => {
     }
   };
 };
+
+export const requireAdmin = checkRoles(['Admin']);

@@ -3,15 +3,24 @@ import {
   canIncludeInactive,
   NotFoundError,
   getProductFindManyArgs,
+  BadRequestError,
+  uploadToCloudinary,
+  deleteFromCloudinary,
 } from '../utils';
-import { prisma } from '../config';
+import { prisma, PRODUCT_MAX_FILE_COUNT } from '../config';
 import {
   ProductCreateInput,
   ProductFindInput,
   ProductFindManyInput,
+  ProductGetImagesInput,
+  ProductImageOutput,
   ProductRemoveInput,
   ProductUpdateInput,
   ProductUpdateIsActiveInput,
+  ProductUploadImagesInput,
+  ProductRemoveImageInput,
+  ProductRemoveImagesInput,
+  toProductImageOutput,
   toProductOutput,
   toProductPaginationOutput,
 } from '../dtos';
@@ -38,6 +47,7 @@ const findById = async ({
 const find = async ({
   id,
   includeInactive,
+  includeImages,
   includeCategory,
   includeInactiveCategory,
 }: ProductFindInput) => {
@@ -51,6 +61,7 @@ const find = async ({
     },
     include: {
       category: includeCategory,
+      images: includeImages,
     },
   });
 
@@ -196,7 +207,6 @@ const updateIsActive = async ({
   includeInactive,
   includeCategory,
 }: ProductUpdateIsActiveInput) => {
-  // check if the product exists
   await findById({ id, includeInactive });
 
   const updatedProduct = await prisma.product.update({
@@ -215,10 +225,140 @@ const updateIsActive = async ({
 };
 
 const remove = async ({ id, includeInactive }: ProductRemoveInput) => {
-  // check if the product exists
   await findById({ id, includeInactive });
 
   await prisma.product.delete({ where: { id } });
+};
+
+const uploadImages = async ({
+  id,
+  images,
+  files,
+  includeInactive,
+}: ProductUploadImagesInput): Promise<ProductImageOutput[]> => {
+  await findById({ id, includeInactive });
+
+  const currentImages = await prisma.productImage.count({
+    where: { productId: id },
+  });
+
+  const totalImages = currentImages + files.length;
+  const maxImages = PRODUCT_MAX_FILE_COUNT;
+
+  if (totalImages > maxImages) {
+    throw new BadRequestError(
+      `Exceed limit. Maximum ${maxImages} images by product. Current: ${currentImages}`,
+    );
+  }
+
+  if (images.length !== files.length) {
+    throw new BadRequestError(
+      `files and images count do not match. files: ${files.length}, images: ${images.length}.`,
+    );
+  }
+
+  const uploadPromises = files.map(async (file, index) => {
+    const { url, publicId } = await uploadToCloudinary(
+      file.path,
+      `products/${id}`,
+    );
+
+    const { isPrimary, order, altText } = images[index];
+
+    const productImage = await prisma.productImage.create({
+      data: {
+        url: url,
+        publicId,
+        isPrimary,
+        order,
+        altText,
+        productId: id,
+      },
+    });
+
+    return productImage;
+  });
+
+  const results = await Promise.all(uploadPromises);
+
+  return results.map(toProductImageOutput);
+};
+
+const getImages = async ({
+  id,
+  includeInactive,
+}: ProductGetImagesInput): Promise<ProductImageOutput[]> => {
+  await findById({ id, includeInactive });
+
+  const images = await prisma.productImage.findMany({
+    where: {
+      productId: id,
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return images.map(toProductImageOutput);
+};
+
+const removeImages = async ({
+  id,
+  includeInactive,
+}: ProductRemoveImagesInput): Promise<void> => {
+  await findById({ id, includeInactive });
+
+  const images = await prisma.productImage.findMany({
+    where: {
+      productId: id,
+    },
+    select: {
+      publicId: true,
+      id: true,
+    },
+  });
+
+  if (images.length === 0) {
+    return;
+  }
+
+  const cloudinaryDeletePromises = images.map(async image => {
+    await deleteFromCloudinary(image.publicId as string);
+  });
+
+  await Promise.allSettled(cloudinaryDeletePromises);
+
+  await prisma.productImage.deleteMany({
+    where: {
+      productId: id,
+    },
+  });
+};
+
+const removeImage = async ({
+  id,
+  includeInactive,
+  imageId,
+}: ProductRemoveImageInput): Promise<void> => {
+  await findById({ id, includeInactive });
+
+  const image = await prisma.productImage.findFirst({
+    where: {
+      id: imageId,
+      productId: id,
+    },
+    select: {
+      publicId: true,
+    },
+  });
+
+  if (!image) {
+    throw new NotFoundError('Image not found');
+  }
+
+  await deleteFromCloudinary(image.publicId as string);
+
+  await prisma.productImage.delete({
+    where: { id: imageId },
+  });
 };
 
 export const productService = {
@@ -228,4 +368,8 @@ export const productService = {
   remove,
   update,
   updateIsActive,
+  uploadImages,
+  getImages,
+  removeImages,
+  removeImage,
 };

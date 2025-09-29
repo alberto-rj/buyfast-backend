@@ -1,5 +1,12 @@
-import { Category, Product as SimpleProduct } from '@prisma/client';
+import {
+  Category,
+  ProductImage,
+  Product as SimpleProduct,
+} from '@prisma/client';
 
-export type Product = SimpleProduct & {
+type Product = SimpleProduct & {
   category?: Category;
+  images?: ProductImage[];
 };
+
+export { Product, ProductImage };
