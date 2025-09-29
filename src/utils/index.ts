@@ -27,3 +27,4 @@ export { getCategoryFindManyArgs } from './category';
 export { getProductFindManyArgs } from './product';
 export { getUserFindManyArgs } from './user';
 export { uploadToCloudinary, deleteFromCloudinary } from './cloudinary';
+export { cleanupOnError } from './cleanup';
