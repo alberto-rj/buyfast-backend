@@ -75,7 +75,7 @@ export const toProductOutput = ({
     category: category ? toCategoryOutput(category) : undefined,
     images: images ? images.map(toProductImageOutput) : undefined,
     createdAt: createdAt.toISOString(),
-    updatedAt: updatedAt.toDateString(),
+    updatedAt: updatedAt.toISOString(),
   };
 };
 
