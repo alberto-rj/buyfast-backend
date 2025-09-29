@@ -1,30 +1,58 @@
 [
   {
-    "name": "Kids",
-    "description": "Products for kids"
+    "name": "Electronics",
+    "description": "Devices and accessories powered by technology, including audio, computing, and mobile gadgets."
   },
   {
-    "name": "Cloths",
-    "description": "Cloths for mans and womans"
+    "name": "Home & Kitchen",
+    "description": "Essential items for home maintenance, cooking, and household convenience."
   },
   {
-    "name": "Dresses",
-    "description": "Dresses for womans"
+    "name": "Office & Stationery",
+    "description": "Supplies and accessories for school, office, and personal organization."
   },
   {
-    "name": "Shoes",
-    "description": "Shoes for children and youngs"
+    "name": "Footwear",
+    "description": "Shoes and sports footwear for comfort and performance."
   },
   {
-    "name": "T-shirts",
-    "description": "T-shirts for party, meeting, beach."
+    "name": "Health & Personal Care",
+    "description": "Items to support personal hygiene, wellness, and grooming routines."
   },
   {
-    "name": "Hats",
-    "description": "Hats for beach, walk, ..."
+    "name": "Fitness & Outdoors",
+    "description": "Gear and accessories for yoga, fitness training, and outdoor activities."
   },
   {
-    "name": "Sun Glasses",
-    "description": "Good sun glasses for beach, park"
+    "name": "Fashion & Accessories",
+    "description": "Clothing, handbags, and wearable items for daily use and style."
+  },
+  {
+    "name": "Baby Products",
+    "description": "Essential goods for infants and toddlers including diapers and care items."
+  },
+  {
+    "name": "Pet Supplies",
+    "description": "Comfort, care, and entertainment products for pets."
+  },
+  {
+    "name": "DIY & Tools",
+    "description": "Tool sets and hardware products for repairs and home improvement."
+  },
+  {
+    "name": "Books",
+    "description": "Printed books across genres, including fiction and non-fiction."
+  },
+  {
+    "name": "Gaming",
+    "description": "Hardware and accessories designed for gaming performance."
+  },
+  {
+    "name": "Beverages",
+    "description": "Tea, coffee, and other drinkable products."
+  },
+  {
+    "name": "Travel Accessories",
+    "description": "Portable items and power solutions for travelers and commuters."
   }
 ]

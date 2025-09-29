@@ -62,11 +62,33 @@ model Product {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive Boolean @default(true) @map("is_active")
+  isFeatured Boolean @default(false) @map("is_featured")
   weight Decimal?
   dimensions String?
+
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   cartItems CartItem[]
+  images ProductImage[]
+
   @@map("products")
+}
+
+model ProductImage {
+  id String @id @default(uuid())
+  url String @map("url")
+  publicId String @map("public_id")
+  isPrimary Boolean @default(false) @map("is_primary")
+
+  altText String? @map("alt_text")
+  order Int?
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  productId String @map("product_id")
+  
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
 }
 
 model CartItem {

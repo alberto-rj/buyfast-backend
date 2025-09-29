@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
   id,
   includeCategory,
+  includeImages,
   includeInactive,
   includeInactiveCategory,
 } from '.';
@@ -14,6 +15,7 @@ export const productFind = z.object({
   }),
   query: z.object({
     includeInactive,
+    includeImages,
     includeInactiveCategory,
     includeCategory,
   }),

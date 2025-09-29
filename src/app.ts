@@ -2,13 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
-import {
-  isDevelopmentEnv,
-  NODE_ENV,
-  PORT,
-  setupCors,
-  setupRoutes,
-} from './config';
+import { isDevelopmentEnv, setupCors, setupRoutes } from './config';
 
 const app = express();
 
@@ -24,9 +18,4 @@ if (isDevelopmentEnv) {
 
 setupRoutes(app);
 
-app.listen(PORT, () => {
-  console.log(
-    `🚀 Server is running in "${NODE_ENV}" mode at http://localhost:${PORT}`,
-  );
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-});
+export { app };

@@ -20,6 +20,7 @@ import {
   minUpdatedAt,
   maxUpdatedAt,
   category,
+  includeImages,
 } from '.';
 import { validate } from '../../utils';
 
@@ -39,6 +40,7 @@ export const productFindMany = z.object({
     search: search.optional(),
     includeInactive: includeInactive.optional(),
     includeCategory: includeCategory.optional(),
+    includeImages: includeImages.optional(),
     includeInactiveCategory: includeInactiveCategory.optional(),
     page,
     limit,

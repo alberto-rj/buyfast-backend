@@ -1,4 +1,4 @@
-import { Product } from '../../types';
+import { Product, ProductImage } from '../../types';
 import {
   CategoryOutput,
   toCategoryOutput,
@@ -19,6 +19,40 @@ export type ProductOutput = {
   description?: string;
   dimensions?: string;
   category?: CategoryOutput;
+  images?: ProductImageOutput[];
+};
+
+export type ProductImageOutput = {
+  id: string;
+  url: string;
+  publicId: string;
+  isPrimary: boolean;
+  createdAt: string;
+  updatedAt: string;
+  altText?: String;
+  order?: number;
+};
+
+export const toProductImageOutput = ({
+  id,
+  url,
+  isPrimary,
+  createdAt,
+  updatedAt,
+  altText,
+  publicId,
+  order,
+}: ProductImage): ProductImageOutput => {
+  return {
+    id,
+    url,
+    publicId,
+    isPrimary,
+    createdAt: createdAt.toISOString(),
+    updatedAt: updatedAt.toISOString(),
+    altText: altText === null ? undefined : altText,
+    order: order === null ? undefined : order,
+  };
 };
 
 export const toProductOutput = ({
@@ -29,6 +63,7 @@ export const toProductOutput = ({
   dimensions,
   description,
   category,
+  images,
   ...props
 }: Product): ProductOutput => {
   return {
@@ -38,6 +73,7 @@ export const toProductOutput = ({
     dimensions: dimensions === null ? undefined : dimensions,
     description: description === null ? undefined : description,
     category: category ? toCategoryOutput(category) : undefined,
+    images: images ? images.map(toProductImageOutput) : undefined,
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toDateString(),
   };
@@ -58,5 +94,5 @@ export const toProductPaginationOutput = ({
     total,
     limit,
     page,
-    resources: resources.map((resource) => toProductOutput(resource)),
+    resources: resources.map(resource => toProductOutput(resource)),
   });

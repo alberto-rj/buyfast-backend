@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Wireless Mouse",
+    "description": "Ergonomic wireless mouse with adjustable DPI.",
+    "price": 24.99,
+    "quantity": 150,
+    "sku": "WM-001"
+  },
+  {
+    "name": "Bluetooth Headphones",
+    "description": "Over-ear headphones with noise cancellation.",
+    "price": 89.99,
+    "quantity": 80,
+    "sku": "BH-002"
+  },
+  {
+    "name": "Stainless Steel Water Bottle",
+    "description": "Insulated bottle keeps drinks cold or hot for hours.",
+    "price": 17.5,
+    "quantity": 200,
+    "sku": "WB-003"
+  },
+  {
+    "name": "Men's Running Shoes",
+    "description": "Lightweight shoes designed for long-distance running.",
+    "price": 59.95,
+    "quantity": 120,
+    "sku": "RS-004"
+  },
+  {
+    "name": "Electric Toothbrush",
+    "description": "Rechargeable toothbrush with multiple cleaning modes.",
+    "price": 39.99,
+    "quantity": 100,
+    "sku": "ET-005"
+  },
+  {
+    "name": "LED Desk Lamp",
+    "description": "Dimmable desk lamp with USB charging port.",
+    "price": 29.99,
+    "quantity": 90,
+    "sku": "DL-006"
+  },
+  {
+    "name": "Notebook Pack",
+    "description": "Set of 5 lined notebooks for school or office use.",
+    "price": 12.75,
+    "quantity": 300,
+    "sku": "NB-007"
+  },
+  {
+    "name": "Yoga Mat",
+    "description": "Non-slip mat ideal for yoga and Pilates.",
+    "price": 22.49,
+    "quantity": 140,
+    "sku": "YM-008"
+  },
+  {
+    "name": "Smartwatch",
+    "description": "Fitness tracking watch with heart rate monitor.",
+    "price": 109.99,
+    "quantity": 60,
+    "sku": "SW-009"
+  },
+  {
+    "name": "Stainless Steel Cookware Set",
+    "description": "10-piece set for all your cooking needs.",
+    "price": 129.0,
+    "quantity": 50,
+    "sku": "CW-010"
+  },
+  {
+    "name": "Baby Diapers - Size 3",
+    "description": "Pack of 96 ultra-absorbent diapers.",
+    "price": 32.99,
+    "quantity": 75,
+    "sku": "BD-011"
+  },
+  {
+    "name": "Digital Kitchen Scale",
+    "description": "Compact scale for precise ingredient measurement.",
+    "price": 18.5,
+    "quantity": 110,
+    "sku": "KS-012"
+  },
+  {
+    "name": "Women's Leather Handbag",
+    "description": "Classic black handbag with multiple compartments.",
+    "price": 79.95,
+    "quantity": 45,
+    "sku": "HB-013"
+  },
+  {
+    "name": "Pet Bed - Medium",
+    "description": "Comfortable and washable pet bed.",
+    "price": 34.99,
+    "quantity": 60,
+    "sku": "PB-014"
+  },
+  {
+    "name": "DIY Tool Kit",
+    "description": "45-piece tool kit for home repairs.",
+    "price": 49.99,
+    "quantity": 70,
+    "sku": "TK-015"
+  },
+  {
+    "name": "Fiction Novel - Paperback",
+    "description": "Thrilling mystery novel with plot twists.",
+    "price": 14.99,
+    "quantity": 200,
+    "sku": "BK-016"
+  },
+  {
+    "name": "Electric Kettle",
+    "description": "1.7L stainless steel electric kettle with auto shut-off.",
+    "price": 27.89,
+    "quantity": 85,
+    "sku": "EK-017"
+  },
+  {
+    "name": "Gaming Keyboard",
+    "description": "Mechanical RGB keyboard for gaming and typing.",
+    "price": 69.99,
+    "quantity": 95,
+    "sku": "GK-018"
+  },
+  {
+    "name": "Organic Green Tea",
+    "description": "Box of 100 individually wrapped green tea bags.",
+    "price": 15.25,
+    "quantity": 130,
+    "sku": "GT-019"
+  },
+  {
+    "name": "Portable Phone Charger",
+    "description": "10,000mAh power bank with fast charging support.",
+    "price": 25.0,
+    "quantity": 150,
+    "sku": "PC-020"
+  }
+]

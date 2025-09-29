@@ -5,17 +5,19 @@ import { InternalServerError } from '../utils';
 
 export const uploadToCloudinary = async (
   filePath: string,
-  folder?: string,
+  subfolder?: string,
 ): Promise<{
   url: string;
   publicId: string;
 }> => {
   try {
-    const folderToSave =
-      typeof folder === 'undefined' ? CLOUDINARY_FOLDER_NAME : folder;
+    const subfolderToSave =
+      typeof subfolder === 'undefined'
+        ? CLOUDINARY_FOLDER_NAME
+        : `${CLOUDINARY_FOLDER_NAME}/${subfolder}`;
 
     const result = await cloudinary.uploader.upload(filePath, {
-      folder: folderToSave,
+      folder: subfolderToSave,
       resource_type: 'image',
       transformation: [{ quality: 'auto' }, { format: 'webp' }],
     });

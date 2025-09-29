@@ -1,4 +1,4 @@
-import { Request, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
@@ -111,4 +111,7 @@ const handleUploadError = (
   }
 };
 
-export { upload, handleUploadError };
+export const product = {
+  upload,
+  handleUploadError,
+};
