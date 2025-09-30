@@ -10,7 +10,6 @@ import {
   setMinUpdatedAt,
   setOrder,
   setPage,
-  setSearch,
   setUUID,
 } from '..';
 
@@ -79,33 +78,35 @@ export const dimensions = z
   })
   .max(100, { error: 'dimensions can not exceed 100 characters.' });
 
-export const minPrice = z
+export const minPrice = z.coerce
   .number({
     error: 'minPrice must be a number.',
   })
   .min(0, { error: 'minPrice must be at least 0.' });
 
-export const maxPrice = z
+export const maxPrice = z.coerce
   .number({
     error: 'maxPrice must be a number.',
   })
   .min(0, { error: 'maxPrice must be at least 0.' });
 
-export const minQuantity = z
+export const minQuantity = z.coerce
+  .number({ error: 'minQuantity must be a number.' })
   .int({ error: 'minQuantity must be an integer.' })
   .min(0, { error: 'minQuantity must be at least 0.' });
 
-export const maxQuantity = z
+export const maxQuantity = z.coerce
+  .number({ error: 'maxQuantity must be a number.' })
   .int({ error: 'maxQuantity must be an integer number.' })
   .min(0, { error: 'maxQuantity must be at least 0.' });
 
-export const minWeight = z
+export const minWeight = z.coerce
   .number({
     error: 'minWeight must be a number.',
   })
   .min(0, { error: 'minWeight must be at least 0.' });
 
-export const maxWeight = z
+export const maxWeight = z.coerce
   .number({
     error: 'maxWeight must be a number.',
   })
