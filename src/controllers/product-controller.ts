@@ -206,7 +206,7 @@ const getImages = async (req: Request, res: Response, next: NextFunction) => {
       includeInactive,
     });
 
-    res.status(204).json(resBody.records({ resources }));
+    res.status(200).json(resBody.records({ resources }));
   } catch (error) {
     next(error);
   }
