@@ -9,6 +9,9 @@ coverage/
 # prisma
 prisma/migrations/
 
+# uploads
+uploads/
+
 # env
 .env
 
