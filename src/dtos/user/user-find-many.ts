@@ -17,7 +17,7 @@ import { validate } from '../../utils';
 
 const userFindMany = z.object({
   query: z.object({
-    search: search,
+    search: search.optional(),
     role: role.optional(),
     minCreatedAt: minCreatedAt.optional(),
     maxCreatedAt: maxCreatedAt.optional(),
