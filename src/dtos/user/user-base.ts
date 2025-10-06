@@ -11,7 +11,6 @@ import {
   setMinUpdatedAt,
   setOrder,
   setPage,
-  setSearch,
   setUUID,
 } from '..';
 import { UserRole } from '../../types';
@@ -136,7 +135,7 @@ export const sortBy = z
 
 export const order = setOrder({ defaultValue: 'desc' });
 
-export const search = setSearch({ defaultValue: '' });
+export const search = z.string({ error: 'search must be a string.' });
 
 export const minCreatedAt = setMinCreatedAt();
 

@@ -81,7 +81,7 @@ const findMany = async ({
   const [total, foundUsers] = await Promise.all([
     prisma.user.count({
       where: {
-        isActive: includeInactive,
+        isActive: canIncludeInactive(includeInactive),
       },
     }),
     prisma.user.findMany(
