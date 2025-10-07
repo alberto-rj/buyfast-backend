@@ -1,12 +1,10 @@
-# Sistema E-commerce - Documentação da API
+# BuyFast - Documentação da API
 
-## Indice
+## Índice
 
--[Visão geral da API](#visão-geral-da-api)
-
--[Detalhes da API](#detalhes-da-api)
-
--[Autenticação](#autenticação)
+- [Visão geral da API](#visão-geral-da-api)
+- [Detalhes da API](#detalhes-da-api)
+  - [Autenticação](#autenticação)
 
 ## Visão geral da API
 
@@ -45,13 +43,14 @@ DELETE /api/categories/:id         # Deletar categoria (admin)
 ### Produtos
 
 ```http
-GET    /api/products               # Listar produtos
-GET    /api/products/:id           # Obter produto específico
-POST   /api/products               # Criar produto (admin)
-PUT    /api/products/:id           # Atualizar produto (admin)
-DELETE /api/products/:id           # Deletar produto (admin)
-POST   /api/products/:id/images    # Upload de imagens (admin)
-DELETE /api/products/:id/images/:imageId # Deletar imagem (admin)
+GET    /api/products                      # Listar produtos
+GET    /api/products/:id                  # Obter produto específico
+POST   /api/products                      # Criar produto (admin)
+PUT    /api/products/:id                  # Atualizar produto (admin)
+DELETE /api/products/:id                  # Deletar produto (admin)
+POST   /api/products/:id/images           # Upload de imagens (admin)
+DELETE /api/products/:id/images           # Deletar imagens do produto (admin)
+DELETE /api/products/:id/images/:imageId  # Deletar imagem specífica do produto (admin)
 ```
 
 ### Carrinho
@@ -81,12 +80,6 @@ GET    /api/admin/reports/sales    # Relatório de vendas
 GET    /api/admin/reports/products # Produtos mais vendidos
 GET    /api/admin/reports/users    # Estatísticas de usuários
 GET    /api/admin/dashboard        # Dashboard geral
-```
-
-### Upload de Arquivos
-
-```http
-POST   /api/upload/images          # Upload de imagens
 ```
 
 ### Health Check

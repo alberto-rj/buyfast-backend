@@ -1,4 +1,4 @@
-# Modelo Entidade-Relacionamento (ERD)
+# BuyFast - Modelo Entidade-Relacionamento (ERD)
 
 ```erDiagram
 USERS {
@@ -68,28 +68,28 @@ CART_ITEMS {
 }
 
 ORDERS {
-    int id PK
-    int user_id FK
-    string order_number UK
-    enum status "pending,processing,shipped,delivered,cancelled"
-    decimal subtotal
-    decimal tax_amount
-    decimal shipping_cost
-    decimal total_amount
-    json shipping_address
-    json billing_address
-    timestamp created_at
-    timestamp updated_at
+  int id PK
+  int user_id FK
+  string order_number UK
+  enum status "pending,processing,shipped,delivered,cancelled"
+  decimal subtotal
+  decimal tax_amount
+  decimal shipping_cost
+  decimal total_amount
+  json shipping_address
+  json billing_address
+  timestamp created_at
+  timestamp updated_at
 }
 
 ORDER_ITEMS {
-    int id PK
-    int order_id FK
-    int product_id FK
-    int quantity
-    decimal unit_price
-    decimal total_price
-    timestamp created_at
+  int id PK
+  int order_id FK
+  int product_id FK
+  int quantity
+  decimal unit_price
+  decimal total_price
+  timestamp created_at
 }
 
 USERS ||--o{ CARTS : "tem"

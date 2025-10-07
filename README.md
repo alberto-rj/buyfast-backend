@@ -91,10 +91,9 @@ Esta é uma API REST completa para e-commerce que fornece todas as funcionalidad
 
 ## Documentações
 
+- 📋 [Requisitos](docs/REQUIREMENTS.md)
 - 🗂️ [Modelo de Dados](docs/ERD.md)
 - 🔗 [Endpoints da API](docs/API.md)
-- 📋 [Casos de Uso](docs/USE-CASES.md)
-- ✅ [Critérios de Aceitação](docs/CRITERIA.md)
 - 📅 [Cronograma de Desenvolvimento](docs/CALENDAR.md)
 
 ## Estrutura do Projecto

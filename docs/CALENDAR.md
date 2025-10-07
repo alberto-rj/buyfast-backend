@@ -1,4 +1,4 @@
-# Cronograma de Desenvolvimento
+# BuyFast - Cronograma de Desenvolvimento
 
 ## Fase 1: Setup e Configuração (Semana 1)
 
@@ -14,9 +14,9 @@
 
 ## Fase 3: Produtos e Categorias (Semana 3)
 
-- [ ] CRUD de produtos
-- [ ] Sistema de categorias
-- [ ] Upload de imagens
+- [x] CRUD de produtos
+- [x] Sistema de categorias
+- [x] Upload de imagens
 
 ## Fase 4: Carrinho e Pedidos (Semana 4)
 

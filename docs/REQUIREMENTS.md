@@ -1,4 +1,4 @@
-# Sistema E-commerce - Documento de Requisitos
+# BuyFast - Documento de Requisitos
 
 ## 1. Introdução
 
@@ -9,12 +9,6 @@ Este documento descreve os requisitos para o desenvolvimento de um sistema de e-
 ### 1.2 Escopo
 
 O sistema permitirá aos usuários navegarem, pesquisarem e comprarem produtos online, enquanto administradores poderão gerenciar produtos, pedidos e usuários.
-
-### 1.3 Definições
-
-- **Cliente**: Usuário que realiza compras
-- **Admin**: Usuário com privilégios administrativos
-- **SKU**: Stock Keeping Unit (código único do produto)
 
 ## 2. Requisitos Funcionais
 
@@ -27,15 +21,15 @@ O sistema permitirá aos usuários navegarem, pesquisarem e comprarem produtos o
 
 ### 2.2 Gestão de Produtos
 
-- [ ] RF05: Administradores devem poder criar produtos
-- [ ] RF06: Administradores devem poder editar produtos
-- [ ] RF07: Usuários devem poder visualizar produtos
-- [ ] RF08: Produtos devem ter categorias
+- [x] RF05: Administradores devem poder criar produtos
+- [x] RF06: Administradores devem poder editar produtos
+- [x] RF07: Usuários devem poder visualizar produtos
+- [x] RF08: Produtos devem ter categorias
 
 ### 2.3 Carrinho de Compras
 
-- [ ] RF09: Usuários devem poder adicionar produtos ao carrinho
-- [ ] RF10: Usuários devem poder modificar quantidades
+- [x] RF09: Usuários devem poder adicionar produtos ao carrinho
+- [x] RF10: Usuários devem poder modificar quantidades
 - [ ] RF11: O sistema deve calcular totais automaticamente
 
 ### 2.4 Processamento de Pedidos
