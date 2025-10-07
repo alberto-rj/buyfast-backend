@@ -28,12 +28,12 @@
 ### Autenticação
 
 ```http
-POST   /api/auth/register               # Registrar novo usuário
-POST   /api/auth/login                  # Login de usuário
-POST   /api/auth/logout                 # Logout de usuário
-POST   /api/auth/refresh                # Refresh token
-POST   /api/auth/forgot-password        # Solicitar recuperação de senha
-POST   /api/auth/reset-password         # Redefinir senha
+POST   /api/auth/register                 # Registrar novo usuário
+POST   /api/auth/login                    # Login de usuário
+POST   /api/auth/logout                   # Logout de usuário
+POST   /api/auth/refresh                  # Refresh token
+POST   /api/auth/forgot-password          # Solicitar recuperação de senha
+POST   /api/auth/reset-password           # Redefinir senha
 ```
 
 ### Usuários
@@ -83,11 +83,11 @@ DELETE /api/cart                   # Limpar carrinho
 ### Pedidos
 
 ```http
-GET    /api/orders                 # Listar pedidos do usuário
-GET    /api/orders/:id             # Obter pedido específico
-POST   /api/orders                 # Criar pedido
-PUT    /api/orders/:id/status      # Atualizar status (admin)
-GET    /api/admin/orders           # Listar todos os pedidos (admin)
+GET    /api/orders                        # Listar pedidos do usuário
+GET    /api/orders/:id                    # Obter pedido específico
+POST   /api/orders                        # Criar pedido
+PUT    /api/orders/:id/status             # Atualizar status (admin)
+GET    /api/admin/orders                  # Listar todos os pedidos (admin)
 ```
 
 ### Relatórios (Admin)
@@ -102,7 +102,7 @@ GET    /api/admin/dashboard        # Dashboard geral
 ### Health Check
 
 ```http
-GET    /api/health                 # Verificação de saúde da API
+GET    /api/health                        # Verificação de saúde da API
 ```
 
 ### Parâmetros de Query Comuns
