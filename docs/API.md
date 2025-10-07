@@ -3,41 +3,58 @@
 ## Índice
 
 - [Visão geral da API](#visão-geral-da-api)
-- [Detalhes da API](#detalhes-da-api)
   - [Autenticação](#autenticação)
+  - [Usuários](#usuários)
+  - [Categorias](#categorias)
+  - [Produtos](#produtos)
+  - [Carrinho](#carrinho)
+  - [Pedidos](#pedidos)
+  - [Relatórios (Admin)](#relatórios-admin)
+  - [Health Check](#health-check)
+  - [Parâmetros de Query Comuns](#parâmetros-de-query-comuns)
+    - [Paginação](#paginação)
+    - [Filtros](#paginação)
+    - [Paginação](#paginação)
+    - [Ordenação](#ordenação)
+    - [Busca](#busca)
+    - [Códigos de Status HTTP](#códigos-de-status-http)
+    - [Formato de Resposta Padrão](#formato-de-resposta-padrão)
+      - [Sucesso](#sucesso)
+      - [Erro](#erro)
+      - [Paginação](#paginação)
 
 ## Visão geral da API
 
 ### Autenticação
 
 ```http
-POST   /api/auth/register          # Registrar novo usuário
-POST   /api/auth/login             # Login de usuário
-POST   /api/auth/logout            # Logout de usuário
-POST   /api/auth/refresh           # Refresh token
-POST   /api/auth/forgot-password   # Solicitar recuperação de senha
-POST   /api/auth/reset-password    # Redefinir senha
+POST   /api/auth/register               # Registrar novo usuário
+POST   /api/auth/login                  # Login de usuário
+POST   /api/auth/logout                 # Logout de usuário
+POST   /api/auth/refresh                # Refresh token
+POST   /api/auth/forgot-password        # Solicitar recuperação de senha
+POST   /api/auth/reset-password         # Redefinir senha
 ```
 
 ### Usuários
 
 ```http
-GET    /api/users/profile          # Obter perfil do usuário
-PUT    /api/users/profile          # Atualizar perfil
-GET    /api/users                  # Listar usuários (admin)
-GET    /api/users/:id              # Obter usuário específico (admin)
-PUT    /api/users/:id              # Atualizar usuário (admin)
-DELETE /api/users/:id              # Deletar usuário (admin)
+GET    /api/users/me                      # Obter perfil do usuário
+PUT    /api/users/me                      # Atualizar perfil
+GET    /api/users                         # Listar usuários (admin)
+GET    /api/users/:id                     # Obter usuário específico (admin)
+PUT    /api/users/:id                     # Atualizar usuário (admin)
+DELETE /api/users/:id                     # Deletar usuário (admin)
 ```
 
 ### Categorias
 
 ```http
-GET    /api/categories             # Listar categorias
-GET    /api/categories/:id         # Obter categoria específica
-POST   /api/categories             # Criar categoria (admin)
-PUT    /api/categories/:id         # Atualizar categoria (admin)
-DELETE /api/categories/:id         # Deletar categoria (admin)
+GET    /api/categories                    # Listar categorias
+GET    /api/categories/:id                # Obter categoria específica
+POST   /api/categories                    # Criar categoria (admin)
+PUT    /api/categories/:id                # Atualizar categoria (admin)
+DELETE /api/categories/:id                # Deletar categoria (admin)
 ```
 
 ### Produtos
@@ -169,45 +186,5 @@ GET    /api/health                 # Verificação de saúde da API
       "pages": 10
     }
   }
-}
-```
-
-## Detalhes da API
-
-### Autenticacao
-
-#### Registro de usuários
-
-##### Endpoint
-
-```http
-POST /api/auth/register
-```
-
-##### Body
-
-```json
-{
-  "firstName": "John", // (),
-  "lastName": "Doe", // ()
-  "email": "johndoe@example.com", // ()
-  "username": "jd",
-  "password": "1234#@ab"
-}
-```
-
-##### Responses
-
-#### 200
-
-```json
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "johndoe@example.com",
-  "username": "jd",
-  "isActive": true,
-  "createdAt": "",
-  "updatedAt": ""
 }
 ```
