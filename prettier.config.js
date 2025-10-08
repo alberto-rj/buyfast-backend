@@ -1,7 +1,7 @@
 /**
  * @type {import('prettier').Config}
  */
-export default {
+module.exports = {
   singleQuote: true,
   trailingComma: 'all',
   printWidth: 80,
@@ -11,7 +11,7 @@ export default {
   jsxSingleQuote: true,
   bracketSpacing: true,
   bracketSameLine: false,
-  arrowParens: 'avoid',
+  arrowParens: 'always',
   proseWrap: 'preserve',
   endOfLine: 'lf',
   embeddedLanguageFormatting: 'auto',
