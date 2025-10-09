@@ -19,8 +19,11 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive Boolean @default(true) @map("is_active")
+  
   refreshTokens RefreshToken[]
   cartItems CartItem[]
+  orders Order[]
+
   @@map("users")
 }
 
@@ -32,11 +35,6 @@ model RefreshToken {
   createdAt DateTime @default(now()) @map("created_at")
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("refresh_tokens")
-}
-
-enum UserRole {
-  Customer
-  Admin
 }
 
 model Category {
@@ -56,6 +54,7 @@ model Product {
   name String
   description String?
   price Decimal
+  tax Decimal @default(0)
   quantity Int @default(0)
   sku String @unique
   categoryId String @map("category_id")
@@ -104,4 +103,63 @@ model CartItem {
   @@index([productId])
   @@unique([userId, productId])
   @@map("cart_items")
+}
+
+model Order {
+  id String @id @default(uuid())
+  userId String @map("user_id")
+  number String @unique
+  status OrderStatus @default(Pending)
+  subtotal Decimal
+  shippingAmount Decimal @map("shipping_amount") @default(0)
+  totalTaxAmount Decimal @map("total_tax_amount")
+  totalAmount Decimal @map("total_amount")
+  shippingAddress Json @map("shipping_address")
+  billingAddress Json @map("billing_address")
+  createdAt DateTime @map("created_at") @default(now())
+  updatedAt DateTime @map("updated_at") @updatedAt
+
+  items OrderItem[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([number])
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id String @id @default(uuid())
+  orderId String @map("order_id")
+  productName String @map("product_name")
+  productSku String @map("product_sku")
+  unitPrice Decimal @map("unit_price")
+  quantity Int
+  taxAmount Decimal @map("tax_amount")
+  totalPrice Decimal @map("total_price")
+  createdAt DateTime @map("created_at") @default(now())
+  updatedAt DateTime @map("updated_at") @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([orderId])
+
+  @@index([orderId])
+
+  @@map("order_items")
+}
+
+enum UserRole {
+  Customer
+  Admin
+}
+
+enum OrderStatus {
+  Pending
+  Processing
+  Shipped
+  Delivered
+  Cancelled
 }

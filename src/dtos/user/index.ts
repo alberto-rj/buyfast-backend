@@ -30,7 +30,9 @@ export { UserLogin, UserLoginInput, toUserLogin } from './user-login';
 export { UserLogout, UserLogoutInput, toUserLogout } from './user-logout';
 export {
   UserOutput,
+  UserBasicOutput,
   toUserOutput,
+  toUserBasicOutput,
   toUserPaginationOutput,
 } from './user-output';
 export { UserRefresh, toUserRefresh } from './user-refresh';
