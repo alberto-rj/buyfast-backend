@@ -100,5 +100,8 @@ model CartItem {
   updatedAt DateTime @updatedAt @map("updated_at")
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+  @@index([productId])
+  @@unique([userId, productId])
   @@map("cart_items")
 }

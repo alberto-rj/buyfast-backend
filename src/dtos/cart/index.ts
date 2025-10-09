@@ -13,7 +13,7 @@ export { CartList, CartListInput, toCartList } from './cart-list';
 export {
   CartItemOutput,
   toCartItemOutput,
-  toCartItemPaginationOutput,
+  toCartOutput,
 } from './cart-output';
 export { CartRemove, CartRemoveInput, toCartRemove } from './cart-remove';
 export { CartUpdate, CartUpdateInput, toCartUpdate } from './cart-update';

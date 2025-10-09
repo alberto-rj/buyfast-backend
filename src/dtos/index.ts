@@ -126,5 +126,5 @@ export {
   toCartRemove,
   toCartUpdate,
   toCartItemOutput,
-  toCartItemPaginationOutput,
+  toCartOutput,
 } from './cart';

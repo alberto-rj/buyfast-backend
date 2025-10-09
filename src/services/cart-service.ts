@@ -5,35 +5,25 @@ import {
   CartUpdateInput,
   CartClearInput,
   CartListInput,
-  toCartItemPaginationOutput,
+  toCartOutput,
   toCartItemOutput,
 } from '../dtos';
 import { ConflictError, NotFoundError } from '../utils';
 
-const canFindUserAndProduct = async ({
-  userId,
-  productId,
-}: {
-  userId: string;
-  productId: string;
-}) => {
-  const [foundUser, foundProduct] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id: userId, isActive: true },
-      select: { id: true },
-    }),
-    prisma.product.findUnique({
-      where: { id: productId, isActive: true },
-      select: { id: true },
-    }),
-  ]);
+const ensureProductExists = async ({ productId }: { productId: string }) => {
+  const foundProduct = await prisma.product.findUnique({
+    where: { id: productId, isActive: true },
+    select: { id: true, quantity: true },
+  });
 
-  if (!foundUser || !foundProduct) {
+  if (!foundProduct) {
     throw new NotFoundError('User or product not found.');
   }
+
+  return { product: foundProduct };
 };
 
-const canAddUserAndProduct = async ({
+const ensureNewUserAndProduct = async ({
   userId,
   productId,
 }: {
@@ -51,37 +41,30 @@ const canAddUserAndProduct = async ({
     throw new ConflictError([
       {
         field: 'userId',
-        message: 'userId is already associated with an item.',
+        message: 'Item already in cart.',
       },
       {
         field: 'productId',
-        message: 'productId is already associated with an item.',
+        message: 'Item already in cart.',
       },
     ]);
   }
 };
 
-const canFind = async ({ id, userId }: { id: string; userId: string }) => {
+const ensureItemExists = async ({ id }: { id: string }) => {
   const foundItem = await prisma.cartItem.findUnique({
-    where: { id, user: { id: userId, isActive: true } },
+    where: { id },
     select: { id: true },
   });
 
   if (!foundItem) {
-    throw new NotFoundError('Item not found.');
+    throw new NotFoundError('Cart item not found.');
   }
+
+  return { item: foundItem };
 };
 
 const list = async ({ limit, page, userId, includeProduct }: CartListInput) => {
-  const foundUser = await prisma.user.findUnique({
-    where: { id: userId, isActive: true },
-    select: { id: true },
-  });
-
-  if (!foundUser) {
-    throw new NotFoundError('User not found.');
-  }
-
   const [total, foundItems] = await Promise.all([
     prisma.cartItem.count({
       where: {
@@ -100,10 +83,16 @@ const list = async ({ limit, page, userId, includeProduct }: CartListInput) => {
     }),
   ]);
 
-  return toCartItemPaginationOutput({
+  const subtotal = foundItems.reduce(
+    (sum, item) => sum + Number(item.product.price) * item.quantity,
+    0,
+  );
+
+  return toCartOutput({
     total,
     limit,
     page,
+    subtotal,
     resources: foundItems,
   });
 };
@@ -114,10 +103,18 @@ const add = async ({
   quantity,
   includeProduct,
 }: CartAddInput) => {
-  await Promise.all([
-    canFindUserAndProduct({ productId, userId }),
-    canAddUserAndProduct({ productId, userId }),
-  ]);
+  const { product } = await ensureProductExists({ productId });
+
+  await ensureNewUserAndProduct({ productId, userId });
+
+  if (product.quantity < quantity) {
+    throw new ConflictError([
+      {
+        field: 'quantity',
+        message: 'Insufficient stock.',
+      },
+    ]);
+  }
 
   const createdItem = await prisma.cartItem.create({
     data: { quantity, userId, productId },
@@ -129,13 +126,8 @@ const add = async ({
   return toCartItemOutput(createdItem);
 };
 
-const update = async ({
-  id,
-  userId,
-  quantity,
-  includeProduct,
-}: CartUpdateInput) => {
-  await canFind({ id, userId });
+const update = async ({ id, quantity, includeProduct }: CartUpdateInput) => {
+  await ensureItemExists({ id });
 
   const updatedItem = await prisma.cartItem.update({
     data: { quantity },
@@ -148,8 +140,8 @@ const update = async ({
   return toCartItemOutput(updatedItem);
 };
 
-const remove = async ({ id, userId }: CartRemoveInput) => {
-  await canFind({ id, userId });
+const remove = async ({ id }: CartRemoveInput) => {
+  await ensureItemExists({ id });
 
   await prisma.cartItem.delete({
     where: { id },
@@ -157,17 +149,6 @@ const remove = async ({ id, userId }: CartRemoveInput) => {
 };
 
 const clear = async ({ userId }: CartClearInput) => {
-  const foundItem = await prisma.cartItem.findFirst({
-    where: { user: { id: userId, isActive: true } },
-    select: {
-      id: true,
-    },
-  });
-
-  if (!foundItem) {
-    throw new NotFoundError('User not found.');
-  }
-
   await prisma.cartItem.deleteMany({ where: { userId } });
 };
 

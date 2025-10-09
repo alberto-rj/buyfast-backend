@@ -13,14 +13,14 @@ const list = async (req: AuthRequest, res: Response, next: NextFunction) => {
 
     const userId = req.payload!.userId;
 
-    const output = await cartService.list({
+    const resource = await cartService.list({
       includeProduct,
       limit,
       page,
       userId,
     });
 
-    res.status(200).json(resBody.paginated(output));
+    res.status(200).json(resBody.record({ resource }));
   } catch (error) {
     next(error);
   }
