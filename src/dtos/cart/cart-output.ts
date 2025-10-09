@@ -16,6 +16,11 @@ export type CartItemOutput = {
   product?: ProductOutput;
 };
 
+export type CartOutput = {
+  items: PaginationOutput<CartItemOutput[]>;
+  subtotal: number;
+};
+
 export const toCartItemOutput = ({
   createdAt,
   updatedAt,
@@ -30,8 +35,9 @@ export const toCartItemOutput = ({
   };
 };
 
-export const toCartItemPaginationOutput = ({
+export const toCartOutput = ({
   resources,
+  subtotal,
   total,
   limit,
   page,
@@ -39,11 +45,18 @@ export const toCartItemPaginationOutput = ({
   total: number;
   limit: number;
   page: number;
+  subtotal: number;
   resources: CartItem[];
-}): PaginationOutput<CartItemOutput[]> =>
-  toPaginationOutput({
+}): CartOutput => {
+  const items = toPaginationOutput({
     total,
     limit,
     page,
     resources: resources.map((resource) => toCartItemOutput(resource)),
   });
+
+  return {
+    items,
+    subtotal,
+  };
+};
