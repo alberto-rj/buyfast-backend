@@ -1,6 +1,14 @@
 import { User } from '../../types';
 import { PaginationOutput, toPaginationOutput } from '../../dtos';
 
+export type UserBasicOutput = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+};
+
 export type UserOutput = {
   id: string;
   firstName: string;
@@ -12,12 +20,28 @@ export type UserOutput = {
   updatedAt: string;
 };
 
-export const toUserOutput = (user: User): UserOutput => {
-  const { password, ...userWithoutPassword } = user;
+export const toUserBasicOutput = ({
+  createdAt,
+  updatedAt,
+  password,
+  role,
+  ...props
+}: User): UserBasicOutput => {
   return {
-    ...userWithoutPassword,
-    createdAt: user.createdAt.toISOString(),
-    updatedAt: user.updatedAt.toISOString(),
+    ...props,
+  };
+};
+
+export const toUserOutput = ({
+  password,
+  createdAt,
+  updatedAt,
+  ...props
+}: User): UserOutput => {
+  return {
+    ...props,
+    createdAt: createdAt.toISOString(),
+    updatedAt: updatedAt.toISOString(),
   };
 };
 
