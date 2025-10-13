@@ -10,11 +10,8 @@ import { BadRequestError, ConflictError, NotFoundError } from '../utils';
 
 const generateOrderNumber = async () => {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-
   const count = await prisma.order.count();
-
   const sequence = (count + 1).toString().padStart(6, '0');
-
   return `ORD-${date}-${sequence}`;
 };
 
@@ -43,6 +40,7 @@ const create = async ({
         quantity: true,
         product: {
           select: {
+            id: true,
             name: true,
             sku: true,
             isActive: true,
@@ -76,19 +74,14 @@ const create = async ({
       const price = Number(product.price);
       return sum + price * quantity;
     }, 0);
-
     const totalTaxAmount = cartItems.reduce((sum, { product, quantity }) => {
       const price = Number(product.price);
       const tax = Number(product.tax);
       return sum + calculateTaxAmount({ price, tax, quantity });
     }, 0);
-
     const shippingAmount = 0;
-
     const totalAmount = subtotal + totalTaxAmount + shippingAmount;
-
     const number = await generateOrderNumber();
-
     const createdOrder = await tx.order.create({
       data: {
         subtotal,
@@ -119,12 +112,22 @@ const create = async ({
         totalPrice: totalPrice,
       };
     });
+    const createdItems = await tx.orderItem.createMany({ data: newOrderItems });
 
-    await tx.orderItem.createMany({ data: newOrderItems });
+    for (const item of cartItems) {
+      await tx.product.update({
+        where: {
+          id: item.product.id,
+        },
+        data: {
+          quantity: { decrement: item.quantity },
+        },
+      });
+    }
 
     await tx.cartItem.deleteMany({ where: { userId } });
 
-    return { order: createdOrder };
+    return { ...createdOrder, items: createdItems };
   });
 };
 
