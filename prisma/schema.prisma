@@ -16,54 +16,88 @@ model User {
   firstName String   @map("first_name")
   lastName  String   @map("last_name")
   role      UserRole @default(Customer)
+  isActive Boolean @default(true) @map("is_active")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  isActive Boolean @default(true) @map("is_active")
   
   refreshTokens RefreshToken[]
   cartItems CartItem[]
   orders Order[]
+  addresses Address[]
+
+  @@index([role])
+  @@index([isActive])
 
   @@map("users")
+}
+
+model Address {
+  id String @id @default(uuid())
+  street String
+  complement String?
+  neighborhood String
+  city String
+  state String
+  zipCode String @map("zip_code")
+  country String
+  isDefault Boolean @default(false) @map("is_default")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId String @map("user_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  
+  @@map("addresses")
 }
 
 model RefreshToken {
   id String @id @default(uuid())
   token String @unique
-  userId String @map("user_id")
   expiriesAt DateTime @map("expires_at")
   createdAt DateTime @default(now()) @map("created_at")
+  
+  userId String @map("user_id")
+  
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   @@map("refresh_tokens")
 }
 
 model Category {
   id String @id @default(uuid())
   name String @unique
-  description String?
   slug String @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive Boolean @default(true) @map("is_active")
+  
+  description String?
+  
   products Product[]
+  
   @@map("categories")
 }
 
 model Product {
   id String @id @default(uuid())
   name String
-  description String?
   price Decimal
   tax Decimal @default(0)
   quantity Int @default(0)
   sku String @unique
-  categoryId String @map("category_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   isActive Boolean @default(true) @map("is_active")
   isFeatured Boolean @default(false) @map("is_featured")
-  weight Decimal?
+  
+  description String?
   dimensions String?
+  weight Decimal?
+  
+  categoryId String @map("category_id")
 
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   cartItems CartItem[]
@@ -77,12 +111,12 @@ model ProductImage {
   url String @map("url")
   publicId String @map("public_id")
   isPrimary Boolean @default(false) @map("is_primary")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   altText String? @map("alt_text")
   order Int?
   
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
   productId String @map("product_id")
   
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -92,35 +126,41 @@ model ProductImage {
 
 model CartItem {
   id String @id @default(uuid())
-  userId String @map("user_id")
-  productId String @map("product_id")
   quantity Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  
+  productId String @map("product_id")
+  userId String @map("user_id")
+  
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   @@index([userId])
   @@index([productId])
+  
   @@unique([userId, productId])
+  
   @@map("cart_items")
 }
 
 model Order {
   id String @id @default(uuid())
-  userId String @map("user_id")
   number String @unique
   status OrderStatus @default(Pending)
   subtotal Decimal
   shippingAmount Decimal @map("shipping_amount") @default(0)
   totalTaxAmount Decimal @map("total_tax_amount")
   totalAmount Decimal @map("total_amount")
-  shippingAddress Json @map("shipping_address")
-  billingAddress Json @map("billing_address")
   createdAt DateTime @map("created_at") @default(now())
   updatedAt DateTime @map("updated_at") @updatedAt
 
-  items OrderItem[]
+  userId String @map("user_id")
 
+  shippingAddress Json @map("shipping_address")
+  billingAddress Json @map("billing_address")
+
+  items OrderItem[]
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -132,7 +172,6 @@ model Order {
 
 model OrderItem {
   id String @id @default(uuid())
-  orderId String @map("order_id")
   productName String @map("product_name")
   productSku String @map("product_sku")
   unitPrice Decimal @map("unit_price")
@@ -141,7 +180,9 @@ model OrderItem {
   totalPrice Decimal @map("total_price")
   createdAt DateTime @map("created_at") @default(now())
   updatedAt DateTime @map("updated_at") @updatedAt
-
+  
+  orderId String @map("order_id")
+  
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@unique([orderId])
