@@ -5,14 +5,105 @@ import {
   OrderGetAllInput,
   OrderGetAllOfInput,
   OrderUpdateStatusInput,
+  AddressCreateInput,
 } from '../dtos';
-import { BadRequestError, ConflictError, NotFoundError } from '../utils';
+import { BadRequestError, NotFoundError } from '../utils';
 
 const generateOrderNumber = async () => {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const count = await prisma.order.count();
   const sequence = (count + 1).toString().padStart(6, '0');
   return `ORD-${date}-${sequence}`;
+};
+
+const resolveShippingAddress = async ({
+  userId,
+  shippingAddressId,
+  newShippingAddress,
+}: OrderCreateInput): Promise<AddressCreateInput> => {
+  let shippingAddress: AddressCreateInput;
+
+  if (typeof shippingAddressId !== 'undefined') {
+    const savedAddress = await prisma.address.findUnique({
+      where: {
+        id: shippingAddressId,
+        userId,
+      },
+    });
+
+    if (!savedAddress) {
+      throw new NotFoundError('Shipping Address not found.');
+    }
+
+    shippingAddress = {
+      street: savedAddress.street,
+      complement: savedAddress.complement || undefined,
+      neighborhood: savedAddress.neighborhood,
+      city: savedAddress.city,
+      state: savedAddress.state,
+      zipCode: savedAddress.zipCode,
+      country: savedAddress.country,
+    };
+  } else if (typeof newShippingAddress !== 'undefined') {
+    shippingAddress = newShippingAddress;
+    await prisma.address.create({
+      data: {
+        userId,
+        ...newShippingAddress,
+      },
+    });
+  } else {
+    throw new NotFoundError('Shipping address is required.');
+  }
+
+  return shippingAddress;
+};
+
+const resolveBillingAddress = async ({
+  userId,
+  billingAddressId,
+  newShippingAddress,
+  newBillingAddress,
+  useSameAddressForBilling,
+}: OrderCreateInput) => {
+  let billingAddress: AddressCreateInput;
+
+  if (useSameAddressForBilling) {
+    billingAddress = newShippingAddress as AddressCreateInput;
+  } else if (typeof billingAddressId !== 'undefined') {
+    const savedAddress = await prisma.address.findUnique({
+      where: {
+        id: billingAddressId,
+        userId,
+      },
+    });
+
+    if (!savedAddress) {
+      throw new NotFoundError('Billing address not found.');
+    }
+
+    billingAddress = {
+      street: savedAddress.street,
+      complement: savedAddress.complement || undefined,
+      neighborhood: savedAddress.neighborhood,
+      city: savedAddress.city,
+      state: savedAddress.state,
+      zipCode: savedAddress.zipCode,
+      country: savedAddress.country,
+    };
+  } else if (typeof newBillingAddress !== 'undefined') {
+    billingAddress = newBillingAddress;
+    await prisma.address.create({
+      data: {
+        userId,
+        ...newBillingAddress,
+      },
+    });
+  } else {
+    throw new NotFoundError('Billing address is required.');
+  }
+
+  return billingAddress;
 };
 
 const calculateTaxAmount = ({
@@ -29,9 +120,12 @@ const calculateTaxAmount = ({
 };
 
 const create = async ({
-  shippingAddress,
-  billingAddress,
   userId,
+  billingAddressId,
+  shippingAddressId,
+  newBillingAddress,
+  newShippingAddress,
+  useSameAddressForBilling,
 }: OrderCreateInput) => {
   await prisma.$transaction(async (tx) => {
     const cartItems = await tx.cartItem.findMany({
@@ -61,14 +155,27 @@ const create = async ({
         throw new NotFoundError('Product not found.');
       }
       if (cartItem.product.quantity < cartItem.quantity) {
-        throw new ConflictError([
-          {
-            field: 'quantity',
-            message: 'Insufficient stock.',
-          },
-        ]);
+        throw new BadRequestError('Insufficient stock.');
       }
     }
+
+    const shippingAddress = await resolveShippingAddress({
+      userId,
+      shippingAddressId,
+      billingAddressId,
+      newShippingAddress,
+      newBillingAddress,
+      useSameAddressForBilling,
+    });
+
+    const billingAddress = await resolveBillingAddress({
+      userId,
+      shippingAddressId,
+      billingAddressId,
+      newShippingAddress: shippingAddress,
+      newBillingAddress,
+      useSameAddressForBilling,
+    });
 
     const subtotal = cartItems.reduce((sum, { product, quantity }) => {
       const price = Number(product.price);
@@ -108,8 +215,8 @@ const create = async ({
         productName,
         productSku,
         unitPrice: price,
-        taxAmount: taxAmount,
-        totalPrice: totalPrice,
+        taxAmount,
+        totalPrice,
       };
     });
     const createdItems = await tx.orderItem.createMany({ data: newOrderItems });
@@ -131,7 +238,29 @@ const create = async ({
   });
 };
 
-const updateStatus = async ({ id, status }: OrderUpdateStatusInput) => {
+const updateStatus = async ({ id, status, userId }: OrderUpdateStatusInput) => {
+  const foundUser = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!foundUser) {
+    throw new NotFoundError('User not found.');
+  }
+
+  const foundOrder = await prisma.order.findUnique({
+    where: { id: id },
+    select: {
+      userId: true,
+    },
+  });
+
+  if (!foundOrder) {
+    throw new NotFoundError('Order not found.');
+  }
+
   const updatedOrder = await prisma.order.update({
     data: {
       status,
@@ -146,6 +275,10 @@ const updateStatus = async ({ id, status }: OrderUpdateStatusInput) => {
 
 const get = async ({ id }: OrderGetInput) => {
   const foundOrder = await prisma.order.findUnique({ where: { id } });
+
+  if (!foundOrder) {
+    throw new NotFoundError('Order not found.');
+  }
 
   return foundOrder;
 };
