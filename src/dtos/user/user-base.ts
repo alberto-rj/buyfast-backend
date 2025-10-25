@@ -37,10 +37,13 @@ export const username = z
   })
   .min(3, { error: 'username must be at least 3 characters.' })
   .max(20, { error: 'username cannot exceed 20 characters.' })
-  .refine(input => validator.isAlphanumeric(input, 'en-US', { ignore: '_' }), {
-    error:
-      'username only must includes uppercase letters, lowercase letters, numbers and underscore.',
-  });
+  .refine(
+    (input) => validator.isAlphanumeric(input, 'en-US', { ignore: '_' }),
+    {
+      error:
+        'username only must includes uppercase letters, lowercase letters, numbers and underscore.',
+    },
+  );
 
 export const email = z
   .email({
@@ -54,6 +57,10 @@ export const role = z
   })
   .default('Customer');
 
+export const roleQuery = z.enum(UserRole, {
+  error: 'role must be only "Admin" or "Customer".',
+});
+
 export const isActive = setDefaultTrue({ fieldName: 'isActive' });
 
 export const password = z
@@ -61,7 +68,7 @@ export const password = z
     error: 'password must be a string.',
   })
   .refine(
-    input =>
+    (input) =>
       validator.isStrongPassword(input, {
         minUppercase: 1,
         minLowercase: 1,
@@ -101,7 +108,7 @@ export const identifier = z
     error: 'identifier must be string.',
   })
   .min(1, { error: 'identifier cannot be empty.' })
-  .refine(input => isValidIdentifier(input), {
+  .refine((input) => isValidIdentifier(input), {
     error: 'identifier must be a valid email or username.',
   });
 

@@ -1,7 +1,6 @@
 import z from 'zod';
 
 import {
-  role,
   limit,
   page,
   search,
@@ -12,13 +11,14 @@ import {
   minUpdatedAt,
   maxUpdatedAt,
   includeInactive,
+  roleQuery,
 } from '.';
 import { validate } from '../../utils';
 
 const userFindMany = z.object({
   query: z.object({
     search: search.optional(),
-    role: role.optional(),
+    role: roleQuery.optional(),
     minCreatedAt: minCreatedAt.optional(),
     maxCreatedAt: maxCreatedAt.optional(),
     minUpdatedAt: minUpdatedAt.optional(),

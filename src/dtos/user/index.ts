@@ -5,6 +5,7 @@ export {
   email,
   password,
   role,
+  roleQuery,
   identifier,
   refreshToken,
   id,
