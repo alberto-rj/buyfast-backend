@@ -1,20 +1,16 @@
 import { z } from 'zod';
 
-import {
-  billingAddressId,
-  shippingAddressId,
-  useSameAddressForBilling,
-} from '.';
-import { addressCreateInput } from '../../dtos';
+import { phone, street, city, zipCode } from '.';
 import { validate } from '../../utils';
 
 export const orderCreate = z.object({
   body: z.object({
-    shippingAddressId: shippingAddressId.optional(),
-    billingAddressId: billingAddressId.optional(),
-    newShippingAddress: addressCreateInput.optional(),
-    newBillingAddress: addressCreateInput.optional(),
-    useSameAddressForBilling,
+    deliveryAddress: z.object({
+      phone,
+      street,
+      city,
+      zipCode,
+    }),
   }),
 });
 

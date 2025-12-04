@@ -6,7 +6,6 @@ export type UserBasicOutput = {
   firstName: string;
   lastName: string;
   email: string;
-  username: string;
 };
 
 export type UserOutput = {
@@ -21,14 +20,21 @@ export type UserOutput = {
 };
 
 export const toUserBasicOutput = ({
-  createdAt,
-  updatedAt,
-  password,
-  role,
-  ...props
-}: User): UserBasicOutput => {
+  id,
+  email,
+  firstName,
+  lastName,
+}: {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}): UserBasicOutput => {
   return {
-    ...props,
+    id,
+    email,
+    firstName,
+    lastName,
   };
 };
 
