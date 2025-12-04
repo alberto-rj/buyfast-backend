@@ -6,9 +6,10 @@ export {
   order,
   page,
   userId,
-  shippingAddressId,
-  billingAddressId,
-  useSameAddressForBilling,
+  phone,
+  street,
+  city,
+  zipCode,
 } from './order-base';
 export { OrderCreate, OrderCreateInput, toOrderCreate } from './order-create';
 export { OrderGet, OrderGetInput, toOrderGet } from './order-get';
@@ -26,6 +27,7 @@ export {
 export {
   OrderItemOutput,
   OrderOutput,
+  OrderDetailsOutput,
   toOrderItemOutput,
   toOrderOutput,
   toOrderPaginationOutput,

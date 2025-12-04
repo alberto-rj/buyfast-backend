@@ -1,10 +1,20 @@
 import { Order, OrderItem, OrderStatus } from '../../types';
 import {
-  AddressOutput,
   PaginationOutput,
   toPaginationOutput,
   UserBasicOutput,
 } from '../../dtos';
+
+export type AddressOutput = {
+  street: string;
+  city: string;
+  phone: string;
+  zipCode: string;
+};
+
+export const parseAddress = (address: unknown): AddressOutput => {
+  return address as AddressOutput;
+};
 
 export type OrderItemOutput = {
   id: string;
@@ -12,7 +22,6 @@ export type OrderItemOutput = {
   productSku: String;
   unitPrice: number;
   quantity: number;
-  taxAmount: number;
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
@@ -22,21 +31,26 @@ export type OrderOutput = {
   id: string;
   number: string;
   status: OrderStatus;
-  subtotal: number;
-  shippingAmount: number;
-  totalTaxAmount: number;
   totalAmount: number;
+  deliveryAddress: AddressOutput;
   createdAt: string;
   updatedAt: string;
-  billingAddress?: AddressOutput;
-  shippingAddress?: AddressOutput;
-  items?: OrderItemOutput[];
-  user?: UserBasicOutput;
+};
+
+export type OrderDetailsOutput = {
+  id: string;
+  number: string;
+  status: OrderStatus;
+  totalAmount: number;
+  deliveryAddress: AddressOutput;
+  items: OrderItemOutput[];
+  user: UserBasicOutput;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const toOrderItemOutput = ({
   unitPrice,
-  taxAmount,
   totalPrice,
   createdAt,
   updatedAt,
@@ -44,7 +58,6 @@ export const toOrderItemOutput = ({
 }: OrderItem): OrderItemOutput => {
   return {
     unitPrice: Number(unitPrice),
-    taxAmount: Number(taxAmount),
     totalPrice: Number(totalPrice),
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),
@@ -53,21 +66,15 @@ export const toOrderItemOutput = ({
 };
 
 export const toOrderOutput = ({
-  subtotal,
-  shippingAmount,
-  totalTaxAmount,
   totalAmount,
-  billingAddress,
-  shippingAddress,
+  deliveryAddress,
   createdAt,
   updatedAt,
   ...props
 }: Order): OrderOutput => {
   return {
-    subtotal: Number(subtotal),
-    shippingAmount: Number(shippingAmount),
-    totalTaxAmount: Number(totalTaxAmount),
     totalAmount: Number(totalAmount),
+    deliveryAddress: deliveryAddress as AddressOutput,
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),
     ...props,

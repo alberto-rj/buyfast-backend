@@ -1,3 +1,4 @@
+import { OrderDetailsOutput } from 'src/dtos/order';
 import { prisma } from '../config';
 import {
   OrderCreateInput,
@@ -5,7 +6,9 @@ import {
   OrderGetAllInput,
   OrderGetAllOfInput,
   OrderUpdateStatusInput,
-  AddressCreateInput,
+  toOrderOutput,
+  toOrderItemOutput,
+  toUserBasicOutput,
 } from '../dtos';
 import { BadRequestError, NotFoundError } from '../utils';
 
@@ -16,226 +19,95 @@ const generateOrderNumber = async () => {
   return `ORD-${date}-${sequence}`;
 };
 
-const resolveShippingAddress = async ({
-  userId,
-  shippingAddressId,
-  newShippingAddress,
-}: OrderCreateInput): Promise<AddressCreateInput> => {
-  let shippingAddress: AddressCreateInput;
-
-  if (typeof shippingAddressId !== 'undefined') {
-    const savedAddress = await prisma.address.findUnique({
-      where: {
-        id: shippingAddressId,
-        userId,
-      },
-    });
-
-    if (!savedAddress) {
-      throw new NotFoundError('Shipping Address not found.');
-    }
-
-    shippingAddress = {
-      street: savedAddress.street,
-      complement: savedAddress.complement || undefined,
-      neighborhood: savedAddress.neighborhood,
-      city: savedAddress.city,
-      state: savedAddress.state,
-      zipCode: savedAddress.zipCode,
-      country: savedAddress.country,
-    };
-  } else if (typeof newShippingAddress !== 'undefined') {
-    shippingAddress = newShippingAddress;
-    await prisma.address.create({
-      data: {
-        userId,
-        ...newShippingAddress,
-      },
-    });
-  } else {
-    throw new NotFoundError('Shipping address is required.');
-  }
-
-  return shippingAddress;
-};
-
-const resolveBillingAddress = async ({
-  userId,
-  billingAddressId,
-  newShippingAddress,
-  newBillingAddress,
-  useSameAddressForBilling,
-}: OrderCreateInput) => {
-  let billingAddress: AddressCreateInput;
-
-  if (useSameAddressForBilling) {
-    billingAddress = newShippingAddress as AddressCreateInput;
-  } else if (typeof billingAddressId !== 'undefined') {
-    const savedAddress = await prisma.address.findUnique({
-      where: {
-        id: billingAddressId,
-        userId,
-      },
-    });
-
-    if (!savedAddress) {
-      throw new NotFoundError('Billing address not found.');
-    }
-
-    billingAddress = {
-      street: savedAddress.street,
-      complement: savedAddress.complement || undefined,
-      neighborhood: savedAddress.neighborhood,
-      city: savedAddress.city,
-      state: savedAddress.state,
-      zipCode: savedAddress.zipCode,
-      country: savedAddress.country,
-    };
-  } else if (typeof newBillingAddress !== 'undefined') {
-    billingAddress = newBillingAddress;
-    await prisma.address.create({
-      data: {
-        userId,
-        ...newBillingAddress,
-      },
-    });
-  } else {
-    throw new NotFoundError('Billing address is required.');
-  }
-
-  return billingAddress;
-};
-
-const calculateTaxAmount = ({
-  price,
-  tax,
-  quantity,
-}: {
-  price: number;
-  tax: number;
-  quantity: number;
-}) => {
-  const priceWithTax = (1 + tax) * price;
-  return priceWithTax * quantity;
-};
-
 const create = async ({
+  deliveryAddress,
   userId,
-  billingAddressId,
-  shippingAddressId,
-  newBillingAddress,
-  newShippingAddress,
-  useSameAddressForBilling,
-}: OrderCreateInput) => {
-  await prisma.$transaction(async (tx) => {
-    const cartItems = await tx.cartItem.findMany({
-      where: { userId },
-      select: {
-        quantity: true,
-        product: {
+}: OrderCreateInput): Promise<OrderDetailsOutput> => {
+  const cartItems = await prisma.cartItem.findMany({
+    where: { userId },
+    include: { product: true },
+  });
+
+  if (cartItems.length === 0) {
+    throw new BadRequestError('No item in cart.');
+  }
+
+  for (const item of cartItems) {
+    const { product } = item;
+
+    if (!product.isActive) {
+      throw new BadRequestError(`Product "${product.name}" is not available`);
+    }
+
+    if (product.quantity < item.quantity) {
+      throw new BadRequestError(
+        `Insufficient stock for "${product.name}". Available: ${product.quantity}, requested: ${item.quantity}`,
+      );
+    }
+  }
+
+  const totalAmount = cartItems.reduce((total, item) => {
+    return total + Number(item.product.price) * item.quantity;
+  }, 0);
+
+  const orderNumber = await generateOrderNumber();
+
+  const createdOrder = await prisma.$transaction(async (tx) => {
+    const newOrder = await tx.order.create({
+      data: {
+        number: orderNumber,
+        totalAmount,
+        deliveryAddress,
+        userId,
+      },
+      include: {
+        items: true,
+        user: {
           select: {
             id: true,
-            name: true,
-            sku: true,
-            isActive: true,
-            price: true,
-            tax: true,
-            quantity: true,
+            firstName: true,
+            lastName: true,
+            email: true,
           },
         },
       },
     });
 
-    if (cartItems.length === 0) {
-      throw new BadRequestError('No item in cart.');
-    }
-
-    for (const cartItem of cartItems) {
-      if (!cartItem.product.isActive) {
-        throw new NotFoundError('Product not found.');
-      }
-      if (cartItem.product.quantity < cartItem.quantity) {
-        throw new BadRequestError('Insufficient stock.');
-      }
-    }
-
-    const shippingAddress = await resolveShippingAddress({
-      userId,
-      shippingAddressId,
-      billingAddressId,
-      newShippingAddress,
-      newBillingAddress,
-      useSameAddressForBilling,
-    });
-
-    const billingAddress = await resolveBillingAddress({
-      userId,
-      shippingAddressId,
-      billingAddressId,
-      newShippingAddress: shippingAddress,
-      newBillingAddress,
-      useSameAddressForBilling,
-    });
-
-    const subtotal = cartItems.reduce((sum, { product, quantity }) => {
-      const price = Number(product.price);
-      return sum + price * quantity;
-    }, 0);
-    const totalTaxAmount = cartItems.reduce((sum, { product, quantity }) => {
-      const price = Number(product.price);
-      const tax = Number(product.tax);
-      return sum + calculateTaxAmount({ price, tax, quantity });
-    }, 0);
-    const shippingAmount = 0;
-    const totalAmount = subtotal + totalTaxAmount + shippingAmount;
-    const number = await generateOrderNumber();
-    const createdOrder = await tx.order.create({
-      data: {
-        subtotal,
-        shippingAmount,
-        totalTaxAmount,
-        totalAmount,
-        number,
-        billingAddress,
-        shippingAddress,
-        userId,
-      },
-    });
-
-    const newOrderItems = cartItems.map(({ quantity, product }) => {
-      const { name: productName, sku: productSku } = product;
-      const price = Number(product.price);
-      const tax = Number(product.tax);
-      const taxAmount = calculateTaxAmount({ price, tax, quantity });
-      const totalPrice = price + taxAmount;
-
-      return {
-        orderId: createdOrder.id,
-        quantity,
-        productName,
-        productSku,
-        unitPrice: price,
-        taxAmount,
-        totalPrice,
-      };
-    });
-    const createdItems = await tx.orderItem.createMany({ data: newOrderItems });
-
     for (const item of cartItems) {
-      await tx.product.update({
-        where: {
-          id: item.product.id,
-        },
+      const totalPrice = Number(item.product.price) * item.quantity;
+      await tx.orderItem.create({
         data: {
-          quantity: { decrement: item.quantity },
+          unitPrice: item.product.price,
+          quantity: item.quantity,
+          totalPrice: totalPrice,
+          productName: item.product.name,
+          productSku: item.product.sku,
+          orderId: newOrder.id,
         },
       });
+
+      await tx.product.update({
+        data: { quantity: { decrement: item.quantity } },
+        where: { id: item.productId },
+      });
+
+      await tx.cartItem.deleteMany({
+        where: { userId },
+      });
+
+      return newOrder;
     }
-
-    await tx.cartItem.deleteMany({ where: { userId } });
-
-    return { ...createdOrder, items: createdItems };
   });
+
+  if (!createdOrder) {
+    throw new BadRequestError('Failed to create order.');
+  }
+
+  return {
+    ...toOrderOutput(createdOrder),
+    items: createdOrder.items.map(toOrderItemOutput),
+    user: toUserBasicOutput(createdOrder.user),
+  };
 };
 
 const updateStatus = async ({ id, status, userId }: OrderUpdateStatusInput) => {

@@ -12,6 +12,27 @@ import {
   setUUID,
 } from '..';
 import { OrderStatus } from '../../types';
+import validator from 'validator';
+
+export const phone = z
+  .string({
+    error: 'phone must be a string.',
+  })
+  .min(9, { error: 'phone must have at least 9 characters.' });
+
+export const street = z
+  .string({ error: 'street must be a string' })
+  .min(5, { error: 'street must have at least 5 characters.' });
+
+export const city = z
+  .string({ error: 'city must be a string.' })
+  .min(2, { error: 'city must have at least 2 characters.' });
+
+export const zipCode = z
+  .string({ error: 'zipCode must be a string.' })
+  .refine((input) => validator.isPostalCode(input, 'US'), {
+    error: 'zipCode is invalid.',
+  });
 
 export const id = setUUID();
 
@@ -62,11 +83,3 @@ export const maxCreatedAt = setMaxCreatedAt();
 export const minUpdatedAt = setMinUpdatedAt();
 
 export const maxUpdatedAt = setMaxUpdatedAt();
-
-export const billingAddressId = setUUID('billingAddressId');
-
-export const shippingAddressId = setUUID('shippingAddressId');
-
-export const useSameAddressForBilling = setDefaultFalse({
-  fieldName: 'useSameAddressForBilling',
-});

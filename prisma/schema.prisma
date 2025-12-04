@@ -148,17 +148,13 @@ model Order {
   id String @id @default(uuid())
   number String @unique
   status OrderStatus @default(Pending)
-  subtotal Decimal
-  shippingAmount Decimal @map("shipping_amount") @default(0)
-  totalTaxAmount Decimal @map("total_tax_amount")
   totalAmount Decimal @map("total_amount")
+  deliveryAddress Json @map("delivery_address")
+
   createdAt DateTime @map("created_at") @default(now())
   updatedAt DateTime @map("updated_at") @updatedAt
 
   userId String @map("user_id")
-
-  shippingAddress Json @map("shipping_address")
-  billingAddress Json @map("billing_address")
 
   items OrderItem[]
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -176,8 +172,8 @@ model OrderItem {
   productSku String @map("product_sku")
   unitPrice Decimal @map("unit_price")
   quantity Int
-  taxAmount Decimal @map("tax_amount")
   totalPrice Decimal @map("total_price")
+
   createdAt DateTime @map("created_at") @default(now())
   updatedAt DateTime @map("updated_at") @updatedAt
   
