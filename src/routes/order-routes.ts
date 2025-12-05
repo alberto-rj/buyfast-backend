@@ -8,7 +8,11 @@ export const orderRoutes = Router();
 orderRoutes
   .route('/')
   .post(authenticate, orderController.create.bind(orderController))
-  .get(authenticate, orderController.getAll.bind(orderController));
+  .get(
+    authenticate,
+    requireAdmin,
+    orderController.getAll.bind(orderController),
+  );
 
 orderRoutes
   .route('/:id')
