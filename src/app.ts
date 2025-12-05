@@ -2,7 +2,12 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
-import { isDevelopmentEnv, setupCors, setupRoutes } from './config';
+import {
+  isDevelopmentEnv,
+  setupCors,
+  setupRoutes,
+  setupSwagger,
+} from './config';
 
 const app = express();
 
@@ -17,6 +22,7 @@ if (isDevelopmentEnv) {
   app.use(morgan('dev'));
 }
 
+setupSwagger(app);
 setupRoutes(app);
 
 export { app };
