@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { orderController } from '../controllers';
-import { authenticate, requireAdmin } from '../middlewares';
+import { authenticate } from '../middlewares';
 
 export const orderRoutes = Router();
 
