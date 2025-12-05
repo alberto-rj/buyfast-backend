@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { orderService } from '../services';
 import {
+  toOrderCancel,
   toOrderCreate,
   toOrderGet,
   toOrderGetAll,
+  toOrderGetAllOf,
   toOrderUpdateStatus,
 } from '../dtos';
 import { AuthPayload, AuthRequest } from '../types';
@@ -50,6 +52,23 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getAllOf = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { userId } = req.payload as AuthPayload;
+    const { params } = toOrderGetAllOf(req);
+
+    const resources = await orderService.getAllOf({ ...params, userId });
+
+    res.status(200).json(resBody.records({ resources }));
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateStatus = async (
   req: Request,
   res: Response,
@@ -69,9 +88,26 @@ const updateStatus = async (
   }
 };
 
+const cancel = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.payload as AuthPayload;
+    const {
+      params: { id },
+    } = toOrderCancel(req);
+
+    const resource = await orderService.cancel({ userId, id });
+
+    res.status(200).json(resBody.record({ resource }));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const orderController = {
+  cancel,
   create,
   get,
   getAll,
+  getAllOf,
   updateStatus,
 };

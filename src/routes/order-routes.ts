@@ -8,17 +8,16 @@ export const orderRoutes = Router();
 orderRoutes
   .route('/')
   .post(authenticate, orderController.create.bind(orderController))
-  .get(
-    authenticate,
-    requireAdmin,
-    orderController.getAll.bind(orderController),
-  );
+  .get(authenticate, orderController.getAllOf.bind(orderController));
 
-orderRoutes
-  .route('/:id')
-  .get(authenticate, orderController.get.bind(orderController))
-  .patch(
-    authenticate,
-    requireAdmin,
-    orderController.updateStatus.bind(orderController),
-  );
+orderRoutes.get(
+  '/:id',
+  authenticate,
+  orderController.get.bind(orderController),
+);
+
+orderRoutes.patch(
+  '/:id/cancel',
+  authenticate,
+  orderController.cancel.bind(orderController),
+);

@@ -8,6 +8,7 @@ import {
   productRoutes,
   cartRoutes,
   orderRoutes,
+  adminRoutes,
 } from '../routes';
 import { errorHandler, notFoundHandler } from '../middlewares';
 
@@ -19,6 +20,7 @@ export const setupRoutes = (app: Express) => {
   app.use('/api/products', productRoutes);
   app.use('/api/cart', cartRoutes);
   app.use('/api/orders', orderRoutes);
+  app.use('/api/admin', adminRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

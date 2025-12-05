@@ -1,6 +1,9 @@
-import { OrderDetailsOutput } from 'src/dtos/order';
 import { prisma } from '../config';
 import {
+  OrderResultOutput,
+  OrderCancelInput,
+  OrderDetailsOutput,
+  OrderGetAllOfInput,
   OrderCreateInput,
   OrderGetInput,
   OrderGetAllInput,
@@ -175,6 +178,58 @@ const updateStatus = async ({
   };
 };
 
+const cancel = async ({
+  id,
+  userId,
+}: OrderCancelInput): Promise<OrderDetailsOutput> => {
+  const newStatus = OrderStatus.Cancelled;
+  const foundOrder = await prisma.order.findUnique({
+    where: { id: id, userId: userId },
+    select: {
+      status: true,
+    },
+  });
+
+  if (!foundOrder) {
+    throw new NotFoundError('Order not found.');
+  }
+
+  if (!isValidStatusTransition(foundOrder.status, newStatus)) {
+    throw new ConflictError([
+      {
+        field: 'status',
+        message: `Cannot change status from ${foundOrder.status} to ${newStatus}.`,
+      },
+    ]);
+  }
+
+  const updatedOrder = await prisma.order.update({
+    data: {
+      status: newStatus,
+    },
+    where: {
+      id,
+    },
+    include: {
+      items: true,
+      user: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return {
+    items: updatedOrder.items.map(toOrderItemOutput),
+    user: toUserBasicOutput(updatedOrder.user),
+    ...toOrderOutput(updatedOrder),
+  };
+};
+
 const get = async ({ id }: OrderGetInput): Promise<OrderDetailsOutput> => {
   const foundOrder = await prisma.order.findUnique({
     where: { id },
@@ -204,6 +259,7 @@ const get = async ({ id }: OrderGetInput): Promise<OrderDetailsOutput> => {
 
 const getAll = async ({
   status,
+  userId,
   page,
   limit,
   sortBy,
@@ -212,6 +268,7 @@ const getAll = async ({
   const foundOrders = await prisma.order.findMany({
     where: {
       status,
+      userId,
     },
     include: {
       items: true,
@@ -240,9 +297,42 @@ const getAll = async ({
   });
 };
 
+const getAllOf = async ({
+  status,
+  userId,
+  page,
+  limit,
+  sortBy,
+  order,
+}: OrderGetAllOfInput): Promise<OrderResultOutput[]> => {
+  const foundOrders = await prisma.order.findMany({
+    where: {
+      status,
+      userId: userId,
+    },
+    include: {
+      items: true,
+    },
+    orderBy: {
+      [sortBy]: order,
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  return foundOrders.map((order) => {
+    return {
+      items: order.items.map(toOrderItemOutput),
+      ...toOrderOutput(order),
+    };
+  });
+};
+
 export const orderService = {
+  cancel,
   create,
   get,
   getAll,
+  getAllOf,
   updateStatus,
 };
