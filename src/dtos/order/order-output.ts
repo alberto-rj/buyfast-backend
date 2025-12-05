@@ -12,10 +12,6 @@ export type AddressOutput = {
   zipCode: string;
 };
 
-export const parseAddress = (address: unknown): AddressOutput => {
-  return address as AddressOutput;
-};
-
 export type OrderItemOutput = {
   id: string;
   productName: string;

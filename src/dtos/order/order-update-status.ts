@@ -15,7 +15,7 @@ export const orderUpdateStatus = z.object({
 export type OrderUpdateStatus = z.infer<typeof orderUpdateStatus>;
 
 export type OrderUpdateStatusInput = OrderUpdateStatus['params'] &
-  OrderUpdateStatus['body'] & { userId: string };
+  OrderUpdateStatus['body'];
 
 export const toOrderUpdateStatus = (input: unknown): OrderUpdateStatus => {
   return validate<OrderUpdateStatus>(orderUpdateStatus, input);

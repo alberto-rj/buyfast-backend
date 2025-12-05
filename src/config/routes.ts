@@ -7,6 +7,7 @@ import {
   categoryRoutes,
   productRoutes,
   cartRoutes,
+  orderRoutes,
 } from '../routes';
 import { errorHandler, notFoundHandler } from '../middlewares';
 
@@ -17,6 +18,7 @@ export const setupRoutes = (app: Express) => {
   app.use('/api/categories', categoryRoutes);
   app.use('/api/products', productRoutes);
   app.use('/api/cart', cartRoutes);
+  app.use('/api/orders', orderRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
-import { limit, order, page, sortBy, status } from '.';
+import { limit, order, page, sortBy, status, userId } from '.';
 import { validate } from '../../utils';
 
 export const orderGetAll = z.object({
   params: z.object({
     status: status.optional(),
+    userId: userId.optional(),
     page,
     limit,
     sortBy,

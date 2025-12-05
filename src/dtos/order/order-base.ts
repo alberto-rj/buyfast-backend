@@ -12,7 +12,6 @@ import {
   setUUID,
 } from '..';
 import { OrderStatus } from '../../types';
-import validator from 'validator';
 
 export const phone = z
   .string({
@@ -30,9 +29,7 @@ export const city = z
 
 export const zipCode = z
   .string({ error: 'zipCode must be a string.' })
-  .refine((input) => validator.isPostalCode(input, 'US'), {
-    error: 'zipCode is invalid.',
-  });
+  .min(4, { error: 'zipCode must have at least 4 characters.' });
 
 export const id = setUUID();
 
