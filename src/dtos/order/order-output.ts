@@ -5,14 +5,14 @@ import {
   UserBasicOutput,
 } from '../../dtos';
 
-export type AddressOutput = {
+export type OrderAddressOutput = {
   street: string;
   city: string;
   phone: string;
   zipCode: string;
 };
 
-export type OrderItemOutput = {
+export interface OrderItemOutput {
   id: string;
   productName: string;
   productSku: String;
@@ -21,29 +21,26 @@ export type OrderItemOutput = {
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type OrderOutput = {
+export interface OrderOutput {
   id: string;
   number: string;
   status: OrderStatus;
   totalAmount: number;
-  deliveryAddress: AddressOutput;
+  deliveryAddress: OrderAddressOutput;
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type OrderDetailsOutput = {
-  id: string;
-  number: string;
-  status: OrderStatus;
-  totalAmount: number;
-  deliveryAddress: AddressOutput;
+export interface OrderResultOutput extends OrderOutput {
+  items: OrderItemOutput[];
+}
+
+export interface OrderDetailsOutput extends OrderOutput {
   items: OrderItemOutput[];
   user: UserBasicOutput;
-  createdAt: string;
-  updatedAt: string;
-};
+}
 
 export const toOrderItemOutput = ({
   unitPrice,
@@ -70,7 +67,7 @@ export const toOrderOutput = ({
 }: Order): OrderOutput => {
   return {
     totalAmount: Number(totalAmount),
-    deliveryAddress: deliveryAddress as AddressOutput,
+    deliveryAddress: deliveryAddress as OrderAddressOutput,
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),
     ...props,

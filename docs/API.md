@@ -83,11 +83,11 @@ DELETE /api/cart                   # Limpar carrinho
 ### Pedidos
 
 ```http
-GET    /api/orders                        # Listar pedidos do usuário
-GET    /api/orders/:id                    # Obter pedido específico
-POST   /api/orders                        # Criar pedido
-PUT    /api/orders/:id/status             # Atualizar status (admin)
-GET    /api/admin/orders                  # Listar todos os pedidos (admin)
+GET    /api/orders                          # Listar pedidos do usuário
+GET    /api/orders/:id                      # Obter pedido específico
+POST   /api/orders                          # Criar pedido
+GET    /api/admin/orders                    # Listar todos os pedidos (admin)
+PATCH  /api/admin/orders/:id/status         # Atualizar status (admin)
 ```
 
 ### Relatórios (Admin)

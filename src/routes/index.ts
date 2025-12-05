@@ -1,3 +1,4 @@
+export { adminRoutes } from './admin-routes';
 export { authRoutes } from './auth-routes';
 export { categoryRoutes } from './category-routes';
 export { cartRoutes } from './cart-routes';
