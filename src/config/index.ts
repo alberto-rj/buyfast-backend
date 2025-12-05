@@ -35,5 +35,7 @@ export {
   PRODUCT_UPLOAD_PATH,
 } from './upload';
 
+export { setupSwagger } from './swagger/swagger';
+
 export { setupCors } from './cors';
 export { setupRoutes } from './routes';
