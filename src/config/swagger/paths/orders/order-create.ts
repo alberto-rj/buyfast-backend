@@ -36,9 +36,33 @@ export const createOrderPath: OpenAPIV3.PathsObject = {
         },
         '400': {
           description: 'Empty cart, no stock, or invalid data',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+            },
+          },
         },
         '401': {
           description: 'Not authenticated',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+            },
+          },
+        },
+        '500': {
+          description: 'Internal server error',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+            },
+          },
         },
       },
     },

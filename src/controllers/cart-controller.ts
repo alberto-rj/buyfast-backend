@@ -1,4 +1,5 @@
 import { Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 import { toCartAdd, toCartList, toCartRemove, toCartUpdate } from '../dtos';
 import { AuthRequest } from '../types';
@@ -20,7 +21,7 @@ const list = async (req: AuthRequest, res: Response, next: NextFunction) => {
       userId,
     });
 
-    res.status(200).json(resBody.record({ resource }));
+    res.status(StatusCodes.OK).json(resBody.record({ resource }));
   } catch (error) {
     next(error);
   }
@@ -32,7 +33,7 @@ const clear = async (req: AuthRequest, res: Response, next: NextFunction) => {
 
     await cartService.clear({ userId });
 
-    res.sendStatus(204);
+    res.sendStatus(StatusCodes.NO_CONTENT);
   } catch (error) {
     next(error);
   }
@@ -54,7 +55,7 @@ const add = async (req: AuthRequest, res: Response, next: NextFunction) => {
       includeProduct,
     });
 
-    res.status(201).json(
+    res.status(StatusCodes.CREATED).json(
       resBody.record({
         resource,
       }),
@@ -81,7 +82,7 @@ const update = async (req: AuthRequest, res: Response, next: NextFunction) => {
       includeProduct,
     });
 
-    res.status(200).json(
+    res.status(StatusCodes.OK).json(
       resBody.record({
         resource,
       }),
@@ -104,7 +105,7 @@ const remove = async (req: AuthRequest, res: Response, next: NextFunction) => {
       userId,
     });
 
-    res.sendStatus(204);
+    res.sendStatus(StatusCodes.NO_CONTENT);
   } catch (error) {
     next(error);
   }

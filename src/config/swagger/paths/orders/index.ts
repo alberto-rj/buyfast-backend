@@ -1,15 +1,19 @@
 import { OpenAPIV3 } from 'openapi-types';
 
 import { createOrderPath } from './order-create';
-import { userOrdersPath } from './user-orders';
-import { orderByIdPath } from './order-by-id';
+import { userOrdersPath } from './get-orders';
+import { getOrderPath } from './get-order';
 import { adminOrdersPath } from './admin-orders';
-import { updateOrderStatusPath } from './order-update-status';
+import { updateOrderStatusPath } from './update-order-status';
+import { adminOrderPath } from './admin-order';
+import { cancelOrderPath } from './cancel-order';
 
 export const orderPaths: OpenAPIV3.PathsObject = {
   ...createOrderPath,
   ...userOrdersPath,
-  ...orderByIdPath,
+  ...getOrderPath,
+  ...cancelOrderPath,
   ...adminOrdersPath,
+  ...adminOrderPath,
   ...updateOrderStatusPath,
 };

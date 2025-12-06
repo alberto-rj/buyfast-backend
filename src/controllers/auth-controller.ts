@@ -9,6 +9,7 @@ import {
   toUserRefresh,
 } from '../dtos';
 import { resBody, refreshTokenExpiresAt } from '../utils';
+import { StatusCodes } from 'http-status-codes';
 
 const createCookie = (res: Response, refreshToken: string) => {
   res.cookie('refreshToken', refreshToken, {
@@ -32,7 +33,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 
     createCookie(res, refreshToken);
 
-    res.status(201).json(
+    res.status(StatusCodes.CREATED).json(
       resBody.auth({
         accessToken,
         user,
@@ -51,7 +52,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     createCookie(res, refreshToken);
 
-    res.status(200).json(
+    res.status(StatusCodes.OK).json(
       resBody.auth({
         accessToken,
         user,
@@ -72,7 +73,7 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
 
     createCookie(res, refreshToken);
 
-    res.status(200).json(
+    res.status(StatusCodes.OK).json(
       resBody.auth({
         accessToken,
         user,
@@ -93,7 +94,7 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
 
     clearCookie(res);
 
-    res.sendStatus(204);
+    res.sendStatus(StatusCodes.NO_CONTENT);
   } catch (error) {
     next(error);
   }

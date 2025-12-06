@@ -17,38 +17,35 @@ export const commonSchemas: Record<string, OpenAPIV3.SchemaObject> = {
   ErrorResponse: {
     type: 'object',
     properties: {
-      success: {
-        type: 'boolean',
-        example: false,
-      },
+      success: { type: 'boolean', example: false },
       data: {
         type: 'object',
         properties: {
           error: {
             type: 'object',
             properties: {
-              name: {
-                type: 'string',
-                example: 'Bad Request Error',
-              },
-              message: {
-                type: 'string',
-                example: 'Invalid data',
-              },
-              details: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    field: {
-                      type: 'string',
-                    },
-                    message: {
-                      type: 'string',
-                    },
-                  },
-                },
-              },
+              name: { type: 'string' },
+              message: { type: 'string' },
+              details: { type: 'array', items: { type: 'object' } },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  ErrorDetailedResponse: {
+    type: 'object',
+    properties: {
+      success: { type: 'boolean', example: false },
+      data: {
+        type: 'object',
+        properties: {
+          error: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              message: { type: 'string' },
             },
           },
         },

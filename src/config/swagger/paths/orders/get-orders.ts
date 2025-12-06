@@ -38,6 +38,16 @@ export const userOrdersPath: OpenAPIV3.PathsObject = {
         '401': {
           description: 'Not authenticated',
         },
+        '500': {
+          description: 'Internal server error',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+            },
+          },
+        },
       },
     },
   },

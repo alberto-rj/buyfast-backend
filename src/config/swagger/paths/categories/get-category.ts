@@ -1,49 +1,42 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const adminOrdersPath: OpenAPIV3.PathsObject = {
-  '/admin/orders': {
+export const getCategoryPath: OpenAPIV3.PathsObject = {
+  '/categories/{id}': {
     get: {
-      tags: ['Orders - Admin'],
-      summary: 'List all orders (Admin)',
-      description: 'Returns a paginated list of all orders in the system.',
-      operationId: 'getAllOrders',
+      tags: ['Categories'],
+      summary: 'Get product category',
+      description: 'Returns Category.',
+      operationId: 'getCategory',
       security: [{ bearerAuth: [] }],
       parameters: [
         {
-          in: 'query',
-          name: 'page',
+          in: 'path',
+          name: 'id',
+          required: true,
+          description: 'Category ID',
           schema: {
-            type: 'integer',
-            default: 1,
+            type: 'string',
+            format: 'uuid',
           },
         },
         {
           in: 'query',
-          name: 'limit',
-          schema: { type: 'integer', default: 10 },
-        },
-        {
-          in: 'query',
-          name: 'status',
+          name: 'includeInactive',
+          required: false,
+          description: 'Whether to include inactive categories',
           schema: {
-            type: 'string',
-            enum: [
-              'Pending',
-              'Processing',
-              'Shipped',
-              'Delivered',
-              'Cancelled',
-            ],
+            type: 'boolean',
+            default: false,
           },
         },
       ],
       responses: {
         '200': {
-          description: 'Order list',
+          description: 'Categories',
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/OrderDetailedResponse',
+                $ref: '#/components/schemas/CategoryResponse',
               },
             },
           },
@@ -58,8 +51,8 @@ export const adminOrdersPath: OpenAPIV3.PathsObject = {
             },
           },
         },
-        '403': {
-          description: 'Admin access required',
+        '404': {
+          description: 'Order not found',
           content: {
             'application/json': {
               schema: {

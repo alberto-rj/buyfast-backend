@@ -11,6 +11,7 @@ import {
   toOrderOutput,
   toOrderItemOutput,
   toUserBasicOutput,
+  OrderGetOfInput,
 } from '../dtos';
 import { BadRequestError, ConflictError, NotFoundError } from '../utils';
 import { OrderStatus } from '@prisma/client';
@@ -328,10 +329,37 @@ const getAllOf = async ({
   });
 };
 
+const getOf = async ({
+  id,
+  userId,
+}: OrderGetOfInput): Promise<OrderResultOutput[]> => {
+  const foundOrders = await prisma.order.findMany({
+    where: {
+      id,
+      userId: userId,
+    },
+    include: {
+      items: true,
+    },
+  });
+
+  if (!foundOrders) {
+    throw new NotFoundError('Order not found.');
+  }
+
+  return foundOrders.map((order) => {
+    return {
+      items: order.items.map(toOrderItemOutput),
+      ...toOrderOutput(order),
+    };
+  });
+};
+
 export const orderService = {
   cancel,
   create,
   get,
+  getOf,
   getAll,
   getAllOf,
   updateStatus,

@@ -13,7 +13,7 @@ orderRoutes
 orderRoutes.get(
   '/:id',
   authenticate,
-  orderController.get.bind(orderController),
+  orderController.getOf.bind(orderController),
 );
 
 orderRoutes.patch(
