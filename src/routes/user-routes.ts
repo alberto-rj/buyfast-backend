@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { userController } from '../controllers';
-import { authenticate, checkRoles } from '../middlewares';
+import { authenticate, checkRoles, requireAdmin } from '../middlewares';
 
 export const userRoutes = Router();
 
@@ -13,25 +13,17 @@ userRoutes
 userRoutes.get(
   '/',
   authenticate,
-  checkRoles(['Admin']),
+  requireAdmin,
   userController.findMany.bind(userController),
 );
 
 userRoutes
   .route('/:id')
-  .get(
-    authenticate,
-    checkRoles(['Admin']),
-    userController.find.bind(userController),
-  )
-  .patch(
-    authenticate,
-    checkRoles(['Admin']),
-    userController.update.bind(userController),
-  )
+  .get(authenticate, requireAdmin, userController.find.bind(userController))
+  .patch(authenticate, requireAdmin, userController.update.bind(userController))
   .delete(
     authenticate,
-    checkRoles(['Admin']),
+    requireAdmin,
     userController.remove.bind(userController),
   );
 
@@ -39,6 +31,6 @@ userRoutes
   .route('/:id/role')
   .patch(
     authenticate,
-    checkRoles(['Admin']),
+    requireAdmin,
     userController.updateRole.bind(userController),
   );

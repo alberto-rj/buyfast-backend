@@ -12,6 +12,13 @@ adminRoutes.get(
   orderController.getAll.bind(orderController),
 );
 
+adminRoutes.get(
+  '/orders/:id',
+  authenticate,
+  requireAdmin,
+  orderController.get.bind(orderController),
+);
+
 adminRoutes.patch(
   '/orders/:id/status',
   authenticate,

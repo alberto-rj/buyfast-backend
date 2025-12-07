@@ -14,13 +14,30 @@ export const commonSchemas: Record<string, OpenAPIV3.SchemaObject> = {
     },
   },
 
+  ErrorDetailedResponse: {
+    type: 'object',
+    properties: {
+      success: { type: 'boolean', example: false },
+      data: {
+        type: 'object',
+        properties: {
+          error: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              message: { type: 'string' },
+              details: { type: 'array', items: { type: 'object' } },
+            },
+          },
+        },
+      },
+    },
+  },
+
   ErrorResponse: {
     type: 'object',
     properties: {
-      success: {
-        type: 'boolean',
-        example: false,
-      },
+      success: { type: 'boolean', example: false },
       data: {
         type: 'object',
         properties: {
@@ -29,25 +46,9 @@ export const commonSchemas: Record<string, OpenAPIV3.SchemaObject> = {
             properties: {
               name: {
                 type: 'string',
-                example: 'Bad Request Error',
               },
               message: {
                 type: 'string',
-                example: 'Invalid data',
-              },
-              details: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    field: {
-                      type: 'string',
-                    },
-                    message: {
-                      type: 'string',
-                    },
-                  },
-                },
               },
             },
           },
@@ -56,7 +57,7 @@ export const commonSchemas: Record<string, OpenAPIV3.SchemaObject> = {
     },
   },
 
-  Pagination: {
+  PaginationResponse: {
     type: 'object',
     properties: {
       page: {

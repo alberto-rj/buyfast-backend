@@ -1,7 +1,7 @@
 import { OpenAPIV3 } from 'openapi-types';
 
 export const orderSchemas: Record<string, OpenAPIV3.SchemaObject> = {
-  Address: {
+  OrderAddress: {
     type: 'object',
     required: ['phone', 'street', 'city', 'zipCode'],
     properties: {
@@ -32,7 +32,29 @@ export const orderSchemas: Record<string, OpenAPIV3.SchemaObject> = {
     },
   },
 
-  OrderItem: {
+  CreateOrderRequest: {
+    type: 'object',
+    required: ['deliveryAddress'],
+    properties: {
+      deliveryAddress: {
+        $ref: '#/components/schemas/OrderAddress',
+      },
+    },
+  },
+
+  UpdateOrderStatusRequest: {
+    type: 'object',
+    required: ['status'],
+    properties: {
+      status: {
+        type: 'string',
+        enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+        description: 'New status for the order',
+      },
+    },
+  },
+
+  OrderItemResponse: {
     type: 'object',
     properties: {
       id: {
@@ -83,7 +105,7 @@ export const orderSchemas: Record<string, OpenAPIV3.SchemaObject> = {
     },
   },
 
-  Order: {
+  OrderResponse: {
     type: 'object',
     properties: {
       id: {
@@ -113,12 +135,12 @@ export const orderSchemas: Record<string, OpenAPIV3.SchemaObject> = {
         description: 'Total value of the order',
       },
       deliveryAddress: {
-        $ref: '#/components/schemas/Address',
+        $ref: '#/components/schemas/OrderAddress',
       },
       items: {
         type: 'array',
         items: {
-          $ref: '#/components/schemas/OrderItem',
+          $ref: '#/components/schemas/OrderItemResponse',
         },
         description: 'List of items included in the order',
       },
@@ -135,24 +157,57 @@ export const orderSchemas: Record<string, OpenAPIV3.SchemaObject> = {
     },
   },
 
-  CreateOrderRequest: {
+  OrderDetailedResponse: {
     type: 'object',
-    required: ['deliveryAddress'],
     properties: {
-      deliveryAddress: {
-        $ref: '#/components/schemas/Address',
+      id: {
+        type: 'string',
+        format: 'uuid',
+        example: 'e5d06deb-3ecc-402d-8f67-172f362dbf46',
       },
-    },
-  },
-
-  UpdateOrderStatusRequest: {
-    type: 'object',
-    required: ['status'],
-    properties: {
+      userId: {
+        type: 'string',
+        format: 'uuid',
+      },
+      number: {
+        type: 'string',
+        example: 'ORD-20251205-0001',
+        description: 'Unique order number',
+      },
       status: {
         type: 'string',
         enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
-        description: 'New status for the order',
+        example: 'Pending',
+        description: 'Current status of the order',
+      },
+      totalAmount: {
+        type: 'number',
+        format: 'decimal',
+        example: 901.15,
+        description: 'Total value of the order',
+      },
+      deliveryAddress: {
+        $ref: '#/components/schemas/OrderAddress',
+      },
+      items: {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/OrderItemResponse',
+        },
+        description: 'List of items included in the order',
+      },
+      user: {
+        $ref: '#/components/schemas/UserBasicResponse',
+      },
+      createdAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2025-12-05T15:24:45.783Z',
+      },
+      updatedAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2025-12-05T15:34:31.003Z',
       },
     },
   },

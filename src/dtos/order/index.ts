@@ -19,6 +19,7 @@ export {
   OrderGetAllOfInput,
   toOrderGetAllOf,
 } from './order-get-all-of';
+export { OrderGetOf, OrderGetOfInput, toOrderGetOf } from './order-get-of';
 export {
   OrderUpdateStatus,
   OrderUpdateStatusInput,

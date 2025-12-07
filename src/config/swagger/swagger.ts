@@ -5,6 +5,15 @@ import swaggerUi from 'swagger-ui-express';
 import { commonSchemas } from './schemas/common';
 import { orderSchemas } from './schemas/order';
 import { orderPaths } from './paths/orders';
+import { cartSchemas } from './schemas/cart';
+import { cartPaths } from './paths/cart';
+import { authSchemas } from './schemas/auth';
+import { authPath } from './paths/auth';
+import { userSchemas } from './schemas/user';
+import { categoryPaths } from './paths/categories';
+import { categorySchemas } from './schemas/category';
+import { userPaths } from './paths/users';
+import { productPaths } from './paths/products';
 
 export const swaggerDocument: OpenAPIV3.Document = {
   openapi: '3.0.0',
@@ -16,7 +25,7 @@ export const swaggerDocument: OpenAPIV3.Document = {
     contact: {
       name: 'Alberto José',
       url: 'https://github.com/alberto-rj',
-      email: 'alberto@example.com',
+      email: 'albertorauljose@gmail.com',
     },
     license: {
       name: 'MIT',
@@ -25,42 +34,38 @@ export const swaggerDocument: OpenAPIV3.Document = {
   },
   servers: [
     {
-      url: 'http://localhost:3000/api',
-      description: 'Servidor de Desenvolvimento',
+      url: 'https://api.buyfast.com/api',
+      description: 'Production server',
     },
     {
-      url: 'https://api.buyfast.com/api',
-      description: 'Servidor de Produção',
+      url: 'http://localhost:3000/api',
+      description: 'Development server',
     },
   ],
   tags: [
     {
       name: 'Orders',
-      description: 'Gerenciamento de pedidos',
-    },
-    {
-      name: 'Orders - Admin',
-      description: 'Gerenciamento de pedidos (Administrador)',
+      description: 'Orders management',
     },
     {
       name: 'Cart',
-      description: 'Carrinho de compras',
+      description: 'Cart management',
     },
     {
       name: 'Products',
-      description: 'Gerenciamento de produtos',
+      description: 'Products management',
     },
     {
       name: 'Categories',
-      description: 'Gerenciamento de categorias',
-    },
-    {
-      name: 'Auth',
-      description: 'Autenticação e autorização',
+      description: 'Categories management',
     },
     {
       name: 'Users',
-      description: 'Gerenciamento de usuários',
+      description: 'Users management',
+    },
+    {
+      name: 'Auth',
+      description: 'Authentication and authorization',
     },
   ],
   components: {
@@ -69,12 +74,16 @@ export const swaggerDocument: OpenAPIV3.Document = {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
-        description: 'Autenticação JWT. Formato: `Bearer {token}`',
+        description: 'JWT Authentication. Format: `Bearer {token}`',
       },
     },
     schemas: {
       ...commonSchemas,
       ...orderSchemas,
+      ...cartSchemas,
+      ...categorySchemas,
+      ...userSchemas,
+      ...authSchemas,
     },
   },
   security: [
@@ -84,6 +93,11 @@ export const swaggerDocument: OpenAPIV3.Document = {
   ],
   paths: {
     ...orderPaths,
+    ...cartPaths,
+    ...categoryPaths,
+    ...productPaths,
+    ...userPaths,
+    ...authPath,
   },
 };
 

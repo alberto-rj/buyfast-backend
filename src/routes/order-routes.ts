@@ -13,11 +13,11 @@ orderRoutes
 orderRoutes.get(
   '/:id',
   authenticate,
-  orderController.get.bind(orderController),
+  orderController.getOf.bind(orderController),
 );
 
 orderRoutes.patch(
-  '/:id/cancel',
+  '/:id/status/cancelled',
   authenticate,
   orderController.cancel.bind(orderController),
 );
