@@ -1,73 +1,57 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const createCategoryPath: OpenAPIV3.PathsObject = {
-  '/categories': {
-    post: {
-      tags: ['Categories'],
-      summary: 'Get product category',
-      description: 'Returns Category.',
-      operationId: 'getCategory',
-      security: [{ bearerAuth: [] }],
-      parameters: [
-        {
-          in: 'path',
-          name: 'id',
-          required: true,
-          description: 'Category ID',
+export const createCategoryPath: OpenAPIV3.PathItemObject = {
+  post: {
+    tags: ['Categories'],
+    summary: 'Create category',
+    description: 'Create category.',
+    operationId: 'createCategory',
+    security: [{ bearerAuth: [] }],
+    requestBody: {
+      content: {
+        'application/json': {
           schema: {
-            type: 'string',
-            format: 'uuid',
+            $ref: '#/components/schemas/CreateCategoryRequest',
           },
         },
-        {
-          in: 'query',
-          name: 'includeInactive',
-          required: false,
-          description: 'Whether to include inactive categories',
-          schema: {
-            type: 'boolean',
-            default: false,
-          },
-        },
-      ],
-      requestBody: {
+      },
+    },
+    responses: {
+      '200': {
+        description: 'Categories',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/UpdateCategoryRequest',
+              $ref: '#/components/schemas/CategoryResponse',
             },
           },
         },
       },
-      responses: {
-        '200': {
-          description: 'Categories',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/Category',
-              },
+      '401': {
+        description: 'Not authenticated',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/ErrorResponse',
             },
           },
         },
-        '401': {
-          description: 'Not authenticated',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/ErrorResponse',
-              },
+      },
+      '404': {
+        description: 'Order not found',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/ErrorResponse',
             },
           },
         },
-        '404': {
-          description: 'Order not found',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/ErrorResponse',
-              },
-            },
+      },
+      '500': {
+        description: 'Internal server error',
+        content: {
+          'application/json': {
+            schema: { $ref: '#/components/schemas/ErrorResponse' },
           },
         },
       },

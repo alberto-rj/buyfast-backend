@@ -1,18 +1,18 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const getCategoryPath: OpenAPIV3.PathItemObject = {
-  get: {
-    tags: ['Categories'],
-    summary: 'Get product category',
-    description: 'Returns Category.',
-    operationId: 'getCategory',
+export const updateIsActiveProductPath: OpenAPIV3.PathItemObject = {
+  patch: {
+    tags: ['Products'],
+    summary: 'Update product product',
+    description: 'Updates a product and returns the updated record.',
+    operationId: 'updateProduct',
     security: [{ bearerAuth: [] }],
     parameters: [
       {
         in: 'path',
         name: 'id',
         required: true,
-        description: 'Category ID',
+        description: 'Product ID',
         schema: {
           type: 'string',
           format: 'uuid',
@@ -22,20 +22,29 @@ export const getCategoryPath: OpenAPIV3.PathItemObject = {
         in: 'query',
         name: 'includeInactive',
         required: false,
-        description: 'Whether to include inactive categories',
+        description: 'Whether to include inactive products',
         schema: {
           type: 'boolean',
           default: false,
         },
       },
     ],
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/UpdateProductRequest',
+          },
+        },
+      },
+    },
     responses: {
       '200': {
-        description: 'Categories',
+        description: 'Products',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/CategoryResponse',
+              $ref: '#/components/schemas/ProductResponse',
             },
           },
         },

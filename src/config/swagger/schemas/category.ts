@@ -10,20 +10,41 @@ export const categorySchemas: Record<string, OpenAPIV3.SchemaObject> = {
       description: { type: 'string', nullable: true },
       isActive: { type: 'boolean' },
       createdAt: { type: 'string', format: 'date-time' },
-      updatedAt: { type: 'string' }, // ou format: 'date-time' se ajustar no backend
+      updatedAt: { type: 'string', format: 'date-time' },
     },
   },
 
-  Pagination: {
+  CreateCategoryRequest: {
+    type: 'object',
+    required: ['name'],
+    properties: {
+      name: { type: 'string' },
+      description: { type: 'string' },
+    },
+  },
+
+  UpdateCategoryRequest: {
+    type: 'object',
+    required: ['name'],
+    properties: {
+      name: { type: 'string' },
+      description: { type: 'string' },
+    },
+  },
+
+  CategoryResponse: {
     type: 'object',
     properties: {
-      total: { type: 'integer' },
-      length: { type: 'integer' },
-      limit: { type: 'integer' },
-      page: { type: 'integer' },
-      pages: { type: 'integer' },
-      hasPrev: { type: 'boolean' },
-      hasNext: { type: 'boolean' },
+      success: { type: 'boolean', default: true },
+      data: {
+        type: 'object',
+        properties: {
+          results: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/Category' },
+          },
+        },
+      },
     },
   },
 
@@ -39,7 +60,7 @@ export const categorySchemas: Record<string, OpenAPIV3.SchemaObject> = {
             items: { $ref: '#/components/schemas/Category' },
           },
           pagination: {
-            $ref: '#/components/schemas/Pagination',
+            $ref: '#/components/schemas/PaginationResponse',
           },
         },
       },

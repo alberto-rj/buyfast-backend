@@ -48,28 +48,6 @@ export const authSchemas: Record<string, OpenAPIV3.SchemaObject> = {
     },
   },
 
-  LoginResponse: {
-    type: 'object',
-    properties: {
-      success: {
-        type: 'boolean',
-        default: true,
-        readOnly: true,
-      },
-      data: {
-        type: 'object',
-        properties: {
-          accessToken: {
-            $ref: '#/components/schemas/AccessToken',
-          },
-          user: {
-            $ref: '#/components/schemas/UserResponse',
-          },
-        },
-      },
-    },
-  },
-
   RegisterRequest: {
     type: 'object',
     required: ['firstName', 'lastName', 'username', 'email', 'password'],
@@ -107,28 +85,6 @@ export const authSchemas: Record<string, OpenAPIV3.SchemaObject> = {
         minimum: 4,
         maximum: 6,
         description: 'Password',
-      },
-    },
-  },
-
-  RegisterResponse: {
-    type: 'object',
-    properties: {
-      success: {
-        type: 'boolean',
-        default: true,
-        readOnly: true,
-      },
-      data: {
-        type: 'object',
-        properties: {
-          accessToken: {
-            $ref: '#/components/schemas/AccessToken',
-          },
-          user: {
-            $ref: '#/components/schemas/UserResponse',
-          },
-        },
       },
     },
   },

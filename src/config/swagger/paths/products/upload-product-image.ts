@@ -1,44 +1,28 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const createOrderPath: OpenAPIV3.PathItemObject = {
+export const uploadProductPath: OpenAPIV3.PathItemObject = {
   post: {
-    tags: ['Orders'],
-    summary: 'Create a new order',
-    description:
-      'Creates an order using the authenticated user’s cart items. The cart is cleared after the order is created.',
-    operationId: 'createOrder',
+    tags: ['Products'],
+    summary: 'Upload product image',
+    description: 'Upload product image.',
+    operationId: 'uploadProduct',
     security: [{ bearerAuth: [] }],
     requestBody: {
-      required: true,
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/CreateOrderRequest',
+            $ref: '#/components/schemas/UploadProductRequest',
           },
         },
       },
     },
     responses: {
-      '201': {
-        description: 'Order successfully created',
+      '200': {
+        description: 'Products',
         content: {
           'application/json': {
             schema: {
-              type: 'object',
-              properties: {
-                success: { type: 'boolean' },
-                data: { $ref: '#/components/schemas/OrderResponse' },
-              },
-            },
-          },
-        },
-      },
-      '400': {
-        description: 'Empty cart, no stock, or invalid data',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/components/schemas/ErrorResponse',
+              $ref: '#/components/schemas/ProductResponse',
             },
           },
         },
@@ -53,13 +37,21 @@ export const createOrderPath: OpenAPIV3.PathItemObject = {
           },
         },
       },
-      '500': {
-        description: 'Internal server error',
+      '404': {
+        description: 'Order not found',
         content: {
           'application/json': {
             schema: {
               $ref: '#/components/schemas/ErrorResponse',
             },
+          },
+        },
+      },
+      '500': {
+        description: 'Internal server error',
+        content: {
+          'application/json': {
+            schema: { $ref: '#/components/schemas/ErrorResponse' },
           },
         },
       },

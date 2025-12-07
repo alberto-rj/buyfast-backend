@@ -9,11 +9,24 @@ import { adminOrderPath } from './admin-order';
 import { cancelOrderPath } from './cancel-order';
 
 export const orderPaths: OpenAPIV3.PathsObject = {
-  ...createOrderPath,
-  ...userOrdersPath,
-  ...getOrderPath,
-  ...cancelOrderPath,
-  ...adminOrdersPath,
-  ...adminOrderPath,
-  ...updateOrderStatusPath,
+  '/orders': {
+    ...createOrderPath,
+    ...userOrdersPath,
+  },
+  '/orders/{id}': {
+    ...userOrdersPath,
+    ...getOrderPath,
+  },
+  '/orders/{id}/status/cancelled': {
+    ...cancelOrderPath,
+  },
+  '/admin/orders': {
+    ...adminOrdersPath,
+  },
+  '/admin/orders/{id}': {
+    ...adminOrderPath,
+  },
+  '/admin/orders/{id}/status': {
+    ...updateOrderStatusPath,
+  },
 };

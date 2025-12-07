@@ -7,9 +7,15 @@ import { addCartItemPath } from './add-item';
 import { updateCartItemPath } from './update-item';
 
 export const cartPaths: OpenAPIV3.PathsObject = {
-  ...getCartPath,
-  ...clearCartPath,
-  ...addCartItemPath,
-  ...updateCartItemPath,
-  ...removeCartItemPath,
+  '/cart': {
+    ...getCartPath,
+    ...clearCartPath,
+  },
+  '/cart/items': {
+    ...addCartItemPath,
+  },
+  '/cart/items/{id}': {
+    ...updateCartItemPath,
+    ...removeCartItemPath,
+  },
 };

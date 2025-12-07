@@ -1,18 +1,18 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const getCategoriesPath: OpenAPIV3.PathItemObject = {
+export const getProductsPath: OpenAPIV3.PathItemObject = {
   get: {
-    tags: ['Categories'],
-    summary: 'List categories',
-    description: 'Returns a paginated list of product categories.',
-    operationId: 'getCategories',
+    tags: ['Products'],
+    summary: 'List products',
+    description: 'Returns a paginated list of product products.',
+    operationId: 'getProducts',
     security: [{ bearerAuth: [] }],
     parameters: [
       {
         in: 'query',
         name: 'includeInactive',
         required: false,
-        description: 'Include inactive categories',
+        description: 'Include inactive products',
         schema: {
           type: 'boolean',
           default: false,
@@ -116,7 +116,7 @@ export const getCategoriesPath: OpenAPIV3.PathItemObject = {
     ],
     responses: {
       '200': {
-        description: 'Paginated list of categories',
+        description: 'Paginated list of products',
         content: {
           'application/json': {
             schema: { $ref: '#/components/schemas/CategoryListResponse' },

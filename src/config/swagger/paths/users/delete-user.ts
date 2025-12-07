@@ -1,11 +1,11 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const getCategoryPath: OpenAPIV3.PathItemObject = {
-  get: {
-    tags: ['Categories'],
-    summary: 'Get product category',
-    description: 'Returns Category.',
-    operationId: 'getCategory',
+export const deleteUserPath: OpenAPIV3.PathItemObject = {
+  delete: {
+    tags: ['Users'],
+    summary: 'Delete product category',
+    description: 'Deletes a user and returns the updated record.',
+    operationId: 'deleteUser',
     security: [{ bearerAuth: [] }],
     parameters: [
       {
@@ -29,6 +29,15 @@ export const getCategoryPath: OpenAPIV3.PathItemObject = {
         },
       },
     ],
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/components/schemas/UpdateCategoryRequest',
+          },
+        },
+      },
+    },
     responses: {
       '200': {
         description: 'Categories',

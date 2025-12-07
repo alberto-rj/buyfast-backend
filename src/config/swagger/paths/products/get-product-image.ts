@@ -1,18 +1,18 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const getCategoryPath: OpenAPIV3.PathItemObject = {
+export const getProductImagePath: OpenAPIV3.PathItemObject = {
   get: {
-    tags: ['Categories'],
-    summary: 'Get product category',
-    description: 'Returns Category.',
-    operationId: 'getCategory',
+    tags: ['Products'],
+    summary: 'Get product product image',
+    description: 'Returns Product image.',
+    operationId: 'getProduct',
     security: [{ bearerAuth: [] }],
     parameters: [
       {
         in: 'path',
         name: 'id',
         required: true,
-        description: 'Category ID',
+        description: 'Product ID',
         schema: {
           type: 'string',
           format: 'uuid',
@@ -22,7 +22,7 @@ export const getCategoryPath: OpenAPIV3.PathItemObject = {
         in: 'query',
         name: 'includeInactive',
         required: false,
-        description: 'Whether to include inactive categories',
+        description: 'Whether to include inactive products',
         schema: {
           type: 'boolean',
           default: false,
@@ -31,11 +31,11 @@ export const getCategoryPath: OpenAPIV3.PathItemObject = {
     ],
     responses: {
       '200': {
-        description: 'Categories',
+        description: 'Products',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/CategoryResponse',
+              $ref: '#/components/schemas/ProductResponse',
             },
           },
         },

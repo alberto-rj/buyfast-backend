@@ -1,11 +1,11 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const getCategoriesPath: OpenAPIV3.PathItemObject = {
+export const getUsersPath: OpenAPIV3.PathItemObject = {
   get: {
-    tags: ['Categories'],
-    summary: 'List categories',
-    description: 'Returns a paginated list of product categories.',
-    operationId: 'getCategories',
+    tags: ['Users'],
+    summary: 'List users',
+    description: 'Returns a paginated list of users.',
+    operationId: 'getUsers',
     security: [{ bearerAuth: [] }],
     parameters: [
       {

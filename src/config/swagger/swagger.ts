@@ -11,6 +11,9 @@ import { authSchemas } from './schemas/auth';
 import { authPath } from './paths/auth';
 import { userSchemas } from './schemas/user';
 import { categoryPaths } from './paths/categories';
+import { categorySchemas } from './schemas/category';
+import { userPaths } from './paths/users';
+import { productPaths } from './paths/products';
 
 export const swaggerDocument: OpenAPIV3.Document = {
   openapi: '3.0.0',
@@ -45,10 +48,6 @@ export const swaggerDocument: OpenAPIV3.Document = {
       description: 'Orders management',
     },
     {
-      name: 'Orders - Admin',
-      description: 'Orders management',
-    },
-    {
       name: 'Cart',
       description: 'Cart management',
     },
@@ -61,12 +60,12 @@ export const swaggerDocument: OpenAPIV3.Document = {
       description: 'Categories management',
     },
     {
-      name: 'Auth',
-      description: 'Authentication and authorization',
-    },
-    {
       name: 'Users',
       description: 'Users management',
+    },
+    {
+      name: 'Auth',
+      description: 'Authentication and authorization',
     },
   ],
   components: {
@@ -82,9 +81,9 @@ export const swaggerDocument: OpenAPIV3.Document = {
       ...commonSchemas,
       ...orderSchemas,
       ...cartSchemas,
-      ...authSchemas,
+      ...categorySchemas,
       ...userSchemas,
-      ...cartSchemas,
+      ...authSchemas,
     },
   },
   security: [
@@ -95,8 +94,10 @@ export const swaggerDocument: OpenAPIV3.Document = {
   paths: {
     ...orderPaths,
     ...cartPaths,
-    ...authPath,
     ...categoryPaths,
+    ...productPaths,
+    ...userPaths,
+    ...authPath,
   },
 };
 

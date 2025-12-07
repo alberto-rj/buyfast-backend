@@ -1,18 +1,18 @@
 import { OpenAPIV3 } from 'openapi-types';
 
-export const getCategoryPath: OpenAPIV3.PathItemObject = {
-  get: {
-    tags: ['Categories'],
-    summary: 'Get product category',
-    description: 'Returns Category.',
-    operationId: 'getCategory',
+export const deleteProductPath: OpenAPIV3.PathItemObject = {
+  delete: {
+    tags: ['Products'],
+    summary: 'Delete product',
+    description: 'Deletes a product by ID.',
+    operationId: 'deleteProduct',
     security: [{ bearerAuth: [] }],
     parameters: [
       {
         in: 'path',
         name: 'id',
         required: true,
-        description: 'Category ID',
+        description: 'Product ID',
         schema: {
           type: 'string',
           format: 'uuid',
@@ -22,7 +22,7 @@ export const getCategoryPath: OpenAPIV3.PathItemObject = {
         in: 'query',
         name: 'includeInactive',
         required: false,
-        description: 'Whether to include inactive categories',
+        description: 'Whether to include inactive products',
         schema: {
           type: 'boolean',
           default: false,
@@ -30,15 +30,8 @@ export const getCategoryPath: OpenAPIV3.PathItemObject = {
       },
     ],
     responses: {
-      '200': {
-        description: 'Categories',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/components/schemas/CategoryResponse',
-            },
-          },
-        },
+      '204': {
+        description: 'Product successfully deleted',
       },
       '401': {
         description: 'Not authenticated',
@@ -51,7 +44,7 @@ export const getCategoryPath: OpenAPIV3.PathItemObject = {
         },
       },
       '404': {
-        description: 'Order not found',
+        description: 'Product not found',
         content: {
           'application/json': {
             schema: {

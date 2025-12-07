@@ -17,7 +17,7 @@ orderRoutes.get(
 );
 
 orderRoutes.patch(
-  '/:id/cancel',
+  '/:id/status/cancelled',
   authenticate,
   orderController.cancel.bind(orderController),
 );
